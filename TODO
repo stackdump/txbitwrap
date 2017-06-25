@@ -1,0 +1,53 @@
+Sat Jun 24 13:56:27 CDT 2017
+
+WIP
+===
+
+* Incorporate max values from PNML 'capacity' field
+  * Modify pgsql data types -- composite state & vector types
+    * to be composed of a domain of token specific to each place location.
+
+
+BACKLOG:
+========
+
+* test settings & twistd CLI args/plugin
+* test UI integration
+  * begin to design admin rpc functionality
+    * coffeescript console? 
+    * implement bitwrap-ui ( deprecated marble-ui )
+
+* test for 'beta' release
+  * Docker build - update to use postgres
+    * add sample docker config w/ link between db and API
+
+* support authentiaction w/ AWS gateway api + cognito
+  * could we drive this entirely at the DB level?
+    * ? add a permission assert to before trigger
+
+ICEBOX:
+=======
+
+* Contracts 
+  * support 'role' functionality via 'control' vector
+    * inhibitors provide basic boolean operations 
+  * allow cross-net interaction between elementary nets
+    * existing: Event(oid)
+    * new: Event(oid, sender=<oid>)
+
+* Examples and Demos
+  * use microcosm multi-machine
+    * demo roles / BITS / (? control structures ?)
+  * 'octotron' model for 'Ultimate Tic-Tac-Toe'
+  * build a new 'torstor'
+    * the ideal javascript-disabled site
+      * demo project using only html image maps and SVG images
+
+* Next Version or Fork ?
+  * python3
+    * consider porting use newer async libs
+    * -or- keep twisted & re-code to drop dependance on cyclone
+      * some SSL dependencies from cyclone don't build on rasbian
+  * OpenResty/Lua
+    * https://github.com/openresty/docker-openresty
+    * https://github.com/shmul/lightningmdb
