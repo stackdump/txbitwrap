@@ -1,11 +1,10 @@
-
 """
 Test Db migrations
 """
 import time
 from twisted.trial.unittest import TestCase
-import bitwrap_io.storage.db as pg
-from bitwrap_io.machine import pnml
+import bitwrap_psql.db as pg
+import bitwrap_machine as pnml
 from bitwrap_io.test import options
 
 

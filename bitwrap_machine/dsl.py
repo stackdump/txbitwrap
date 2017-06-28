@@ -5,7 +5,7 @@ Uses Petri-Net Markup as a "Domain Specific Language" (DSL) to define a bitwrap 
 
 """
 
-from _xml import Transition, Place
+from pnml import Transition, Place
 
 def append_roles(net):
     """ build roles from edge list """

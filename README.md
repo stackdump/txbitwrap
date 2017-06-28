@@ -89,16 +89,11 @@ Download:
 
 #### Docker
 
+Run development database
+
+    docker run -d --name bitwrap-dev -p 127.0.0.1:5432:5432 -e POSTGRES_PASSWORD=bitwrap postgres:9.6
+
+#### 
 Automated Build: https://hub.docker.com/r/bitwrap/bitwrap-io/~/dockerfile/
 
-#### TODO: update instructions for linking w/ postgres db container
-
-Run the image: ( by default uses LMDB storage )
-
-    docker pull bitwrap/bitwrap-io
-
-    docker run -it --name=bitwrap-io \
-    -v /tmp:/repo \ # FIXME: is this location actually used?
-    -p 127.0.0.1:8080:8080 \
-    bitwrap/bitwrap-io:latest
-
+    #TODO: include instructions for deploying using containers

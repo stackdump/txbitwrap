@@ -9,7 +9,6 @@ import cyclone.httpclient
 from twisted.application import internet
 from twisted.trial.unittest import TestCase
 from bitwrap_io.api import factory as Api
-from bitwrap_io.machine import pnml
 
 
 IFACE = '127.0.0.1'
@@ -68,6 +67,6 @@ class ApiTest(TestCase):
         if isinstance(event['payload'], str):
             data = event['payload']
         else:
-            data = json.dumps(event)
+            data = json.dumps(event['payload'])
 
         return cyclone.httpclient.fetch(url, postdata=data)

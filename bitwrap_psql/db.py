@@ -39,9 +39,11 @@ def drop_schema(schema, **kwargs):
         try:
             txn.execute(sql)
         except:
+            print '__SQL_ERR__'
+            print sql
             pass
 
-    try_execute("DROP TRIGGER %s.dispatch" % schema)
+    try_execute("DROP TRIGGER %s_dispatch on %s.events" % (schema, schema))
     try_execute("DROP TABLE %s.transitions" % schema)
     try_execute("DROP TABLE %s.events" % schema)
     try_execute("DROP TABLE %s.states" % schema)
@@ -80,7 +82,7 @@ def create_schema(machine, **kwargs):
     CREATE DOMAIN %s.token as smallint CHECK(VALUE >= 0 and VALUE <= %i)
     """ % (machine.name, UNSIGNED_MAX))
 
-    num_places = len(machine.net.places)
+    num_places = len(machine.machine['state'])
     columns = [''] * num_places
     vector = [''] * num_places
     delta = [''] * num_places
@@ -134,7 +136,8 @@ def create_schema(machine, **kwargs):
 
     # KLUDGE: this seems to be a limitation of how default values are declared
     # this doesn't work when state vector has only one element
-    # state %s_state DEFAULT %s::%s_state,
+    # state %s.state DEFAULT (0), # FAILS
+    # state %s.state DEFAULT (0,0), # WORKS
     if len(inital_vector) < 2:
         raise Exception('state vector must be an n-tuple where n >= 2')
 
@@ -162,7 +165,7 @@ def create_schema(machine, **kwargs):
 
     txn.execute("""
     CREATE TABLE %s.events (
-      oid VARCHAR(255) REFERENCES %s.states(oid) ON DELETE CASCADE,
+      oid VARCHAR(255) REFERENCES %s.states(oid) ON DELETE CASCADE ON UPDATE CASCADE,
       seq SERIAL,
       action VARCHAR(255) NOT NULL,
       payload json DEFAULT '{}',
@@ -187,24 +190,29 @@ def create_schema(machine, **kwargs):
             txn ${name}.vector;
             revision int4;
         BEGIN
-            SELECT (vector).* INTO STRICT txn from ${name}.transitions where action = NEW.action;
+            SELECT
+                (vector).* INTO STRICT txn
+            FROM
+                ${name}.transitions
+            WHERE
+                action = NEW.action;
 
-        UPDATE
-          ${name}.states set 
-            state = ( ${delta} ),
-            rev = rev + 1,
-            modified = now()
-        WHERE
-          oid = NEW.oid
-        RETURNING
-          rev into STRICT revision;
+            UPDATE
+              ${name}.states set 
+                state = ( ${delta} ),
+                rev = rev + 1,
+                modified = now()
+            WHERE
+              oid = NEW.oid
+            RETURNING
+              rev into STRICT revision;
 
-        NEW.seq = revision;
-        NEW.hash = md5(row_to_json(NEW)::TEXT);
-        NEW.timestamp = now();
+            NEW.seq = revision;
+            NEW.hash = md5(row_to_json(NEW)::TEXT);
+            NEW.timestamp = now();
 
-        RETURN NEW;
-      END
+            RETURN NEW;
+        END
     $MARKER LANGUAGE plpgsql""")
     
     fn_sql = function_template.substitute(

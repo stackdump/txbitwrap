@@ -6,8 +6,8 @@ import json
 from collections import OrderedDict
 from twisted.internet import defer
 from bitwrap_io.test import ApiTest
-import bitwrap_io.storage.db as pg
-from bitwrap_io.machine import pnml
+import bitwrap_psql.db as pg
+import bitwrap_machine as pnml
 
 
 class EventStoreTest(ApiTest):
@@ -34,7 +34,7 @@ class EventStoreTest(ApiTest):
         d.addCallback(lambda _: self.fetch('config/default.json'))
         d.addCallback(assertValidStatusCode)
 
-        d.addCallback(lambda _: self.fetch('pnml'))
+        d.addCallback(lambda _: self.fetch('schemata'))
         d.addCallback(assertValidStatusCode)
 
         d.addCallback(lambda _: self.fetch('machine/%s' % schema))
@@ -48,7 +48,6 @@ class EventStoreTest(ApiTest):
         """
         test write operation using a sequence of tic-tac-toe events
         """
-
 
         d = defer.Deferred()
         oid = 'trial-' + time.time().__str__()

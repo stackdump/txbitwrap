@@ -3,7 +3,7 @@
 from cyclone.web import RequestHandler
 import bitwrap_io
 from bitwrap_io.api import headers
-from bitwrap_io.machine import pnml
+import bitwrap_machine as pnml
 
 class Resource(headers.Mixin, RequestHandler):
     """ Return state machine json """

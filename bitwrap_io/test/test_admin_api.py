@@ -6,8 +6,8 @@ import json
 from collections import OrderedDict
 from twisted.internet import defer
 from bitwrap_io.test import ApiTest
-import bitwrap_io.storage.db as pg
-from bitwrap_io.machine import pnml
+import bitwrap_psql.db as pg
+import bitwrap_machine as pnml
 
 
 class AdminApiTest(ApiTest):

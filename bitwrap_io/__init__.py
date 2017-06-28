@@ -3,31 +3,31 @@ bitwrap_io
 
 usage:
 
-    In [1]: import bitwrap_io
-    In [2]: m = bitwrap_io.open('counter')
-    In [3]: m
-    Out[3]: <bitwrap_io.state_machine.StateMachine at 0x7f30da88b710>
-    In [4]: m(oid='foo', action='INC')
-    Out[4]:
-            {'event': {'action': 'INC',
-              'endpoint': None,
-              'error': 0,
-              'oid': 'foo',
-              'payload': {},
-              'previous': None,
-              'state': [1]},
-             'id': '01a49f6d2ccc4f52'}
+    import bitwrap_io
+    m = bitwrap_io.open('counter')
+    m(oid='foo', action='INC', payload={}) # dispatch an event
 
 """
 import sys
-from bitwrap_io.machine import StateMachine
+import bitwrap_psql as psql
 
-MACHINES = {}
+_STORE = {}
+
+class EventStore(object):
+    """ bitwrap_io.EventStore """
+
+    def __init__(self, schema, **kwargs):
+        self.schema = schema.__str__() # TODO: can we remove this?
+        self.storage = psql.Storage(self.schema, **kwargs)
+
+    def __call__(self, **request):
+        """ execute a transformation """
+        return self.storage.commit(request)
 
 def open(schema, **kwargs):
-    """ bitwrap_io module callable """
+    """ open an evenstore by providing a schema name """
 
-    if not schema in MACHINES:
-        MACHINES[schema] = StateMachine(schema, **kwargs)
+    if not schema in _STORE:
+        _STORE[schema] = EventStore(schema, **kwargs)
 
-    return MACHINES[schema]
+    return _STORE[schema]

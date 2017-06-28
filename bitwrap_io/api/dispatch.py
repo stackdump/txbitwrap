@@ -2,10 +2,8 @@
 return statevectors
 """
 from cyclone.web import RequestHandler
-import bitwrap_io.storage
 from bitwrap_io.api import headers
 import bitwrap_io
-import json
 
 class Resource(headers.PostMixin, RequestHandler):
     """ /dispatch/{schema}/{oid} """

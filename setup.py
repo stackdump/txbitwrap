@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="bitwrap_io",
+    name="bitwrap-io",
     version="0.2.0",
     author="Matthew York",
     author_email="myork@stackdump.com",
@@ -12,9 +12,9 @@ setup(
     include_package_data=True,
     install_requires=['cyclone==1.1', 'service-identity==16.0.0', 'pg8000==1.10.6'],
     long_description="""
-# Bitwrap-pnml
+# Bitwrap-io
 
-A blockchain-style python eventstore
+A blockchain-style eventstore
 
 ### Reference
 
