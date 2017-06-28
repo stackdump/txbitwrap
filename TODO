@@ -3,28 +3,20 @@ Tue Jun 27 22:29:46 CDT 2017
 WIP
 ===
 
-* run pylint on all new modules
-  * assert module names use dashes: bitwrap-io
+* test UI integration
+  * begin to design admin rpc functionality
+    * coffeescript console? 
+    * implement bitwrap-ui ( deprecated marble-ui )
 
 BACKLOG:
 ========
-
-
-* refactor into 4 repositories
-  * bitwrap-machine # python only
-  * bitwrap-psql # python + psql 
-  * bitwrap-io # python + psql + cyclone
-  * bitwrap-lambda # python + psql
 
 * incorporate PNML 'capacity' field
   * Modify pgsql data types -- composite state & vector types
     * to be composed of a domain of token specific to each place location.
 
-* test settings & twistd CLI args/plugin
-* test UI integration
-  * begin to design admin rpc functionality
-    * coffeescript console? 
-    * implement bitwrap-ui ( deprecated marble-ui )
+* finish lambda implementation
+  * bitwrap-lambda # python + psql
 
 * test for 'beta' release
   * Docker build - update to use postgres
@@ -33,6 +25,9 @@ BACKLOG:
 * support authentiaction w/ AWS gateway api + cognito
   * could we drive this entirely at the DB level?
     * ? add a permission assert to before trigger
+
+* run pylint on all new modules
+  * assert module names use dashes: bitwrap-io
 
 ICEBOX:
 =======

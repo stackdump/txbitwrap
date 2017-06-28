@@ -1,5 +1,5 @@
 """
-bitwrap_io.storage.sql - statevector storage using postgresql
+bitwrap_psql - provies stateful event storage using postgresql
 
 """
 

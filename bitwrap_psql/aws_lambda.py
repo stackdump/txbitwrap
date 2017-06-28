@@ -2,11 +2,13 @@
 Lambda handler for bitwrap gateway api.
 This handler expects events from these routes:
 
-POST /api - admin rpc api
-GET  /pnml - list schema names
+POST /api - admin rpc api ?? REVIEW: should we keep admin api?
+     perhaps should a separate API gateway
+
+GET  /schemata - list schema names
 GET  /machine/{schema} - get machine json
 
-POST /dispatch/{schema}/{oid} - dispatch new event
+POST /dispatch/{schema}/{oid}/{action} - dispatch new event
 GET  /stream/{schema}/{oid} - get all events by oid
 GET  /state/{schema}/{oid} - get current state by oid
 GET  /event/{schema}/{eventid} - get event by eventid
@@ -14,7 +16,7 @@ GET  /event/{schema}/{eventid} - get event by eventid
 # FIXME refactor to match latest changes for psql
 
 import json
-import bitwrap_io
+#import bitwrap_io KLUDGE: shouldn't depend on this module anymore
 #from bitwrap_io.storage import factory as StorageFactory # FIXME
 
 def success(body):
