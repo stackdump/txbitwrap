@@ -7,7 +7,7 @@ before_script:
     - psql -c "ALTER USER postgres WITH password 'bitwrap'" -U postgres
 script:
   - PYTHONPATH=./ trial bitwrap_psql.test.test_schema_migration
-  - PYTHONPATH=./ trial bitwrap_io.test.test_admin_api
+  - PYTHONPATH=./ trial bitwrap_io.test.test_rpc_api
   - PYTHONPATH=./ trial bitwrap_io.test.test_eventstore
 deploy:
   provider: pypi

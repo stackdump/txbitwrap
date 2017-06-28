@@ -10,7 +10,7 @@ import bitwrap_psql.db as pg
 import bitwrap_machine as pnml
 
 
-class AdminApiTest(ApiTest):
+class RpcApiTest(ApiTest):
 
     cli = ApiTest.client('api')
 
