@@ -11,5 +11,5 @@ class Resource(headers.Mixin, RequestHandler):
     def get(self, schema, key, *args):
         """ get head event by oid """
 
-        bw = bitwrap_io.open(schema, **self.settings)
-        self.write(bw.storage.db.states.fetch(key))
+        handle = bitwrap_io.open(schema, **self.settings)
+        self.write(handle.storage.db.states.fetch(key))

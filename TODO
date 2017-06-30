@@ -1,12 +1,11 @@
-Tue Jun 27 22:29:46 CDT 2017
+Thu Jun 29 20:00:27 CDT 2017
 
 WIP
 ===
 
 * test UI integration
-  * begin to design admin rpc functionality
-    * coffeescript console? 
-    * implement bitwrap-ui ( deprecated marble-ui )
+    * enhance coffeescript console as an admin tool
+    * implement bitwrap-ui
 
 BACKLOG:
 ========
@@ -15,22 +14,22 @@ BACKLOG:
   * Modify pgsql data types -- composite state & vector types
     * to be composed of a domain of token specific to each place location.
 
-* finish lambda implementation
+* finish lambda implementation ./bitwrap_psql/aws_lambda.py
   * bitwrap-lambda # python + psql
 
-* test for 'beta' release
-  * Docker build - update to use postgres
-    * add sample docker config w/ link between db and API
+* test for beta release
+  * release to bitwrap.github.io
+    * deploy on aws_lambda + Api Gateway
+
+* Docker build - update to use postgres
+  * add sample docker config w/ link between db and API
+
+ICEBOX:
+=======
 
 * support authentiaction w/ AWS gateway api + cognito
   * could we drive this entirely at the DB level?
     * ? add a permission assert to before trigger
-
-* run pylint on all new modules
-  * assert module names use dashes: bitwrap-io
-
-ICEBOX:
-=======
 
 * Contracts 
   * support 'role' functionality via 'control' vector
@@ -43,9 +42,10 @@ ICEBOX:
   * use microcosm multi-machine
     * demo roles / BITS / (? control structures ?)
   * 'octotron' model for 'Ultimate Tic-Tac-Toe'
-  * build a new 'torstor'
+  * build a new 'torstor' DEMO
     * the ideal javascript-disabled site
       * demo project using only html image maps and SVG images
+      * provide anonymity combined with open-ness
 
 * Next Version or Fork ?
   * python3

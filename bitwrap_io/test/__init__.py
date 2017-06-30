@@ -14,14 +14,14 @@ from bitwrap_io.api import factory as Api
 IFACE = '127.0.0.1'
 PORT = 8888
 
-options = {
+OPTIONS = {
     'listen-ip': IFACE,
     'listen-port': PORT,
     'machine-path': './bitwrap_io/schemata',
     'pg-host': '127.0.0.1',
     'pg-port': 5432,
     'pg-username': 'postgres',
-    'pg-password': 'bitwrap', # FIXME use pass for travis.ci
+    'pg-password': 'bitwrap',
     'pg-database': 'bitwrap'
 }
 
@@ -31,9 +31,9 @@ class ApiTest(TestCase):
     def setUp(self):
         """ start tcp endpoint """
 
-        self.options = options
+        self.options = OPTIONS
         #pylint: disable=no-member
-        self.service = internet.TCPServer(PORT, Api(options), interface=options['listen-ip'])
+        self.service = internet.TCPServer(PORT, Api(self.options), interface=self.options['listen-ip'])
         #pylint: enable=no-member
         self.service.startService()
 

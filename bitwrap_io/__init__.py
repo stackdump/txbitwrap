@@ -17,7 +17,7 @@ class EventStore(object):
     """ bitwrap_io.EventStore """
 
     def __init__(self, schema, **kwargs):
-        self.schema = schema.__str__() # TODO: can we remove this?
+        self.schema = schema.__str__()
         self.storage = psql.Storage(self.schema, **kwargs)
 
     def __call__(self, **request):

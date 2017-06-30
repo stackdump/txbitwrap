@@ -3,7 +3,6 @@ Test EventStore
 """
 import time
 import json
-from collections import OrderedDict
 from twisted.internet import defer
 from bitwrap_io.test import ApiTest
 import bitwrap_psql.db as pg
@@ -11,6 +10,7 @@ import bitwrap_machine as pnml
 
 
 class EventStoreTest(ApiTest):
+    """ test bitwrap eventstore using tic-tac-toe """
 
     cli = ApiTest.client('api')
 
@@ -21,7 +21,7 @@ class EventStoreTest(ApiTest):
         d = defer.Deferred()
         schema = 'octoe'
 
-        def assertValidStatusCode(res, code=200):
+        def assert_status_code(res, code=200):
             """ test event response """
             self.assertEquals(res.code, code)
             obj = json.loads(res.body)
@@ -29,16 +29,16 @@ class EventStoreTest(ApiTest):
             return obj
 
         d.addCallback(lambda _: self.fetch('version'))
-        d.addCallback(assertValidStatusCode)
+        d.addCallback(assert_status_code)
 
         d.addCallback(lambda _: self.fetch('config/default.json'))
-        d.addCallback(assertValidStatusCode)
+        d.addCallback(assert_status_code)
 
         d.addCallback(lambda _: self.fetch('schemata'))
-        d.addCallback(assertValidStatusCode)
+        d.addCallback(assert_status_code)
 
         d.addCallback(lambda _: self.fetch('machine/%s' % schema))
-        d.addCallback(assertValidStatusCode)
+        d.addCallback(assert_status_code)
 
         d.callback(None)
 
@@ -55,7 +55,7 @@ class EventStoreTest(ApiTest):
         machine = pnml.Machine(schema)
         pg.create_db(machine, drop=True, **self.options)
 
-        def assertValidJsonBody(res, code=200):
+        def assert_valid_body(res, code=200):
             """ test event response """
             self.assertEquals(res.code, code)
             obj = json.loads(res.body)
@@ -70,12 +70,12 @@ class EventStoreTest(ApiTest):
                 return self.fetch('stream/octoe/'+ oid)
 
             d.addCallback(_test)
-            d.addCallback(assertValidJsonBody)
+            d.addCallback(assert_valid_body)
             d.addCallback(lambda obj: self.assertEquals(len(obj), count))
 
         def test_state():
             """ add state tests"""
-            def _test(_):
+            def _get_state(_):
                 print "\n* state - latest"
                 return self.fetch('state/octoe/'+ oid)
 
@@ -83,10 +83,10 @@ class EventStoreTest(ApiTest):
                 print "\n* event - %i" % obj['rev']
                 return self.fetch('event/octoe/'+ obj['id'])
 
-            d.addCallback(_test)
-            d.addCallback(assertValidJsonBody)
+            d.addCallback(_get_state)
+            d.addCallback(assert_valid_body)
             d.addCallback(test_head_event)
-            d.addCallback(assertValidJsonBody)
+            d.addCallback(assert_valid_body)
 
         def create_stream(exists):
             self.assertFalse(exists)
@@ -119,26 +119,26 @@ class EventStoreTest(ApiTest):
                         schema=schema,
                         oid=oid,
                         action=action,
-                        payload={ 'trial': ['event', 'data']}
+                        payload={'trial': ['event', 'data']}
                     )
 
                 d.addCallback(dispatch_event)
-                d.addCallback(lambda res: assertValidJsonBody(res))
+                d.addCallback(assert_valid_body)
  
             for action in seq:
                 add_action(action)
 
         def run_tests():
-            seq = [ 'BEGIN',
-                    'X11',
-                    'O11', #invalid
-                    'BAD', #invalid
-                    'O01',
-                    'X00',
-                    'O20',
-                    'X22',
-                    'END_O'
-                  ]
+            """ kick off testing """
+            seq = ['BEGIN',
+                   'X11',
+                   'O11', #invalid
+                   'BAD', #invalid
+                   'O01',
+                   'X00',
+                   'O20',
+                   'X22',
+                   'END_O']
 
             create_trial_stream()
             dispatch_sequence(seq)

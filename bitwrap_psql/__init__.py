@@ -24,14 +24,14 @@ class Storage(object):
         """ execute transition and persist to storage on success """
 
         curr = self.db.cursor()
-        
+
         sql = """
         INSERT INTO %s.events(oid, action, payload)
           VALUES('%s', '%s', '%s')
         RETURNING
           to_json((hash, oid, seq )::%s.event) as event;
         """ % (self.db.schema, req['oid'], req['action'], req['payload'], self.db.schema)
-        
+
         try:
             curr.execute(sql)
             res = curr.fetchone()
@@ -40,10 +40,10 @@ class Storage(object):
                 return res[0]
 
         except ProgrammingError:
-            if (self.db.conn.error.args[3][:5] == 'value') :
-                return { 'oid': req['oid'], '__err__': 'INVALID_OUTPUT' }
-            else:
-                return { 'oid': req['oid'], '__err__': 'INVALID_INPUT' }
+            if self.db.conn.error.args[3][:5] == 'value':
+                return {'oid': req['oid'], '__err__': 'INVALID_OUTPUT'}
+
+            return {'oid': req['oid'], '__err__': 'INVALID_INPUT'}
 
 
 class Database(object):
@@ -107,7 +107,7 @@ class States(object):
 
     def fetch(self, key):
         """ get event by eventid """
-            
+
         tpl = Template("""
         SELECT
           to_json((ev.hash, st.oid, ev.action, st.rev, st.state, ev.payload, modified, created)::${name}.current_state)

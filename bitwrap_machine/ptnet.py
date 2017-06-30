@@ -2,12 +2,13 @@
 """
 import os
 from glob import glob
-import pnml as petrinet
-import dsl
+import bitwrap_machine.pnml as petrinet
+import bitwrap_machine.dsl as dsl
 
 PNML_PATH = os.environ.get('PNML_PATH', os.path.abspath(__file__ + '/../examples'))
 
 def set_pnml_path(pnml_dir):
+    global PNML_PATH
     PNML_PATH = pnml_dir
 
 def schema_to_file(name):

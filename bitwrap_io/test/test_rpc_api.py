@@ -1,9 +1,7 @@
 """
-Test EventStore
+Test EventStore Remote Procedure calls
 """
 import time
-import json
-from collections import OrderedDict
 from twisted.internet import defer
 from bitwrap_io.test import ApiTest
 import bitwrap_psql.db as pg
@@ -11,13 +9,12 @@ import bitwrap_machine as pnml
 
 
 class RpcApiTest(ApiTest):
+    """ Test ops for eventstore config and management """
 
     cli = ApiTest.client('api')
 
     def test_eventstore_db_schemata_admin(self):
-        """
-        test write operation using a sequence of tic-tac-toe events
-        """
+        """ test write operation using a sequence of tic-tac-toe events """
 
         d = defer.Deferred()
         oid = 'trial-' + time.time().__str__()
@@ -36,13 +33,13 @@ class RpcApiTest(ApiTest):
             self.assertTrue(schema_exists)
             return self.cli.stream_exists(schema, oid)
 
-        def schema_destroy(res):
+        def schema_destroy(_):
             return self.cli.schema_destroy(schema)
 
         def assert_destroyed(schema_exists):
             self.assertFalse(schema_exists)
 
-        def schema_create(res):
+        def schema_create(_):
             return self.cli.schema_create(schema)
 
         def assert_created(schema_exists):

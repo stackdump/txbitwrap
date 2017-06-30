@@ -18,6 +18,7 @@ class Mixin(object):
         self.set_header('Access-Control-Allow-Methods', 'GET')
 
 class PostMixin(object):
+    """ set headers for handlers that support post """
 
     def set_default_headers(self):
         """ allow cors """

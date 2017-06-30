@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 # -*- coding_ utf-8 -*-
 
-""" This program implements a parser and data structure for Petri net files.
-Copyright (c) 2015 Thomas Irgang
+"""
+This program implements a parser and data structure for Petri net files.
+
+Original author: Copyright (c) 2015 Thomas Irgang
 see MIT license: https://github.com/irgangla/pntools/blob/master/LICENSE
 
 This program implements an XML parser and a python data structure for
@@ -141,15 +143,15 @@ class Edge(object):
         """ find source of txn """
         if self.source in self.net.transitions:
             return self.net.transitions[self.source]
-        else:
-            return self.net.places[self.source]
+
+        return self.net.places[self.source]
 
     def find_target(self):
         """ find txn target """
         if self.target in self.net.transitions:
             return self.net.transitions[self.target]
-        else:
-            return self.net.places[self.target]
+
+        return self.net.places[self.target]
 
     def __str__(self):
         return str(self.find_source()) + "-->" + str(self.find_target())
