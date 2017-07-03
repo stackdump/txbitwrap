@@ -1,5 +1,7 @@
 # txbitwrap
 
+[![Build Status](https://travis-ci.org/stackdump/txbitwrap.svg?branch=master)](https://travis-ci.org/stackdump/txbitwrap)
+
 An event-oriented service using a PostgreSQL database as an eventstore.
 Fork of http://getbitwrap.com
 
@@ -9,7 +11,7 @@ Integrating bitwrap eventstore with a reactor-driven application toolkit.
 
 #### Docker
 
-Automated Build: https://hub.docker.com/r/bitwrap/txbitwrap/~/dockerfile/
+[![Docker](https://img.shields.io/docker/automated/stackdump/txbitwrap.svg)](https://hub.docker.com/r/stackdump/txbitwrap/~/dockerfile/)
 
 Run development database & server
 
