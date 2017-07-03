@@ -23,8 +23,10 @@ class Storage(object):
     def commit(self, req):
         """ execute transition and persist to storage on success """
 
-        curr = self.db.cursor()
+        if req['payload'] == '':
+            req['payload'] = '{}'
 
+        curr = self.db.cursor()
         sql = """
         INSERT INTO %s.events(oid, action, payload)
           VALUES('%s', '%s', '%s')
