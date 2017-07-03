@@ -1,5 +1,5 @@
 """
-bitwrap_io.api
+txbitwrap.api
 
 this module provides an administrative API
   * for deploying PNML schemata as sql/pgsql entities
@@ -7,8 +7,8 @@ this module provides an administrative API
 
 """
 from cyclone.jsonrpc import JsonrpcRequestHandler
-import bitwrap_io
-from bitwrap_io.api import headers
+import txbitwrap
+from txbitwrap.api import headers
 import bitwrap_psql.db as pg
 import bitwrap_machine as pnml
 
@@ -17,7 +17,7 @@ class Handler(headers.Mixin, JsonrpcRequestHandler):
 
     def handle(self, schema):
         """ open handle on bitwrap storage """
-        return bitwrap_io.open(schema, **self.settings)
+        return txbitwrap.open(schema, **self.settings)
 
     def jsonrpc_schema_exists(self, schema):
         """ test that an event-machine schema exists """

@@ -1,10 +1,10 @@
 """
-bitwrap_io
+txbitwrap
 
 usage:
 
-    import bitwrap_io
-    m = bitwrap_io.open('counter')
+    import txbitwrap
+    m = txbitwrap.open('counter')
     m(oid='foo', action='INC', payload={}) # dispatch an event
 
 """
@@ -14,7 +14,7 @@ import bitwrap_psql as psql
 _STORE = {}
 
 class EventStore(object):
-    """ bitwrap_io.EventStore """
+    """ txbitwrap.EventStore """
 
     def __init__(self, schema, **kwargs):
         self.schema = schema.__str__()

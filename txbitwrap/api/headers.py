@@ -6,7 +6,7 @@ _ALLOW = os.environ.get('ALLOW_ORIGIN', '*')
 class Mixin(object):
     """ set default api headers """
 
-    def options(self):
+    def options(self, *args, **kwargs):
         """ allow cors """
         pass
 
@@ -19,6 +19,10 @@ class Mixin(object):
 
 class PostMixin(object):
     """ set headers for handlers that support post """
+
+    def options(self, *args, **kwargs):
+        """ allow cors """
+        pass
 
     def set_default_headers(self):
         """ allow cors """

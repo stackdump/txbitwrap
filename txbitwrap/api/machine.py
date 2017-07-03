@@ -1,7 +1,7 @@
-""" bitwrap_io.api.machine """
+""" txbitwrap.api.machine """
 
 from cyclone.web import RequestHandler
-from bitwrap_io.api import headers
+from txbitwrap.api import headers
 import bitwrap_machine as pnml
 
 class Resource(headers.Mixin, RequestHandler):

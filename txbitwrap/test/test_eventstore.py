@@ -4,7 +4,7 @@ Test EventStore
 import time
 import json
 from twisted.internet import defer
-from bitwrap_io.test import ApiTest
+from txbitwrap.test import ApiTest
 import bitwrap_psql.db as pg
 import bitwrap_machine as pnml
 

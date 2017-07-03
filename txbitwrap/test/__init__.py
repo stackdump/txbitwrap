@@ -8,7 +8,7 @@ import json
 import cyclone.httpclient
 from twisted.application import internet
 from twisted.trial.unittest import TestCase
-from bitwrap_io.api import factory as Api
+from txbitwrap.api import factory as Api
 
 
 IFACE = '127.0.0.1'
@@ -17,7 +17,7 @@ PORT = 8888
 OPTIONS = {
     'listen-ip': IFACE,
     'listen-port': PORT,
-    'machine-path': './bitwrap_io/schemata',
+    'machine-path': './txbitwrap/schemata',
     'pg-host': '127.0.0.1',
     'pg-port': 5432,
     'pg-username': 'postgres',

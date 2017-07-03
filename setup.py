@@ -5,7 +5,7 @@ setup(
     version="0.2.0",
     author="Matthew York",
     author_email="myork@stackdump.com",
-    description="bitwrap eventstore deployed as a Twisted plugin"
+    description="bitwrap eventstore deployed as a Twisted plugin",
 
     license='MIT',
     keywords='PNML petri-net eventstore state-machine',

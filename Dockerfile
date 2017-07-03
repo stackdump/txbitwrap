@@ -1,13 +1,15 @@
 FROM python:2.7.13
 
 WORKDIR /opt/txbitwrap
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
 COPY . .
-RUN pip -r requirements.txt
 RUN pip install .
 
 VOLUME ["/opt/bitwrap", "/repo"]
 
-ENV SCHEMA_PATH=/opt/txbitwrap/schemata
+ENV PNML_PATH=/opt/txbitwrap/schemata
+ENV PYTHON_PATH=/opt/txbitwrap
 
 EXPOSE 8080
 

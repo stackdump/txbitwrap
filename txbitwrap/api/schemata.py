@@ -1,8 +1,8 @@
-""" bitwrap_io.api.schemata """
+""" txbitwrap.api.schemata """
 
 from cyclone.web import RequestHandler
 from bitwrap_machine import ptnet
-from bitwrap_io.api import headers
+from txbitwrap.api import headers
 
 class Resource(headers.Mixin, RequestHandler):
     """ list PNML """

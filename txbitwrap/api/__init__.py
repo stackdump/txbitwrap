@@ -1,11 +1,11 @@
 """
-bitwrap_io.api - this module defines web routes for bitwrap application
+txbitwrap.api - this module defines web routes for bitwrap application
 """
 
 import os
 import cyclone.web
 from cyclone.web import RequestHandler
-from bitwrap_io.api import config, headers, api, schemata, machine, event, dispatch, stream, state
+from txbitwrap.api import config, headers, api, schemata, machine, event, dispatch, stream, state
 
 VERSION = 'v4'
 

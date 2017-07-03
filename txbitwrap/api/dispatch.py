@@ -2,8 +2,8 @@
 return statevectors
 """
 from cyclone.web import RequestHandler
-from bitwrap_io.api import headers
-import bitwrap_io
+from txbitwrap.api import headers
+import txbitwrap
 
 class Resource(headers.PostMixin, RequestHandler):
     """ /dispatch/{schema}/{oid} """
@@ -15,5 +15,5 @@ class Resource(headers.PostMixin, RequestHandler):
         EX: '{"action": "BEGIN", "oid": "trial-1497880691.3", "payload": {}, "schema": "octoe"}'
         """
 
-        res = bitwrap_io.open(schema, **self.settings)(oid=oid, action=action, payload=self.request.body)
+        res = txbitwrap.open(schema, **self.settings)(oid=oid, action=action, payload=self.request.body)
         self.write(res)

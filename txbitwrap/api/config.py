@@ -1,10 +1,10 @@
 """
-bitwrap_io.api.config - font end stats and config
+txbitwrap.api.config - font end stats and config
 """
 
 import os
 from cyclone.web import RequestHandler
-from bitwrap_io.api import headers
+from txbitwrap.api import headers
 
 def settings(options):
     """ append settings to api args """

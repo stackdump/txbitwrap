@@ -1,6 +1,6 @@
 ### Testing With Tic-Tac-Toe State machine
 
-These tests use tic-tac-toe events with bitwrap_io
+These tests use tic-tac-toe events with a bitwrap eventstore
 using bitwrap schema file named "octoe"
 
 #### How 'octoe' state_machine lets you play tic-tac-toe
