@@ -9,7 +9,6 @@ RUN pip install .
 VOLUME ["/opt/bitwrap", "/repo"]
 
 ENV PNML_PATH=/opt/txbitwrap/schemata
-ENV PYTHON_PATH=/opt/txbitwrap
 
 EXPOSE 8080
 
