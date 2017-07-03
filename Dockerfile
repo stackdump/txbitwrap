@@ -1,16 +1,15 @@
 FROM python:2.7.13
 
-WORKDIR /opt/bitwrap-io
+WORKDIR /opt/txbitwrap
 COPY . .
+RUN pip -r requirements.txt
 RUN pip install .
 
 VOLUME ["/opt/bitwrap", "/repo"]
 
-ENV BITWRAP_DATASTORE=lmdb
-ENV SCHEMA_PATH=/opt/bitwrap-io/bitwrap_io/schemata
-ENV LMDB_PATH=/repo/
+ENV SCHEMA_PATH=/opt/txbitwrap/schemata
 
 EXPOSE 8080
 
-ENTRYPOINT ["/opt/bitwrap-io/entry.sh"]
+ENTRYPOINT ["/opt/txbitwrap/entry.sh"]
 

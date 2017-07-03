@@ -1,28 +1,25 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="bitwrap-io",
+    name="txbitwrap",
     version="0.2.0",
     author="Matthew York",
     author_email="myork@stackdump.com",
-    description="A blockchain-style python eventstore w/ LMDB or postgresql backend",
+    description="bitwrap eventstore fork deployed as a Twisted plugin"
+
     license='MIT',
     keywords='PNML petri-net eventstore state-machine',
     packages=find_packages() + ['twisted.plugins'],
     include_package_data=True,
-    install_requires=['cyclone==1.1', 'service-identity==16.0.0', 'pg8000==1.10.6'],
+    install_requires=['cyclone==1.1', 'service-identity==16.0.0', 'bitwrap-machine', 'bitwrap-psql'],
     long_description="""
-# Bitwrap-io
+# txbitwrap
 
-A blockchain-style eventstore
+Deploy and manage bitwrap eventstore as a twistd service.
 
 ### Reference
 
-Read Martin Fowler's description of [Event Sourcing](http://martinfowler.com/eaaDev/EventSourcing.html).
-
-Watch an event sourcing video from [Greg Young](https://www.youtube.com/watch?v=8JKjvY4etTY).
-
-Learn more about our deterministic approach to Blockchains at our blog [blahchain.com](http://www.blahchain.com).
+https://twistedmatrix.com
 
 """,
     url="http://getbitwrap.com",

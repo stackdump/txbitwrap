@@ -1,4 +1,2 @@
-recursive-include bitwrap_io *.*
-recursive-include bitwrap_machine *.*
-recursive-include bitwrap_psql *.py
+recursive-include txbitwrap *.*
 recursive-include twisted *.py

@@ -1,7 +1,8 @@
 # txbitwrap
 
+An event-oriented service using a PostgreSQL database as an eventstore.
 Fork of http://getbitwrap.com
 
 #### Status
-BLOCKED:
-After refactor of bitwrap-io package refactor to use latest python api.
+
+Integrating bitwrap eventstore with a reactor-driven application framework.

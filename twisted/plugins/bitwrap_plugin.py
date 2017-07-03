@@ -7,7 +7,7 @@ from twisted.internet import reactor
 from twisted.internet.protocol import Factory
 from twisted.plugin import IPlugin
 from twisted.python import usage
-from bitwrap_io.api import factory as ApiFactory
+from txbitwrap.api import factory as ApiFactory
 from bitwrap_machine import ptnet
 Factory.noisy = False
 
