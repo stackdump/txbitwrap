@@ -8,13 +8,14 @@ provide an python interface between eventstore and application code
 
 BACKLOG
 =======
-* consider using https://github.com/terrycojones/txrdq
-  * to process events & as a means to queue new events
-* provide scheduling algorithms for controlling next triggered transaction/job/task
-  * default order by random() where state[] + delta[] => valid_state_vector
+* add long-poll to observe stream of a job in process
+  * add task queue https://github.com/terrycojones/txrdq
+  * to process events & serve as a means to enqueue new events
 
 ICEBOX
 ======
+* provide scheduling algorithms for controlling next triggered transaction/job/task
+  * replace the default order by random() where state[] + delta[] => valid_state_vector
 * eventually apply scheduling algos
   * simple weighting
   * or machine learning for comparing possible actions
