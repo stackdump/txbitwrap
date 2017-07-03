@@ -1,6 +1,16 @@
-Mon Jul  3 08:27:05 CDT 2017
+Mon Jul  3 08:41:16 CDT 2017
 
 WIP
 ===
 
-refactoring to make use of twisted reactor to integreate eventstore with application code.
+refactoring to make better use of twisted reactor + provide an python interface between eventstore and application code
+
+BACKLOG
+=======
+* support self-signed SSL cert generation 
+  * should install before or after container starts
+* consider using https://github.com/terrycojones/txrdq
+  * to process events & as a means to queue new events
+  * can provide scheduling algorithms for controlling next triggered transaction/job/task
+    * default order by random() where state[] + delta[] => valid_state_vector
+  * eventually try to apply machine learning or simple weighting for comparing possible actions
