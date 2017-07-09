@@ -1,2 +1,9 @@
 #!/usr/bin/env bash
-PYTHONPATH=./ twistd -n bitwrap --listen-ip=0.0.0.0 --listen-port=8080 
+
+# use env var from docker --link if RDS_HOST env is not already set
+if [[ "x${RDS_HOST}" = 'x' ]] ; then
+  export RDS_HOST=$RDS_PORT_5432_TCP_ADDR # see: ./run.sh example using --link
+fi
+
+export PYTHONPATH=./
+twistd -n bitwrap --listen-ip=0.0.0.0 --listen-port=8080

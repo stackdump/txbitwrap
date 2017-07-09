@@ -11,8 +11,7 @@ docker rm --force $CONTAINER_NAME &>/dev/null
 docker build . -t bitwrap/txbitwrap:dev
 
 docker run -it --name=${CONTAINER_NAME} \
--e "VIRTUAL_HOST=api.bitwrap.io" \
--v ${HOME}:/opt/bitwrap \
--v /tmp:/repo \
--p 127.0.0.1:8080:8080 \
-bitwrap/txbitwrap:dev
+  --link bitwrap-dev:rds \
+  -v ${HOME}:/opt/bitwrap \
+  -p 127.0.0.1:8080:8080 \
+  bitwrap/txbitwrap:dev
