@@ -16,15 +16,16 @@ class Rpc(headers.Mixin, JsonrpcRequestHandler):
         """ test that an event-machine schema exists """
         return self.handle(schema).storage.db.schema_exists()
 
-    def jsonrpc_schema_create(self, schema):
-        """ test that an event-machine schema exists """
-        machine = pnml.Machine(schema)
-        try:
-            pg.create_schema(machine, **self.settings)
-        except:
-            pass
+    def jsonrpc_schema_create(self, machine_name, schema):
+        """ load state machine as database schema optionally specify a schema name """
+        if schema is None:
+            name = machine_name
+        else:
+            name = schema
 
-        return self.jsonrpc_schema_exists(schema)
+        pg.create_schema(pnml.Machine(machine_name), schema_name=name, **self.settings)
+
+        return self.jsonrpc_schema_exists(name)
 
     def jsonrpc_schema_destroy(self, schema):
         """ drop database schema """
