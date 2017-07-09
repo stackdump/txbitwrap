@@ -41,7 +41,6 @@ class ApiTest(TestCase):
         """ stop tcp endpoint """
         self.service.stopService()
 
-
     @staticmethod
     def url(resource):
         """ bulid a url using test endpoint """

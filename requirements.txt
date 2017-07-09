@@ -1,3 +1,4 @@
+txrdq==0.2.14
 cyclone==1.1
 service-identity==16.0.0
 -e git+https://github.com/bitwrap/bitwrap-machine.git#egg=bitwrap-machine
