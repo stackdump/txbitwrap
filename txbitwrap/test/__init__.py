@@ -4,11 +4,13 @@ run tests against a webserver running in the same reactor
 NOTE: this test uses port 8888 on localhost
 """
 
+import os
 import json
 import cyclone.httpclient
 from twisted.application import internet
 from twisted.trial.unittest import TestCase
 from txbitwrap.api import factory as Api
+from bitwrap_machine import ptnet
 
 
 IFACE = '127.0.0.1'
@@ -17,7 +19,7 @@ PORT = 8888
 OPTIONS = {
     'listen-ip': IFACE,
     'listen-port': PORT,
-    'machine-path': './txbitwrap/schemata',
+    'machine-path': os.path.abspath(os.path.dirname(__file__) + '/../../schemata'),
     'pg-host': '127.0.0.1',
     'pg-port': 5432,
     'pg-username': 'postgres',
@@ -36,6 +38,7 @@ class ApiTest(TestCase):
         self.service = internet.TCPServer(PORT, Api(self.options), interface=self.options['listen-ip'])
         #pylint: enable=no-member
         self.service.startService()
+        ptnet.set_pnml_path(OPTIONS['machine-path'])
 
     def tearDown(self):
         """ stop tcp endpoint """

@@ -10,6 +10,7 @@ usage:
 """
 import sys
 import bitwrap_psql as psql
+from txbitwrap.event import rdq
 
 _STORE = {}
 

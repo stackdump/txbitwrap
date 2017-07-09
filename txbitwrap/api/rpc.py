@@ -40,3 +40,7 @@ class Rpc(headers.Mixin, JsonrpcRequestHandler):
     def jsonrpc_stream_create(self, schema, oid):
         """ create a new stream if it doesn't exist """
         return self.handle(schema).storage.db.create_stream(oid)
+
+    def jsonrpc_job_create(self, oid, payload):
+        """ enqueue a new job """
+        return self.handle(schema).storage.db.create_stream(oid)
