@@ -1,10 +1,10 @@
-Sat Jul  8 23:55:42 CDT 2017
+Sun Jul  9 10:27:33 CDT 2017
 
 WIP
 ===
 * add workflow/task execution feature
   * w/ task queue https://github.com/terrycojones/txrdq
-  * create 'proc' stream
+  * create 'proc' machine def & stream
 
 BACKLOG
 =======
