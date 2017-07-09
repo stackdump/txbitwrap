@@ -29,14 +29,6 @@ class Resource(headers.Mixin, RequestHandler):
     def get(self, stage, *args):
         """ direct web app to api """
 
-        out = {
+        self.write({
             'endpoint': os.environ.get('ENDPOINT', 'http://127.0.0.1:8080'),
-            'wrapserver': os.environ.get('WRAPSERVER', 'http://127.0.0.1:8001'),
-            'stage': stage
-        }
-
-        # KLUDGE: append all settings if using development pg-password
-        if 'pg-password' in self.settings and self.settings['pg-password'] == 'bitwrap':
-            out['settings'] = self.settings
-
-        self.write(out)
+        })

@@ -52,8 +52,8 @@ class EventStoreTest(ApiTest):
         d = defer.Deferred()
         oid = 'trial-' + time.time().__str__()
         schema = 'octoe'
-        machine = pnml.Machine(schema)
-        pg.create_db(machine, drop=True, **self.options)
+        pg.recreate_db(**self.options)
+        pg.create_schema(pnml.Machine(schema), drop=True, **self.options)
 
         def assert_valid_body(res, code=200):
             """ test event response """

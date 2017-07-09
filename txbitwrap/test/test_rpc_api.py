@@ -20,7 +20,8 @@ class RpcApiTest(ApiTest):
         oid = 'trial-' + time.time().__str__()
         schema = 'octoe'
         machine = pnml.Machine(schema)
-        pg.create_db(machine, drop=True, **self.options)
+        pg.recreate_db(**self.options)
+        pg.create_schema(pnml.Machine(schema), drop=True, **self.options)
 
         def create_stream(stream_already_exists):
             self.assertFalse(stream_already_exists)
