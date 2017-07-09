@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # use env var from docker --link if RDS_HOST env is not already set
-if [[ "x${RDS_HOST}" = 'x' ]] ; then
-  export RDS_HOST=$RDS_PORT_5432_TCP_ADDR # see: ./run.sh example using --link
+if [[ "x${RDS_HOST}" = 'x'  && "x${RDS_PORT_5432_TCP_ADDR}" != "x" ]] ; then
+    export RDS_HOST=$RDS_PORT_5432_TCP_ADDR # see: ./run.sh example using --link
 fi
 
 export PYTHONPATH=./

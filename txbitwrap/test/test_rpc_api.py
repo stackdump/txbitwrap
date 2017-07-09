@@ -41,7 +41,7 @@ class RpcApiTest(ApiTest):
             self.assertFalse(schema_exists)
 
         def schema_create(_):
-            return self.cli.schema_create(schema)
+            return self.cli.schema_create(schema, schema)
 
         def assert_created(schema_exists):
             self.assertTrue(schema_exists)
