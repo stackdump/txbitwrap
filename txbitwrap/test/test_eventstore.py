@@ -1,6 +1,4 @@
-"""
-Test EventStore
-"""
+""" Test EventStore """
 import time
 import json
 from twisted.internet import defer
@@ -17,7 +15,7 @@ class EventStoreTest(ApiTest):
     def test_machine_api(self):
         """
         test readonly operations
-        """
+        """ 
         d = defer.Deferred()
         schema = 'octoe'
 

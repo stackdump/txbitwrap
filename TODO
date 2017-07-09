@@ -1,16 +1,15 @@
-Mon Jul  3 08:41:16 CDT 2017
+Sat Jul  8 22:01:34 CDT 2017
 
 WIP
 ===
-
-refactoring to make better use of twisted reactor +
-provide an python interface between eventstore and application code
+refactor api to more closely resemble bitwrap.io
 
 BACKLOG
 =======
+* refactoring to make better use of twisted reactor +
+  * provide a python interface between eventstore and application code
+* add task queue https://github.com/terrycojones/txrdq
 * add long-poll to observe stream of a job in process
-  * add task queue https://github.com/terrycojones/txrdq
-  * to process events & serve as a means to enqueue new events
 
 ICEBOX
 ======
