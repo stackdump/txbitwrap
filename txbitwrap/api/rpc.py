@@ -5,6 +5,8 @@ import txbitwrap
 import bitwrap_machine as pnml
 import bitwrap_psql.db as pg
 
+# TODO: should we provide a mechanism to adjust processor and rdq settings ?
+
 class Rpc(headers.Mixin, JsonrpcRequestHandler):
     """ Operations for creating streams and installing database schemata """
 
