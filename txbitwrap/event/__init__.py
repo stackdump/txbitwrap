@@ -4,10 +4,11 @@ HANDLERS = {}
 
 def __dispatcher(event):
     if not event['schema'] in HANDLERS:
-       return
+        print 'no handler'
+        return
 
     for dispatch in HANDLERS[event['schema']]:
-       dispatch(event)
+        dispatch(event)
 
 rdq = ResizableDispatchQueue(__dispatcher, 5)
 

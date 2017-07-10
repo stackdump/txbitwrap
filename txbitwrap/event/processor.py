@@ -4,13 +4,17 @@ from txbitwrap.event import rdq
 
 SCHEMA='proc'
 
-def run(jobid, data, **kwargs):
+def redispatch(event):
+    return rdq.put(event)
+
+def run(jobid, payload, **kwargs):
     es = txbitwrap.open(SCHEMA, **kwargs)
     es.storage.db.create_stream(jobid)
-    res = es(oid=jobid, action='BEGIN', payload=json.dumps(data))
-    res['payload'] = data
+    event = es(oid=jobid, action='BEGIN', payload=json.dumps(payload))
+    event['payload'] = payload
+    event['schema'] = SCHEMA
 
-    if not 'id' in res:
+    if not 'id' in event:
         raise Exception('failed to add proc evvent')
 
-    return rdq.put({ 'schema': 'proc', 'data': res})
+    return redispatch(event)

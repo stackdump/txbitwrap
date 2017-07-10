@@ -1,7 +1,7 @@
 from twisted.internet import defer
 import txbitwrap
 from txbitwrap.event import bind, rdq
-from txbitwrap.event.processor import run
+from txbitwrap.event.processor import run, redispatch
 from txbitwrap.test import ApiTest, OPTIONS
 import bitwrap_psql.db as pg
 import bitwrap_machine as pnml
@@ -21,24 +21,25 @@ class EventProcessorTest(ApiTest):
         d = defer.Deferred()
 
         def game_handler(options, event):
+            """ play a game of tic-tac-toe """
+
             gamestore = txbitwrap.open('game', **OPTIONS)
-            gameid = event['data']['payload']['gameid']
+            gameid = event['payload']['gameid']
             db = gamestore.storage.db
 
             if not db.stream_exists(gameid):
                 db.create_stream(gameid)
+                gamestore.storage.commit({ 'oid': gameid, 'action': 'BEGIN', 'payload': '{}'})
+            else:
+                # KLUDGE: just complete the game on 2nd invocation
+                gamestore.storage.commit({ 'oid': gameid, 'action': 'END_X', 'payload': '{}'})
 
             state = db.states.fetch(gameid)['state']
 
-            # redispatch if not complete
-            if state['complete'] == 0:
-                #d.callback((options, event)) # complete the test
-                pass
-
-            #import IPython ; IPython.embed()
-
-            #print options, event
-            d.callback((options, event))
+            if state['complete'] == 1:
+                d.callback((options, event)) # complete the test
+            else:
+                redispatch(event)
 
         bind('proc', {'config': 'data'}, game_handler)
 
