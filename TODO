@@ -1,22 +1,16 @@
-Sun Jul  9 10:27:33 CDT 2017
+Mon Jul 10 22:08:30 CDT 2017
 
 WIP
 ===
-* add workflow/task execution feature
-  * use proc stream to control job dispatch
+* integration testing w/ bitwrap-ui over websocket
 
 BACKLOG
-=======
-* add long-poll to observe stream of a job in process
+======
 * enable ssh portal using twisted manhole
 
 ICEBOX
 ======
-* provide scheduling algorithms for controlling next triggered transaction/job/task
-  * replace the default order by random() where state[] + delta[] => valid_state_vector
-* eventually apply scheduling algos
-  * simple weighting
-  * or machine learning for comparing possible actions
+* refactor to support txamqp for pub/sub
 * support self-signed SSL cert generation 
   * use ip address as CNAME
-  * should install before or after container starts
+  * should allow install before or after container starts

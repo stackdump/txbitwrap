@@ -6,6 +6,8 @@ import cyclone.web
 from cyclone.web import RequestHandler
 import txbitwrap
 from txbitwrap.api import headers, rpc
+from txbitwrap.event.processor import redispatch
+from txbitwrap.event.observer import Observe
 from cyclone.jsonrpc import JsonrpcRequestHandler
 import bitwrap_machine as pnml
 import bitwrap_psql.db as pg
@@ -36,6 +38,10 @@ class Dispatch(headers.PostMixin, RequestHandler):
 
         res = txbitwrap.open(schema, **self.settings)(oid=oid, action=action, payload=self.request.body)
         self.write(res)
+        res['payload'] = json.loads(self.request.body)
+        res['schema'] = schema
+        res['action'] = action
+        redispatch(res)
 
 class Event(headers.Mixin, RequestHandler):
     """ /event/{schema}/{eventid} """
@@ -109,8 +115,10 @@ class Index(RequestHandler):
 def factory(options):
     """ cyclone app factory """
 
+    # TODO: add observe
     handlers = [
         (r"/dispatch/(.*)/(.*)/(.*)", Dispatch),
+        (r"/observe", Observe),
         (r"/event/(.*)/(.*)", Event),
         (r"/state/(.*)/(.*)", State),
         (r"/machine/(.*)", Machine),

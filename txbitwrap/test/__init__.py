@@ -33,12 +33,12 @@ class ApiTest(TestCase):
     def setUp(self):
         """ start tcp endpoint """
 
+        ptnet.set_pnml_path(OPTIONS['machine-path'])
         self.options = OPTIONS
         #pylint: disable=no-member
         self.service = internet.TCPServer(PORT, Api(self.options), interface=self.options['listen-ip'])
         #pylint: enable=no-member
         self.service.startService()
-        ptnet.set_pnml_path(OPTIONS['machine-path'])
 
     def tearDown(self):
         """ stop tcp endpoint """

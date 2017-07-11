@@ -1,6 +1,6 @@
 from twisted.internet import defer
 import txbitwrap
-from txbitwrap.event import bind, rdq
+from txbitwrap.event import bind, unbind, rdq
 from txbitwrap.event.processor import run, redispatch
 from txbitwrap.test import ApiTest, OPTIONS
 import bitwrap_psql.db as pg
@@ -41,14 +41,15 @@ class EventProcessorTest(ApiTest):
             else:
                 redispatch(event)
 
-        bind('proc', {'config': 'data'}, game_handler)
+        subscriber_id = bind('proc', {'config': 'data'}, game_handler)
 
         def test_event_handler(args):
             self.assertEquals(args[1]['schema'], 'proc')
             self.assertEquals(args[0]['config'], 'data')
-
-        job = run('job_uuid', { 'gameid': 'game_uuid' }, **self.options)
+            
 
         d.addCallback(test_event_handler)
+        d.addCallback(lambda _: unbind('proc', subscriber_id))
+        job = run('job_uuid', { 'gameid': 'game_uuid' }, **self.options)
 
         return d

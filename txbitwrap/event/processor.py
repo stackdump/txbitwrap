@@ -15,6 +15,6 @@ def run(jobid, payload, **kwargs):
     event['schema'] = SCHEMA
 
     if not 'id' in event:
-        raise Exception('failed to add proc evvent')
+        raise Exception('failed to persist proc state')
 
     return redispatch(event)
