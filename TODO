@@ -1,16 +1,15 @@
-Mon Jul 10 22:08:30 CDT 2017
+Tue Jul 11 23:45:40 CDT 2017
 
-WIP
-===
-* integration testing w/ bitwrap-ui over websocket
+* refactor to support txamqp for pub/sub
 
 BACKLOG
 ======
 * enable ssh portal using twisted manhole
+* improve RPC
+  * provide a mechanism to adjust processor and rdq settings
 
 ICEBOX
 ======
-* refactor to support txamqp for pub/sub
 * support self-signed SSL cert generation 
   * use ip address as CNAME
   * should allow install before or after container starts

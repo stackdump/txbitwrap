@@ -1,24 +1,21 @@
-from cyclone.web import RequestHandler, asynchronous
 from cyclone.websocket import WebSocketHandler
-from twisted.internet import task
-from txbitwrap.api import headers
-from twisted.web import server
 from txbitwrap.event import bind, unbind
-import time
 import json
 
-class Observe(WebSocketHandler):
+class Broker(WebSocketHandler):
+    """ provide a way for clients to subscribe to an event stream """
 
     def messageReceived(self, message):
         print '__msg__', message
         msg = json.loads(message)
 
-        def dispatch(options, event):
+        def forward(options, event):
+            """ forward event to websocket """
             self.sendMessage(json.dumps(event))
 
         if 'bind' in msg:
             self.handle = msg['bind']
-            self.subscription = bind(self.handle, {}, dispatch)
+            self.subscription = bind(self.handle, {}, forward)
 
         if 'unbind' in msg:
             unbind(self.handle, self.subscription)
@@ -28,4 +25,9 @@ class Observe(WebSocketHandler):
         print '__connect__'
 
     def connectionLost(self, reason):
+        try:
+            unbind(self.handle, self.subscription)
+        except:
+            pass
+
         print '__close__', reason

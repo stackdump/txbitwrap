@@ -6,7 +6,6 @@ import txbitwrap
 import bitwrap_machine as pnml
 import bitwrap_psql.db as pg
 
-# TODO: should we provide a mechanism to adjust processor and rdq settings ?
 
 class Rpc(headers.Mixin, JsonrpcRequestHandler):
     """ Operations for creating streams and installing database schemata """
@@ -49,7 +48,8 @@ class Rpc(headers.Mixin, JsonrpcRequestHandler):
         run(oid, payload, **self.settings)
         return txbitwrap.open(JOBSCHEMA, **self.settings).storage.db.states.fetch(oid)
 
-    def jsonrpc_await_state(self, schema, oid, key, value, timeout):
+    def jsonrpc_await_state(self, schema, oid, params):
         # TODO: add event.processor subscriber
         # when it's complete, remove the subcriber
-        return
+        # params = { 'key': <key>, 'value': <target value> timeout: 1800s }
+        return {"params": [schema, oid, params]}

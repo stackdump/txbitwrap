@@ -31,7 +31,7 @@ class EventProcessorTest(ApiTest):
                 db.create_stream(gameid)
                 gamestore.storage.commit({ 'oid': gameid, 'action': 'BEGIN', 'payload': '{}'})
             else:
-                # KLUDGE: just complete the game on 2nd invocation
+                # complete the game on 2nd invocation
                 gamestore.storage.commit({ 'oid': gameid, 'action': 'END_X', 'payload': '{}'})
 
             state = db.states.fetch(gameid)['state']
@@ -44,6 +44,7 @@ class EventProcessorTest(ApiTest):
         subscriber_id = bind('proc', {'config': 'data'}, game_handler)
 
         def test_event_handler(args):
+            """ assert that the correct event was received """
             self.assertEquals(args[1]['schema'], 'proc')
             self.assertEquals(args[0]['config'], 'data')
             

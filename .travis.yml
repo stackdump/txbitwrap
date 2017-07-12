@@ -9,7 +9,6 @@ script:
   - trial txbitwrap.test.test_rpc_api 
   - trial txbitwrap.test.test_eventstore
   - trial txbitwrap.test.test_event_handler
-  - trial txbitwrap.test.test_event_processor
 deploy:
   provider: pypi
   user: stackdump

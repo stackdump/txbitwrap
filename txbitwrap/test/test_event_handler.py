@@ -6,6 +6,9 @@ class EventHandlerTest(ApiTest):
     """ Test Event Handler """
 
     def test_event_put(self):
+        """
+        dispatch an event to test that a handler can be registered
+        """
         d = defer.Deferred()
 
         event = {
@@ -21,15 +24,17 @@ class EventHandlerTest(ApiTest):
         }
 
         def handler(options, event):
+            """ define method for receiving events from rdq """
             d.callback((options, event))
 
         bind('octoe', {'test': 'data'}, handler)
 
         def test_event_handler(args):
+            """ assert we got the correct event """
             self.assertEquals(args[1]['schema'], 'octoe')
             self.assertEquals(args[0]['test'], 'data')
 
-        job = rdq.put(event)
+        rdq.put(event)
 
         d.addCallback(test_event_handler)
 

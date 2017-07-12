@@ -7,8 +7,7 @@ from cyclone.web import RequestHandler
 import txbitwrap
 from txbitwrap.api import headers, rpc
 from txbitwrap.event.processor import redispatch
-from txbitwrap.event.observer import Observe
-from cyclone.jsonrpc import JsonrpcRequestHandler
+from txbitwrap.event.broker import Broker
 import bitwrap_machine as pnml
 import bitwrap_psql.db as pg
 
@@ -24,9 +23,6 @@ def settings(options):
     #xsrf_cookies=True, # REVIEW: is this usable w/ rpc ?
     options['template_path'] = os.path.abspath(os.path.dirname(__file__) + '/../templates')
     options['debug'] = True
-
-    if 'pg-database' in options:
-        options['backend'] = 'postgresql'
 
     return dict(options.items())
 
@@ -86,8 +82,8 @@ class Stream(headers.Mixin, RequestHandler):
 
     def get(self, schema, key, *args):
         """ return event stream json array """
-        bw = txbitwrap.open(schema, **self.settings)
-        self.write(json.dumps(bw.storage.db.events.fetchall(key)))
+        estor = txbitwrap.open(schema, **self.settings)
+        self.write(json.dumps(estor.storage.db.events.fetchall(key)))
 
 class Config(headers.Mixin, RequestHandler):
     """ config """
@@ -97,14 +93,10 @@ class Config(headers.Mixin, RequestHandler):
 
         self.write({
             'endpoint': os.environ.get('ENDPOINT', 'http://127.0.0.1:8080'),
+            'encoding': 'json',
+            'version': VERSION,
+            'stage': stage
         })
-
-class Version(headers.Mixin, RequestHandler):
-    """ index """
-
-    def get(self):
-        """ report api version """
-        self.write({__name__: VERSION})
 
 class Index(RequestHandler):
     """ index """
@@ -115,17 +107,15 @@ class Index(RequestHandler):
 def factory(options):
     """ cyclone app factory """
 
-    # TODO: add observe
     handlers = [
         (r"/dispatch/(.*)/(.*)/(.*)", Dispatch),
-        (r"/observe", Observe),
+        (r"/websocket", Broker),
         (r"/event/(.*)/(.*)", Event),
         (r"/state/(.*)/(.*)", State),
         (r"/machine/(.*)", Machine),
         (r"/schemata", Schemata),
         (r"/stream/(.*)/(.*)", Stream),
         (r"/config/(.*).json", Config),
-        (r"/version", Version),
         (r"/api", rpc.Rpc),
         (r"/", Index)
     ]
