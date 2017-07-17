@@ -26,9 +26,6 @@ class EventStoreTest(ApiTest):
             print "\n", json.dumps(obj, indent=4)
             return obj
 
-        d.addCallback(lambda _: self.fetch('version'))
-        d.addCallback(assert_status_code)
-
         d.addCallback(lambda _: self.fetch('config/default.json'))
         d.addCallback(assert_status_code)
 
