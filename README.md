@@ -20,3 +20,5 @@ Run development database & server
     docker run -d --name bitwrap-dev -p 127.0.0.1:5432:5432 -e POSTGRES_PASSWORD=bitwrap postgres:9.6
 
     # TODO: include instructions run this container and how to link w/ postgresql container above
+
+    docker run -d --hostname rabbit-dev --name rabbit-dev -e RABBITMQ_DEFAULT_USER=bitwrap -e RABBITMQ_DEFAULT_PASS=bitwrap  -p 127.0.0.1:5672:5672 -p 127.0.0.1:15672:15672 rabbitmq:3-management

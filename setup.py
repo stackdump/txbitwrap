@@ -11,14 +11,18 @@ setup(
     keywords='PNML petri-net eventstore state-machine',
     packages=find_packages() + ['twisted.plugins'],
     include_package_data=True,
-    install_requires=['cyclone==1.1', 'service-identity==16.0.0', 'txrdq==0.2.14', 'bitwrap-machine', 'bitwrap-psql'],
+    install_requires=[
+        'cyclone==1.1',
+        'service-identity==16.0.0',
+        'txRDQ==0.2.14',
+        'txAMQP==0.7.0',
+        'bitwrap-machine',
+        'bitwrap-psql'],
+
     long_description="""
-# txbitwrap
+txbitwrap
 
 Deploy and manage bitwrap eventstore as a twistd service.
-
-### Reference
-
 https://twistedmatrix.com
 
 """,

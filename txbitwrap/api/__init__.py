@@ -7,7 +7,7 @@ from cyclone.web import RequestHandler
 import txbitwrap
 from txbitwrap.api import headers, rpc
 from txbitwrap.event.processor import redispatch
-from txbitwrap.event.broker import Broker
+from txbitwrap.event.broker import WebSocketBroker
 import bitwrap_machine as pnml
 import bitwrap_psql.db as pg
 
@@ -109,7 +109,7 @@ def factory(options):
 
     handlers = [
         (r"/dispatch/(.*)/(.*)/(.*)", Dispatch),
-        (r"/websocket", Broker),
+        (r"/websocket", WebSocketBroker),
         (r"/event/(.*)/(.*)", Event),
         (r"/state/(.*)/(.*)", State),
         (r"/machine/(.*)", Machine),

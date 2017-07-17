@@ -1,15 +1,25 @@
 from twisted.internet import defer
 from txrdq.rdq import ResizableDispatchQueue
+from twisted.internet import defer
+from txbitwrap.event.dispatch import Dispatcher
 import uuid
 
 HANDLERS = {}
 
-def __dispatcher(event):
-    """ dispatch job from rdq to HANDLERS """
+def __queue_worker(event, forward=True):
+    """ add registered handlers as callbacks """
 
     deferjob = defer.Deferred()
 
-    def enqueue(handle):
+    def __forward(event):
+        """ forward event to Dispatcher """
+
+        if '__err__' not in event:
+          Dispatcher.instance.send(event)
+        return event
+
+    def __dispatch(deferjob, handle):
+        """ add job to rdq """
         if handle not in HANDLERS:
             print '__NOHANDLE__', handle
             return
@@ -17,26 +27,25 @@ def __dispatcher(event):
         for subscriber, dispatch in HANDLERS[handle].items():
             deferjob.addCallback(dispatch)
 
-    enqueue(event['schema'])
-    enqueue(event['schema'] + '.' + event['oid'])
+    if forward:
+        deferjob.addCallback(__forward)
+    else:
+        __dispatch(deferjob, event['schema'])
+        __dispatch(deferjob, event['schema'] + '.' + event['oid'])
 
     deferjob.callback(event)
-    return deferjob
 
-rdq = ResizableDispatchQueue(__dispatcher, 5)
+rdq = ResizableDispatchQueue(__queue_worker, 5)
+Dispatcher.listeners.append(lambda event: __queue_worker(event, forward=False))
 
 def bind(handle_id, options, handler):
     """
     bind handler function to event dispatcher
-
-    handler_id can be:
-      a schema name: 'proc' or or 
-      a composite key schema.oid: 'proc.myjobuuid'
-      a tuple: ('proc', 'myjobuuid')
+    returns subscriber-id
     """
 
     if not isinstance(handle_id, basestring):
-        handle = list(handle_id).join('.')
+        handle = '.'.join(handle_id)
     else:
         handle = handle_id
 
@@ -46,17 +55,23 @@ def bind(handle_id, options, handler):
     if 'subscriber_id' not in options:
         options['subscriber_id'] = str(uuid.uuid4())
 
-    HANDLERS[handle][options['subscriber_id']] = lambda event: handler(options, event)
+    def __handle(event):
+        """ wrapper around registered handler """
+        handler(options, event)
+        return event
+
+    HANDLERS[handle][options['subscriber_id']] = __handle
 
     return options['subscriber_id']
 
 def unbind(handle_id, subscriber):
     """
     remove subscriber from event handler if it is bound
+    returns True when found / False when missing
     """
 
     if not isinstance(handle_id, basestring):
-        handle = list(handle_id).join('.')
+        handle = '.'.join(handle_id)
     else:
         handle = handle_id
 
@@ -65,3 +80,4 @@ def unbind(handle_id, subscriber):
         return True
 
     return False
+

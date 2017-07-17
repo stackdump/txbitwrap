@@ -1,12 +1,14 @@
-Tue Jul 11 23:45:40 CDT 2017
+Sun Jul 16 22:14:49 CDT 2017
 
-* refactor to support txamqp for pub/sub
+WIP
+===
+
+* improve RPC
+  * provide a mechanism to adjust processor and rdq settings
 
 BACKLOG
 ======
 * enable ssh portal using twisted manhole
-* improve RPC
-  * provide a mechanism to adjust processor and rdq settings
 
 ICEBOX
 ======

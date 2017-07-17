@@ -1,33 +1,35 @@
+import os
+import json
 from cyclone.websocket import WebSocketHandler
 from txbitwrap.event import bind, unbind
-import json
+from twisted.python import log
 
-class Broker(WebSocketHandler):
+class WebSocketBroker(WebSocketHandler):
     """ provide a way for clients to subscribe to an event stream """
 
-    def messageReceived(self, message):
-        print '__msg__', message
-        msg = json.loads(message)
+    def forward(self, options, event):
+        """ forward event to WS & broker """
+        self.sendMessage(json.dumps(event))
 
-        def forward(options, event):
-            """ forward event to websocket """
-            self.sendMessage(json.dumps(event))
+    def messageReceived(self, message):
+        """
+        write event to websocket and forward to AMQP exchange
+        """
+
+        msg = json.loads(message)
+        log.msg('__msg__', msg)
 
         if 'bind' in msg:
             self.handle = msg['bind']
-            self.subscription = bind(self.handle, {}, forward)
+            self.subscription = bind(self.handle, {}, self.forward)
 
         if 'unbind' in msg:
             unbind(self.handle, self.subscription)
 
 
     def connectionMade(self):
-        print '__connect__'
+        """ new websocket connection """
+        log.msg('__connect__')
 
     def connectionLost(self, reason):
-        try:
-            unbind(self.handle, self.subscription)
-        except:
-            pass
-
-        print '__close__', reason
+        log.msg('__close__', reason)

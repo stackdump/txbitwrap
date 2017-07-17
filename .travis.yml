@@ -8,7 +8,6 @@ before_script:
 script:
   - trial txbitwrap.test.test_rpc_api 
   - trial txbitwrap.test.test_eventstore
-  - trial txbitwrap.test.test_event_handler
 deploy:
   provider: pypi
   user: stackdump
