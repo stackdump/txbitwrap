@@ -12,7 +12,7 @@ from txamqp.content import Content
 import txamqp.spec
 
 def __dispatcher(handle):
-    """ use as a singleton """
+    """ Dispatcher singleton """
     Dispatcher.instance = handle
 
 class Dispatcher(object):

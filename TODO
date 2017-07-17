@@ -1,14 +1,16 @@
-Sun Jul 16 22:14:49 CDT 2017
+Sun Jul 16 23:43:19 CDT 2017
 
 WIP
 ===
+* build a demo app to extend this behavior to build a tic-tac-toe bot
 
-* improve RPC
-  * provide a mechanism to adjust processor and rdq settings
 
 BACKLOG
-======
+=======
+* allow configuration of routing algorithm to allow fanout etc..
 * enable ssh portal using twisted manhole
+* provide a mechanism to adjust processor and rdq settings at runtime
+  * allow pausing of work
 
 ICEBOX
 ======

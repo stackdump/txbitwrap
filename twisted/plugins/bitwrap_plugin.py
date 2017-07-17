@@ -27,7 +27,8 @@ class Options(usage.Options):
         ("rabbit-port", "t", 5672, "amqp port"),
         ("rabbit-vhost", "v", None, "amqp vhost AMQP_VHOST=<vhost>"),
         ("rabbit-username", "n", None, "amqp username or use env AMQP_USER=<rabbit>"),
-        ("rabbit-password", "w", None, "amqp pass or use env AMQP_PASS=<pass>")
+        ("rabbit-password", "w", None, "amqp pass or use env AMQP_PASS=<pass>"),
+        ("redispatch", "x", None, "dispatch events using external message queue BITWRAP_REDISPATCH=1")
     )
 
 class ServiceFactory(object):
@@ -56,7 +57,10 @@ class ServiceFactory(object):
         _opt('rabbit-username', 'AMQP_USER', 'bitwrap')
         _opt('rabbit-password', 'AMQP_PASS', 'bitwrap')
 
-        Dispatcher(options)
+        _opt('redispatch', 'BITWRAP_REDISPATCH', None)
+
+        if options['redispatch'] is not None and int(options['redispatch']) == 1:
+            Dispatcher(options)
 
         bitwrap_node = internet.TCPServer(
             int(options['listen-port']),

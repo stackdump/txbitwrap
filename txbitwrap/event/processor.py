@@ -1,16 +1,8 @@
 import json
 import txbitwrap
-from txbitwrap.event import rdq
+from txbitwrap.event import rdq, redispatch
 
 SCHEMA='proc'
-
-def redispatch(event, reschedule=False):
-    """
-    enqueue event for further processing
-    TODO: add pause/reschedule feature
-    """
-
-    return rdq.put(event)
 
 def run(jobid, payload, **kwargs):
     """ before redispatch create a proc event stream """
@@ -25,4 +17,7 @@ def run(jobid, payload, **kwargs):
     if 'id' not in event:
         raise Exception('failed to persist proc.state')
 
-    return redispatch(event)
+    if kwargs.get('reschedule', False):
+        return redispatch(event)
+
+    return rdq.put(event)

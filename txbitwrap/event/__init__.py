@@ -6,38 +6,37 @@ import uuid
 
 HANDLERS = {}
 
-def __queue_worker(event, forward=True):
-    """ add registered handlers as callbacks """
-
+def __worker(event):
+    """ handle event on local reactor """
     deferjob = defer.Deferred()
 
-    def __forward(event):
-        """ forward event to Dispatcher """
-
-        if '__err__' not in event and Dispatcher.instance is not None:
-            Dispatcher.instance.send(event)
-
-        return event
-
-    def __dispatch(deferjob, handle):
+    def __run(deferjob, handle):
         """ add job to rdq """
         if handle not in HANDLERS:
             print '__NOHANDLE__', handle
             return
 
-        for subscriber, dispatch in HANDLERS[handle].items():
+        for _, dispatch in HANDLERS[handle].items():
             deferjob.addCallback(dispatch)
 
-    if forward:
-        deferjob.addCallback(__forward)
-    else:
-        __dispatch(deferjob, event['schema'])
-        __dispatch(deferjob, event['schema'] + '.' + event['oid'])
+    __run(deferjob, event['schema'])
+    __run(deferjob, event['schema'] + '.' + event['oid'])
 
     deferjob.callback(event)
+    return event
 
-rdq = ResizableDispatchQueue(__queue_worker, 5)
-Dispatcher.listeners.append(lambda event: __queue_worker(event, forward=False))
+rdq = ResizableDispatchQueue(__worker, 5)
+Dispatcher.listeners.append(lambda event: rdq.put(event))
+
+def redispatch(event):
+    """ send AMQP event """
+    if '__err__' not in event:
+        if Dispatcher.instance is not None:
+            Dispatcher.instance.send(event)
+        else:
+            rdq.put(event)
+
+    return event
 
 def bind(handle_id, options, handler):
     """
@@ -81,4 +80,3 @@ def unbind(handle_id, subscriber):
         return True
 
     return False
-

@@ -1,6 +1,7 @@
 """ admin api to allow management of streams and event schemata """
 from cyclone.jsonrpc import JsonrpcRequestHandler
 from txbitwrap.event.processor import run, SCHEMA as JOBSCHEMA
+from txbitwrap.event.dispatch import Dispatcher
 from txbitwrap.api import headers
 import txbitwrap
 import bitwrap_machine as pnml
@@ -33,11 +34,9 @@ class Rpc(headers.Mixin, JsonrpcRequestHandler):
         """ drop database schema """
         pg.drop_schema(schema, **self.settings)
 
-
     def jsonrpc_stream_exists(self, schema, oid):
         """ test that a stream exists """
         return self.handle(schema).storage.db.stream_exists(oid)
-
 
     def jsonrpc_stream_create(self, schema, oid):
         """ create a new stream if it doesn't exist """
@@ -47,9 +46,3 @@ class Rpc(headers.Mixin, JsonrpcRequestHandler):
         """ enqueue a new job """
         run(oid, payload, **self.settings)
         return txbitwrap.open(JOBSCHEMA, **self.settings).storage.db.states.fetch(oid)
-
-    def jsonrpc_await_state(self, schema, oid, params):
-        # TODO: add event.processor subscriber
-        # when it's complete, remove the subcriber
-        # params = { 'key': <key>, 'value': <target value> timeout: 1800s }
-        return {"params": [schema, oid, params]}

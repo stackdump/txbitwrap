@@ -6,7 +6,7 @@ import cyclone.web
 from cyclone.web import RequestHandler
 import txbitwrap
 from txbitwrap.api import headers, rpc
-from txbitwrap.event.processor import redispatch
+from txbitwrap.event import redispatch
 from txbitwrap.event.broker import WebSocketBroker
 import bitwrap_machine as pnml
 import bitwrap_psql.db as pg
