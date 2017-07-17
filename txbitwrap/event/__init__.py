@@ -14,8 +14,9 @@ def __queue_worker(event, forward=True):
     def __forward(event):
         """ forward event to Dispatcher """
 
-        if '__err__' not in event:
-          Dispatcher.instance.send(event)
+        if '__err__' not in event and Dispatcher.instance is not None:
+            Dispatcher.instance.send(event)
+
         return event
 
     def __dispatch(deferjob, handle):
