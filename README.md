@@ -9,7 +9,7 @@ This library is build to run atop an event-driven networking engine called: [Twi
 
 #### Status
 
-Integrating bitwrap eventstore with a reactor-driven application toolkit.
+modifying bitwrap eventstore to provide a reactor-driven event toolkit
 
 #### Docker
 

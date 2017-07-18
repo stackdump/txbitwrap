@@ -1,19 +1,20 @@
-Sun Jul 16 23:43:19 CDT 2017
+Mon Jul 17 23:03:58 CDT 2017
 
 WIP
 ===
-* build a demo app to extend this behavior to build a tic-tac-toe bot
 
+* build a tic-tac-toe bot attached to 'octoe' handler
 
 BACKLOG
 =======
 * allow configuration of routing algorithm to allow fanout etc..
 * enable ssh portal using twisted manhole
-* provide a mechanism to adjust processor and rdq settings at runtime
-  * allow pausing of work
 
 ICEBOX
 ======
+* provide rpc calls for adjusting settings
+  * allow pausing of work
+  * adjust rdq width
 * support self-signed SSL cert generation 
   * use ip address as CNAME
   * should allow install before or after container starts

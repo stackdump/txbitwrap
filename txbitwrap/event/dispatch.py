@@ -1,10 +1,10 @@
 import os
 import json
-from cyclone.websocket import WebSocketHandler
+from zope.interface import implements
 from twisted.internet import defer
-from twisted.internet.defer import inlineCallbacks
-from twisted.internet import reactor, task
+from twisted.internet import reactor
 from twisted.internet.protocol import ClientCreator
+from twisted.application.service import IService
 from twisted.python import log
 from txamqp.protocol import AMQClient
 from txamqp.client import TwistedDelegate
@@ -14,19 +14,31 @@ import txamqp.spec
 def __dispatcher(handle):
     """ Dispatcher singleton """
     Dispatcher.instance = handle
+    return handle
 
 class Dispatcher(object):
     """
     Dispatch state machine events to RabbitMQ
     """
 
+    implements(IService)
+
     handle = defer.Deferred()
     instance = None
     listeners = []
 
-    def __init__(self, settings):
-        spec = txamqp.spec.load(os.path.abspath(__file__ + '/../../specs/amqp0-9-1.stripped.xml'))
+    def __init__(self, rdq, settings):
+        self.rdq = rdq
         self.settings = settings
+        self.name = __name__
+
+    def privilegedStartService(self):
+        pass
+
+    def startService(self):
+
+        spec = txamqp.spec.load(os.path.abspath(__file__ + '/../../specs/amqp0-9-1.stripped.xml'))
+
         delegate = TwistedDelegate()
 
         cli = ClientCreator(
@@ -42,42 +54,51 @@ class Dispatcher(object):
         cli.addErrback(lambda err: log.err(err))
         Dispatcher.handle.callback(self)
 
+    def stopService(self):
+        # TODO: stop listening to rabbit
+        pass
+
     def addCallback(self, listener):
         Deferred.listener.append(listener)
 
     def send(self, event):
         msg = Content(json.dumps(event))
-        print("Sending message: %s" % msg)
+        #log.msg("Sending message: %s" % msg)
         self.chan.basic_publish(exchange="bitwrap", content=msg, routing_key=event['schema'])
 
-    @inlineCallbacks
+    @defer.inlineCallbacks
     def onConnect(self, conn):
         """ on rabbit connected """
 
         self.conn = conn
         consumer_id=__name__
+        self.queue_name = self.settings['external-queue']
 
-        log.msg("Connected to broker.")
+        #log.msg("Connected to broker.")
         yield self.conn.authenticate(self.settings['rabbit-username'], self.settings['rabbit-password'])
 
-        log.msg("Authenticated. Ready to send messages")
+        #log.msg("Authenticated. Ready to send messages")
         self.chan = yield self.conn.channel(1)
         yield self.chan.channel_open()
-        yield self.chan.queue_declare(queue='bitwrap', durable=True, exclusive=False)
+        yield self.chan.queue_declare(queue=self.queue_name, durable=True, exclusive=False)
         yield self.chan.exchange_declare(exchange="bitwrap", type="topic", durable=False )
-        yield self.chan.queue_bind(queue='bitwrap', exchange="bitwrap", routing_key="*")
-        yield self.chan.basic_consume(queue='bitwrap', no_ack=True, consumer_tag=consumer_id)
+        yield self.chan.queue_bind(queue=self.queue_name, exchange="bitwrap", routing_key="*")
 
-        queue = yield self.conn.queue(consumer_id)
+        if self.settings['worker'] and int(self.settings.get('worker', 0)) == 1:
 
-        while True:
-            d = defer.Deferred()
-            msg = yield queue.get()
-            print 'Received: ' + msg.content.body + ' from channel #' + str(self.chan.id)
+            Dispatcher.listeners.append(lambda event: self.rdq.put(event))
 
-            for dispatch in Dispatcher.listeners:
-                d.addCallback(dispatch)
+            yield self.chan.basic_consume(queue=self.queue_name, no_ack=True, consumer_tag=consumer_id)
+            queue = yield self.conn.queue(consumer_id)
 
-            d.callback(json.loads(msg.content.body))
+            while True:
+                d = defer.Deferred()
+                msg = yield queue.get()
+                #log.msg('Received: ' + msg.content.body + ' from channel #' + str(self.chan.id))
+
+                for dispatch in Dispatcher.listeners:
+                    d.addCallback(dispatch)
+
+                d.callback(json.loads(msg.content.body))
 
 Dispatcher.handle.addCallback(__dispatcher)

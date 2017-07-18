@@ -23,7 +23,7 @@ class EventProcessorTest(ApiTest):
         def game_handler(options, event):
             """ play a game of tic-tac-toe """
 
-            gamestore = txbitwrap.open('game', **OPTIONS)
+            gamestore = txbitwrap.storage('game', **OPTIONS)
             gameid = event['payload']['gameid']
             db = gamestore.storage.db
 

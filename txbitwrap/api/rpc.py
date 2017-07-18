@@ -13,7 +13,7 @@ class Rpc(headers.Mixin, JsonrpcRequestHandler):
 
     def handle(self, schema):
         """ open handle on bitwrap storage """
-        return txbitwrap.open(schema, **self.settings)
+        return txbitwrap.storage(schema, **self.settings)
 
     def jsonrpc_schema_exists(self, schema):
         """ test that an event-machine schema exists """
@@ -45,4 +45,4 @@ class Rpc(headers.Mixin, JsonrpcRequestHandler):
     def jsonrpc_job_create(self, oid, payload):
         """ enqueue a new job """
         run(oid, payload, **self.settings)
-        return txbitwrap.open(JOBSCHEMA, **self.settings).storage.db.states.fetch(oid)
+        return txbitwrap.storage(JOBSCHEMA, **self.settings).storage.db.states.fetch(oid)

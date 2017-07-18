@@ -6,30 +6,11 @@ from twisted.application.service import IServiceMaker, MultiService
 from twisted.internet import reactor
 from twisted.internet.protocol import Factory
 from twisted.plugin import IPlugin
-from twisted.python import usage
 from txbitwrap.api import factory as ApiFactory
-from bitwrap_machine import ptnet
 from txbitwrap.event.dispatch import Dispatcher
+from txbitwrap.event import rdq
+from txbitwrap import Options
 Factory.noisy = False
-
-class Options(usage.Options):
-
-    optParameters = (
-        ("machine-path", "m", ptnet.PNML_PATH, "Path to read <schema>.xml"),
-        ("listen-ip", "i", "0.0.0.0", "The listen address."),
-        ("listen-port", "o", 8080, "The port number to listen on."),
-        ("pg-host", "h", None, "psql host or use env RDS_HOST=127.0.0.1"),
-        ("pg-port", "r", 5432, "psql port"),
-        ("pg-database", "d", None, "psql database name or use env RDS_DB=<dbname>"),
-        ("pg-username", "u", None, "psql username or use env RDS_USER=<pg-user>"),
-        ("pg-password", "p", None, "psql pass or use env RDS_PASS=<pg-pass>"),
-        ("rabbit-host", "q", None, "amqp username or use env AMQP_USER=<rabbit>"),
-        ("rabbit-port", "t", 5672, "amqp port"),
-        ("rabbit-vhost", "v", None, "amqp vhost AMQP_VHOST=<vhost>"),
-        ("rabbit-username", "n", None, "amqp username or use env AMQP_USER=<rabbit>"),
-        ("rabbit-password", "w", None, "amqp pass or use env AMQP_PASS=<pass>"),
-        ("redispatch", "x", None, "dispatch events using external message queue BITWRAP_REDISPATCH=1")
-    )
 
 class ServiceFactory(object):
     implements(IServiceMaker, IPlugin)
@@ -39,36 +20,20 @@ class ServiceFactory(object):
     options = Options
 
     def makeService(self, options):
-        service = MultiService()
+        multi_service = MultiService()
+        Options.append_env(options)
 
-        def _opt(optkey, key, default):
-            if options[optkey] is None:
-                options[optkey] = os.environ.get(key, default)
+        if options['api'] and int(options.get('api', 0)) == 1:
+            bitwrap_node = internet.TCPServer(
+                int(options['listen-port']),
+                ApiFactory(options),
+                interface=options['listen-ip'])
 
-        ptnet.set_pnml_path(options['machine-path'])
+            multi_service.addService(bitwrap_node)
 
-        _opt('pg-host', 'RDS_HOST', '127.0.0.1')
-        _opt('pg-database', 'RDS_DB', 'bitwrap')
-        _opt('pg-username', 'RDS_USER', 'postgres')
-        _opt('pg-password', 'RDS_PASS', 'bitwrap')
+        if options['external-queue']:
+            multi_service.addService(Dispatcher(rdq, options))
 
-        _opt('rabbit-host', 'AMQP_HOST', '127.0.0.1')
-        _opt('rabbit-vhost', 'AMQP_VHOST', '/')
-        _opt('rabbit-username', 'AMQP_USER', 'bitwrap')
-        _opt('rabbit-password', 'AMQP_PASS', 'bitwrap')
-
-        _opt('redispatch', 'BITWRAP_REDISPATCH', None)
-
-        if options['redispatch'] is not None and int(options['redispatch']) == 1:
-            Dispatcher(options)
-
-        bitwrap_node = internet.TCPServer(
-            int(options['listen-port']),
-            ApiFactory(options),
-            interface=options['listen-ip'])
-
-        service.addService(bitwrap_node)
-
-        return service
+        return multi_service
 
 serviceMaker = ServiceFactory()

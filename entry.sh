@@ -10,4 +10,4 @@ if [[ "x${PNML_PATH}" = 'x' ]] ; then
 fi
 
 export PYTHONPATH=./
-twistd -n bitwrap --listen-ip=0.0.0.0 --listen-port=8080 --redispatch=1
+twistd -n bitwrap --listen-ip=0.0.0.0 --listen-port=8080 --api=1 --worker=1 --external-queue=bitwrap

@@ -32,7 +32,7 @@ class Dispatch(headers.PostMixin, RequestHandler):
     def post(self, schema, oid, action, **kwargs):
         """ accepts a json post body as event payload """
 
-        res = txbitwrap.open(schema, **self.settings)(oid=oid, action=action, payload=self.request.body)
+        res = txbitwrap.storage(schema, **self.settings)(oid=oid, action=action, payload=self.request.body)
         self.write(res)
         res['payload'] = json.loads(self.request.body)
         res['schema'] = schema
@@ -44,7 +44,7 @@ class Event(headers.Mixin, RequestHandler):
 
     def get(self, schema, key, *args):
         """ get event by eventid """
-        handle = txbitwrap.open(schema, **self.settings)
+        handle = txbitwrap.storage(schema, **self.settings)
         self.write(handle.storage.db.events.fetch(key))
 
 class State(headers.Mixin, RequestHandler):
@@ -53,7 +53,7 @@ class State(headers.Mixin, RequestHandler):
     def get(self, schema, key, *args):
         """ get head event by oid """
 
-        handle = txbitwrap.open(schema, **self.settings)
+        handle = txbitwrap.storage(schema, **self.settings)
         self.write(handle.storage.db.states.fetch(key))
 
 class Machine(headers.Mixin, RequestHandler):
@@ -82,7 +82,7 @@ class Stream(headers.Mixin, RequestHandler):
 
     def get(self, schema, key, *args):
         """ return event stream json array """
-        estor = txbitwrap.open(schema, **self.settings)
+        estor = txbitwrap.storage(schema, **self.settings)
         self.write(json.dumps(estor.storage.db.events.fetchall(key)))
 
 class Config(headers.Mixin, RequestHandler):

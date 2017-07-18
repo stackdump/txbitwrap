@@ -2,5 +2,6 @@ txRDQ==0.2.14
 txAMQP==0.7.0
 cyclone==1.1
 service-identity==16.0.0
+honcho==1.0.1
 -e git+https://github.com/bitwrap/bitwrap-machine.git#egg=bitwrap-machine
 -e git+https://github.com/bitwrap/bitwrap-psql.git#egg=bitwrap-psql

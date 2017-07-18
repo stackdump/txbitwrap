@@ -13,7 +13,7 @@ def __worker(event):
     def __run(deferjob, handle):
         """ add job to rdq """
         if handle not in HANDLERS:
-            print '__NOHANDLE__', handle
+            #print '__NOHANDLE__', handle
             return
 
         for _, dispatch in HANDLERS[handle].items():
@@ -26,7 +26,6 @@ def __worker(event):
     return event
 
 rdq = ResizableDispatchQueue(__worker, 5)
-Dispatcher.listeners.append(lambda event: rdq.put(event))
 
 def redispatch(event):
     """ send AMQP event """
