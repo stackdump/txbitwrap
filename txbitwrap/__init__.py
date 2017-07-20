@@ -59,14 +59,14 @@ class Options(usage.Options):
         ("pg-database", "d", None, "psql database name ; use env RDS_DB=<dbname>"),
         ("pg-username", "u", None, "psql username ; use env RDS_USER=<pg-user>"),
         ("pg-password", "p", None, "psql pass ; use env RDS_PASS=<pg-pass>"),
-        ("rabbit-host", "q", None, "amqp username ; use env AMQP_USER=<rabbit>"),
+        ("rabbit-host", "r", None, "amqp username ; use env AMQP_USER=<rabbit>"),
         ("rabbit-port", "t", 5672, "amqp port"),
         ("rabbit-vhost", "v", None, "amqp vhost AMQP_VHOST=<vhost>"),
         ("rabbit-username", "n", None, "amqp username ; use env AMQP_USER=<rabbit>"),
         ("rabbit-password", "w", None, "amqp pass ; use env AMQP_PASS=<pass>"),
-        ("api", "a", None, "run the cyclone web App ; use env var BITWRAP_API=1"),
-        ("worker", "w", None, "handle events from API or Rabbit ; use env BITWRAP_WORKER=1"),
-        ("external-queue", "x", None, "dispatch events using external message queue ; use env BITWRAP_QUEUE=bitwrap")
+        ("routing-key", "w", None, "handle events from API or Rabbit ; use env BITWRAP_ROUTING_KEY='*'"),
+        ("exchange", "x", None, "dispatch events to exchange ; use env BITWRAP_EXCHANGE=bitwrap"),
+        ("queue", "q", None, "Dispatcher will listen for events on this queue ; use env BITWRAP_QUEUE=bitwrap")
     )
 
     @staticmethod
@@ -87,9 +87,9 @@ class Options(usage.Options):
         _opt('rabbit-username', 'AMQP_USER', 'bitwrap')
         _opt('rabbit-password', 'AMQP_PASS', 'bitwrap')
 
-        _opt('api', 'BITWRAP_API', None)
-        _opt('worker', 'BITWRAP_WORKER', None)
-        _opt('external-queue', 'BITWRAP_QUEUE', 'bitwrap')
+        _opt('routing-key', 'BITWRAP_ROUTING_KEY', '*')
+        _opt('exchange', 'BITWRAP_EXCHANGE', 'bitwrap')
+        _opt('queue', 'BITWRAP_QUEUE', 'bitwrap')
 
         return options
 

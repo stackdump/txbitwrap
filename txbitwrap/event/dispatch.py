@@ -61,10 +61,13 @@ class Dispatcher(object):
     def addCallback(self, listener):
         Deferred.listener.append(listener)
 
-    def send(self, event):
+    @staticmethod
+    def send(event):
+        self = Dispatcher.instance
         msg = Content(json.dumps(event))
         #log.msg("Sending message: %s" % msg)
-        self.chan.basic_publish(exchange="bitwrap", content=msg, routing_key=event['schema'])
+        self.chan.basic_publish(exchange=self.settings['exchange'], content=msg, routing_key=event['schema'])
+        return event
 
     @defer.inlineCallbacks
     def onConnect(self, conn):
@@ -72,7 +75,6 @@ class Dispatcher(object):
 
         self.conn = conn
         consumer_id=__name__
-        self.queue_name = self.settings['external-queue']
 
         #log.msg("Connected to broker.")
         yield self.conn.authenticate(self.settings['rabbit-username'], self.settings['rabbit-password'])
@@ -80,25 +82,23 @@ class Dispatcher(object):
         #log.msg("Authenticated. Ready to send messages")
         self.chan = yield self.conn.channel(1)
         yield self.chan.channel_open()
-        yield self.chan.queue_declare(queue=self.queue_name, durable=True, exclusive=False)
-        yield self.chan.exchange_declare(exchange="bitwrap", type="topic", durable=False )
-        yield self.chan.queue_bind(queue=self.queue_name, exchange="bitwrap", routing_key="*")
+        yield self.chan.exchange_declare(exchange=self.settings['exchange'], type="topic", durable=False )
+        yield self.chan.queue_declare(queue=self.settings['queue'], durable=True, exclusive=False)
+        yield self.chan.queue_bind(queue=self.settings['queue'], exchange=self.settings['exchange'], routing_key=self.settings['routing-key'])
 
-        if self.settings['worker'] and int(self.settings.get('worker', 0)) == 1:
+        Dispatcher.listeners.append(lambda event: self.rdq.put(event))
 
-            Dispatcher.listeners.append(lambda event: self.rdq.put(event))
+        yield self.chan.basic_consume(queue=self.settings['queue'], no_ack=True, consumer_tag=consumer_id)
+        queue = yield self.conn.queue(consumer_id)
 
-            yield self.chan.basic_consume(queue=self.queue_name, no_ack=True, consumer_tag=consumer_id)
-            queue = yield self.conn.queue(consumer_id)
+        while True:
+            d = defer.Deferred()
+            msg = yield queue.get()
+            #log.msg('Received: ' + msg.content.body + ' from channel #' + str(self.chan.id))
 
-            while True:
-                d = defer.Deferred()
-                msg = yield queue.get()
-                #log.msg('Received: ' + msg.content.body + ' from channel #' + str(self.chan.id))
+            for dispatch in Dispatcher.listeners:
+                d.addCallback(dispatch)
 
-                for dispatch in Dispatcher.listeners:
-                    d.addCallback(dispatch)
-
-                d.callback(json.loads(msg.content.body))
+            d.callback(json.loads(msg.content.body))
 
 Dispatcher.handle.addCallback(__dispatcher)

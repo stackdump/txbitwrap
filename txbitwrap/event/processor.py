@@ -1,23 +1,48 @@
 import json
 import txbitwrap
-from txbitwrap.event import rdq, redispatch
+from txbitwrap import Dispatcher, Options, factory, bind, storage
 
-SCHEMA='proc'
+class Factory(object):
+    """
+    Event Processor Factory
+    """
 
-def run(jobid, payload, **kwargs):
-    """ before redispatch create a proc event stream """
+    def __init__(self):
+        """ set config defaults """
 
-    es = txbitwrap.storage(SCHEMA, **kwargs)
-    es.storage.db.create_stream(jobid)
-    event = es(oid=jobid, action='BEGIN', payload=json.dumps(payload))
-    event['payload'] = payload
-    event['schema'] = SCHEMA
-    event['action'] = 'BEGIN'
+        if not hasattr(self, 'config'):
 
-    if 'id' not in event:
-        raise Exception('failed to persist proc.state')
+            self.config = {
+                'exchange': 'bitwrap',
+                'queue': self.name,
+                'routing-key': self.name
+            }
 
-    if kwargs.get('reschedule', False):
-        return redispatch(event)
+    def __call__(self):
+        """ build twisted application """
 
-    return rdq.put(event)
+        if hasattr(self, 'on_load'):
+            self.on_load()
+
+        self.options = Options.from_env(self.config)
+        self.stor = storage(self.name, **self.options)
+        bind(self.name, self.options, self.on_event)
+
+        return factory(self.name, self.options)
+
+    def state(self, oid):
+        return self.stor.storage.db.states.fetch(oid)['state']
+
+    def dispatch(self, oid, action, payload):
+        """ append event to eventstore and dispatch to rabbit """
+
+        res = self.stor(oid=oid, action=action, payload=json.dumps(payload))
+        res['schema'] = self.name
+        res['action'] = action
+        res['payload'] = payload
+
+        return Dispatcher.send(res)
+
+    def on_event(self, options, event):
+        """ overload to handle events """
+        pass

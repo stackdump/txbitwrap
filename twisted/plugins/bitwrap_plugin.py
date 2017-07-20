@@ -23,15 +23,14 @@ class ServiceFactory(object):
         multi_service = MultiService()
         Options.append_env(options)
 
-        if options['api'] and int(options.get('api', 0)) == 1:
-            bitwrap_node = internet.TCPServer(
-                int(options['listen-port']),
-                ApiFactory(options),
-                interface=options['listen-ip'])
+        bitwrap_node = internet.TCPServer(
+            int(options['listen-port']),
+            ApiFactory(options),
+            interface=options['listen-ip'])
 
-            multi_service.addService(bitwrap_node)
+        multi_service.addService(bitwrap_node)
 
-        if options['external-queue']:
+        if options['queue']:
             multi_service.addService(Dispatcher(rdq, options))
 
         return multi_service

@@ -82,8 +82,8 @@ class Stream(headers.Mixin, RequestHandler):
 
     def get(self, schema, key, *args):
         """ return event stream json array """
-        estor = txbitwrap.storage(schema, **self.settings)
-        self.write(json.dumps(estor.storage.db.events.fetchall(key)))
+        stor = txbitwrap.storage(schema, **self.settings)
+        self.write(json.dumps(stor.storage.db.events.fetchall(key)))
 
 class Config(headers.Mixin, RequestHandler):
     """ config """
