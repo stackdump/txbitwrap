@@ -25,10 +25,10 @@ class Dispatcher(object):
 
     handle = defer.Deferred()
     instance = None
-    listeners = []
 
     def __init__(self, rdq, settings):
         self.rdq = rdq
+        self.listeners = []
         self.settings = settings
         self.name = __name__
 
@@ -86,7 +86,7 @@ class Dispatcher(object):
         yield self.chan.queue_declare(queue=self.settings['queue'], durable=True, exclusive=False)
         yield self.chan.queue_bind(queue=self.settings['queue'], exchange=self.settings['exchange'], routing_key=self.settings['routing-key'])
 
-        Dispatcher.listeners.append(lambda event: self.rdq.put(event))
+        self.listeners.append(lambda event: self.rdq.put(event))
 
         yield self.chan.basic_consume(queue=self.settings['queue'], no_ack=True, consumer_tag=consumer_id)
         queue = yield self.conn.queue(consumer_id)
@@ -96,7 +96,7 @@ class Dispatcher(object):
             msg = yield queue.get()
             #log.msg('Received: ' + msg.content.body + ' from channel #' + str(self.chan.id))
 
-            for dispatch in Dispatcher.listeners:
+            for dispatch in self.listeners:
                 d.addCallback(dispatch)
 
             d.callback(json.loads(msg.content.body))

@@ -92,7 +92,7 @@ class Config(headers.Mixin, RequestHandler):
         """ direct web app to api """
 
         self.write({
-            'endpoint': os.environ.get('ENDPOINT', 'http://127.0.0.1:8080'),
+            'endpoint': os.environ.get('ENDPOINT', 'http://' + self.request.host),
             'encoding': 'json',
             'version': VERSION,
             'stage': stage

@@ -31,7 +31,7 @@ def redispatch(event):
     """ send AMQP event """
     if '__err__' not in event:
         if Dispatcher.instance is not None:
-            Dispatcher.instance.send(event)
+            Dispatcher.send(event)
         else:
             rdq.put(event)
 

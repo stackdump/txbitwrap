@@ -13,4 +13,3 @@ ENV PNML_PATH=/opt/txbitwrap/schemata
 EXPOSE 8080
 
 ENTRYPOINT ["/opt/txbitwrap/entry.sh"]
-

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="txbitwrap",
-    version="0.2.0",
+    version="0.3.0",
     author="Matthew York",
     author_email="myork@stackdump.com",
     description="bitwrap eventstore deployed as a Twisted plugin",
@@ -28,7 +28,7 @@ https://twistedmatrix.com
 """,
     url="http://getbitwrap.com",
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Topic :: Database :: Database Engines/Servers",
         "License :: OSI Approved :: MIT License"
     ],

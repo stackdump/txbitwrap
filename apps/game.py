@@ -1,13 +1,10 @@
 #!/usr/bin/env python
 import random
 from twisted.internet import reactor
-from txbitwrap.event.processor import Factory
+from txbitwrap.event import processor
 
-class TicTacToe(Factory):
-    """
-    play tic-tac-toe
-    w/ random strategy
-    """
+class TicTacToe(processor.Factory):
+    """ play tic-tac-toe w/ random strategy """
 
     name = 'octoe'
 
@@ -15,9 +12,8 @@ class TicTacToe(Factory):
              '10', '11', '12',
              '20', '21', '22']
 
-    config = None
-
     def on_load(self):
+        """ configure the handler """
         self.move_key = 'turn_' + self.player.lower()
 
         self.config = {
@@ -36,7 +32,10 @@ class TicTacToe(Factory):
         def move():
             for coords in self.board:
                 if statevector['m' + coords] > 0:
-                    print self.dispatch(event['oid'], self.player + coords, event['payload'])
+                    print self.dispatch(
+                        oid=event['oid'],
+                        action=self.player + coords,
+                        payload=event['payload'])
                     return
 
         reactor.callLater(0.5, move)

@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 
-# use env var from docker --link if RDS_HOST env is not already set
 if [[ "x${RDS_HOST}" = 'x'  && "x${RDS_PORT_5432_TCP_ADDR}" != "x" ]] ; then
-    export RDS_HOST=$RDS_PORT_5432_TCP_ADDR # see: ./run.sh example using --link
+    # map from docker ENV vars
+    export RDS_HOST=${RDS_PORT_5432_TCP_ADDR}
+fi
+
+if [[ "x${AMQP_HOST}" = 'x' && "x${AMQP_PORT_5671_TCP_ADDR}" != "x" ]] ; then
+    # map from docker ENV vars
+    export AMQP_HOST=${AMQP_PORT_5671_TCP_ADDR}
 fi
 
 if [[ "x${PNML_PATH}" = 'x' ]] ; then
     export PNML_PATH=./schemata
 fi
 
-export PYTHONPATH=./
-twistd -n -l - bitwrap --listen-ip=0.0.0.0 --listen-port=8080 --queue=bitwrap --exchange=bitwrap --routing-key='*'
+honcho start $@

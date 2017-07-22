@@ -7,56 +7,36 @@ Fork of http://getbitwrap.com
 
 This library is build to run atop an event-driven networking engine called: [Twisted](https://twistedmatrix.com/trac/)
 
-#### Status
+### Status
 
 Modifying bitwrap eventstore to provide a reactor-driven event toolkit.
 
-Here's an example of a handler for playing tic-tac-toe using an eventstream.
+#### Demo - Tic-Tac-Toe
+
+* Try sending game events yourself
+  * using manual events trigger by clicking the board in-browser
+
+````
+    ./entry.sh
+````
 
 
-    #!/usr/bin/env python
-    import random
-    from twisted.internet import reactor
-    from txbitwrap.event.processor import Factory
+OR 
 
-    class TicTacToe(Factory):
-        """
-        play tic-tac-toe
-        w/ random strategy
-        """
+* use the apps/player-X.tac apps/player-O.tac files
+  * to simulate a game using random play event processors
 
-        name = 'octoe'
+````
+    honcho start
+````
 
-        board = ['00', '01', '02',
-                 '10', '11', '12',
-                 '20', '21', '22']
+Then 
 
-        config = None
+* visit http://127.0.0.1:8080#octothorpe
+* click 'Rest' to create a new game
+  * if using Procfile you will see the game progress
+  * otherwise click on the gameboard to make moves
 
-        def on_load(self):
-            self.move_key = 'turn_' + self.player.lower()
-
-            self.config = {
-                'exchange': 'bitwrap',
-                'queue': 'player-' + self.player,
-                'routing-key': self.name
-            }
-
-        def on_event(self, opts, event):
-            """ handle 'octoe' event from rabbit """
-            statevector = self.state(event['oid'])
-
-            if statevector[self.move_key] == 0:
-                return
-
-            def move():
-                for coords in self.board:
-                    if statevector['m' + coords] > 0:
-                        print self.dispatch(event['oid'], self.player + coords, event['payload'])
-                        return
-
-            reactor.callLater(0.5, move)
-            random.shuffle(self.board)
 
 #### Docker
 
