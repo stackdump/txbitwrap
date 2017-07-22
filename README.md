@@ -17,7 +17,7 @@ Modifying bitwrap eventstore to provide a reactor-driven event toolkit.
   * using manual events trigger by clicking the board in-browser
 
 ````
-    ./entry.sh
+    ./entry.sh api
 ````
 
 
@@ -27,7 +27,7 @@ OR
   * to simulate a game using random play event processors
 
 ````
-    honcho start
+    ./entry.sh api X O
 ````
 
 Then 
