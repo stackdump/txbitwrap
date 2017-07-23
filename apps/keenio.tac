@@ -32,6 +32,8 @@ class KeenIO(processor.Factory):
             'routing-key': self.schema
         }
 
+        self.stor = None # does not use eventstore
+
     def on_event(self, opts, event):
         """ forward event to keen.io """
 

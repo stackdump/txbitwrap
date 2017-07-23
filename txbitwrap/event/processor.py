@@ -61,7 +61,9 @@ class Factory(EventStoreMethods):
 
         self.options = Options.from_env(self.config)
 
-        self.stor = storage(self.schema, **self.options)
+        if not hasattr(self, 'stor'):
+            self.stor = storage(self.schema, **self.options)
+
         bind(self.schema, self.options, self.on_event)
 
         return factory(self.schema, self.options)
