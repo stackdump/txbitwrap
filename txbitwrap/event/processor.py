@@ -16,7 +16,7 @@ class EventStoreMethods(object):
         msg = json.dumps(payload)
 
         if schema is None:
-            schema = self.name
+            schema = self.schema
             res = self.stor(oid=oid, action=action, payload=msg)
         else:
             # TODO: test writing to other schemata
@@ -55,15 +55,16 @@ class Factory(EventStoreMethods):
         if not hasattr(self, 'config'):
             self.config = {
                 'exchange': 'bitwrap',
-                'queue': self.name,
-                'routing-key': self.name
+                'queue': self.schema,
+                'routing-key': self.schema
             }
 
         self.options = Options.from_env(self.config)
-        self.stor = storage(self.name, **self.options)
-        bind(self.name, self.options, self.on_event)
 
-        return factory(self.name, self.options)
+        self.stor = storage(self.schema, **self.options)
+        bind(self.schema, self.options, self.on_event)
+
+        return factory(self.schema, self.options)
 
 
     def on_event(self, options, event):

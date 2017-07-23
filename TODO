@@ -1,12 +1,14 @@
-Sat Jul 22 09:29:03 CDT 2017
+Sun Jul 23 09:13:03 CDT 2017
 
 WIP
 ===
 * testing container deployment on AWS
+  * benchmark
 
 BACKLOG
 =======
 * investigate how we could use tensor flow with bitwrap models
+* use/add datadog w/ ECS?
 
 ICEBOX
 ======

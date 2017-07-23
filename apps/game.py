@@ -6,7 +6,7 @@ from txbitwrap.event import processor
 class TicTacToe(processor.Factory):
     """ play tic-tac-toe w/ random strategy """
 
-    name = 'octoe'
+    schema = 'octoe'
 
     board = ['00', '01', '02',
              '10', '11', '12',
@@ -19,7 +19,7 @@ class TicTacToe(processor.Factory):
         self.config = {
             'exchange': 'bitwrap',
             'queue': 'player-' + self.player,
-            'routing-key': self.name
+            'routing-key': self.schema
         }
 
     def on_event(self, opts, event):
