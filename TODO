@@ -1,0 +1,14 @@
+Sun Jul 23 21:47:11 CDT 2017
+
+WIP
+===
+* integration testing on AWS
+
+BACKLOG
+=======
+* support self-signed SSL cert generation
+  * for http api service + websocket
+
+ICEBOX
+======
+* investigate how we could use tensor flow with bitwrap models
