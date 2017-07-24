@@ -1,22 +1,14 @@
-Sun Jul 23 09:13:03 CDT 2017
+Sun Jul 23 21:47:11 CDT 2017
 
 WIP
 ===
-* testing container deployment on AWS
-  * benchmark
+* integration testing on AWS
 
 BACKLOG
 =======
-* investigate how we could use tensor flow with bitwrap models
-* use/add datadog w/ ECS?
+* support self-signed SSL cert generation
+  * for http api service + websocket
 
 ICEBOX
 ======
-* enable ssh portal using twisted manhole
-* provide rpc calls for adjusting settings
-  * allow pausing of work
-  * adjust rdq width
-* support self-signed SSL cert generation 
-  * use ip address as CNAME
-  * should allow install before or after container starts
-
+* investigate how we could use tensor flow with bitwrap models
