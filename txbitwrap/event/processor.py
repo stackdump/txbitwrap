@@ -1,6 +1,7 @@
 import json
-import txbitwrap
 from txbitwrap import Dispatcher, Options, factory, bind, storage
+import bitwrap_machine as pnml
+import bitwrap_psql.db as pg
 
 class EventStoreMethods(object):
     """
@@ -13,15 +14,10 @@ class EventStoreMethods(object):
         if payload is None:
             payload = {}
 
-        msg = json.dumps(payload)
-
         if schema is None:
             schema = self.schema
-            res = self.stor(oid=oid, action=action, payload=msg)
-        else:
-            # TODO: test writing to other schemata
-            # will this send error also?
-            res = txbitwrap.storage(schema, **self.options)(oid=oid, action=action, payload=msg)
+
+        res = storage(schema, **self.options)(oid=oid, action=action, payload=json.dumps(payload))
 
         res['schema'] = schema
         res['action'] = action
@@ -29,20 +25,36 @@ class EventStoreMethods(object):
 
         return Dispatcher.send(res)
 
-    def get(self, schema, eventid):
-        """ get an event """
-
-    def load(self, machine_name, schema_name):
+    def exists(self, *args):
         """ load a bitwrap machine as a database schema """
+        stor = storage(args[0], **self.options)
+
+        if args[1]:
+            return stor.storage.db.stream_exists(args[1])
+
+        return stor.storage.db.schema_exists()
+
+    def load(self, machine, schema=None):
+        """ load a bitwrap machine as a database schema """
+        if schema is None:
+            name = machine
+        else:
+            name = schema
+        return pg.create_schema(pnml.Machine(machine), schema_name=name, **self.options)
 
     def create(self, schema, oid):
         """ create a new stream """
+        stor = storage(schema, **self.options)
+        return stor.storage.db.create_stream(oid)
 
-    def stream(self):
+    def stream(self, schema, oid):
         """ get all events from a stream """
+        stor = storage(schema, **self.options)
+        return stor.storage.db.events.fetchall(oid)
 
-    def state(self, oid):
-        return self.stor.storage.db.states.fetch(oid)['state']
+    def state(self, schema, oid):
+        stor = storage(schema, **self.options)
+        return stor.storage.db.states.fetch(oid)['state']
 
 
 class Factory(EventStoreMethods):
@@ -60,9 +72,6 @@ class Factory(EventStoreMethods):
             }
 
         self.options = Options.from_env(self.config)
-
-        if not hasattr(self, 'stor'):
-            self.stor = storage(self.schema, **self.options)
 
         bind(self.schema, self.options, self.on_event)
 
