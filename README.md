@@ -33,9 +33,9 @@ OR
 Then 
 
 * visit http://127.0.0.1:8080#octothorpe
-* click 'Rest' to create a new game
-  * if using Procfile you will see the game progress
-  * otherwise click on the gameboard to make moves
+* click 'Reset' to create a new game
+  * if running X & O workers - you will see the game progress on its own
+  * otherwise click on the gameboard to make moves manually
 
 
 #### Docker
