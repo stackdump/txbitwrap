@@ -32,4 +32,9 @@ class WebSocketBroker(WebSocketHandler):
         log.msg('__connect__')
 
     def connectionLost(self, reason):
+        """ connection closed """
         log.msg('__close__', reason)
+        try:
+            unbind(self.handle, self.subscription)
+        except:
+            pass

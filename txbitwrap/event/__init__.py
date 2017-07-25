@@ -13,7 +13,6 @@ def __worker(event):
     def __run(deferjob, handle):
         """ add job to rdq """
         if handle not in HANDLERS:
-            #print '__NOHANDLE__', handle
             return
 
         for _, dispatch in HANDLERS[handle].items():
@@ -48,7 +47,7 @@ def bind(handle_id, options, handler):
     else:
         handle = handle_id
 
-    if handler not in HANDLERS:
+    if handle not in HANDLERS:
         HANDLERS[handle] = {}
 
     if 'subscriber_id' not in options:
@@ -74,8 +73,12 @@ def unbind(handle_id, subscriber):
     else:
         handle = handle_id
 
+    flag = False
     if handle in HANDLERS:
         HANDLERS[handle].pop(subscriber)
-        return True
+        flag = True
 
-    return False
+    if len(HANDLERS[handle]) == 0:
+        HANDLERS.pop(handle)
+
+    return flag

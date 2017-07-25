@@ -1,4 +1,4 @@
-Sun Jul 23 21:47:11 CDT 2017
+Mon Jul 24 19:20:50 CDT 2017
 
 WIP
 ===
@@ -7,7 +7,7 @@ WIP
 BACKLOG
 =======
 * support self-signed SSL cert generation
-  * for http api service + websocket
+  * in docker container
 
 ICEBOX
 ======

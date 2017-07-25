@@ -4,12 +4,13 @@ if [[ "x${CONTAINER_NAME}" = 'x' ]] ; then
   CONTAINER_NAME="txbitwrap-dev-${1}"
 fi
 
-IMAGE_NAME="stackdump/txbitwrap:latest"
+# comment out to build new image
+#IMAGE_NAME="stackdump/txbitwrap:latest"
 
 docker rm --force $CONTAINER_NAME &>/dev/null
 
 if [[ "x${IMAGE_NAME}" = 'x' ]] ; then
-    IMAGE_NAME= "bitwrap/txbitwrap:dev"
+    IMAGE_NAME="bitwrap/txbitwrap:dev"
     echo "rebuilding: ${IMAGE_NAME}"
     docker build . -t $IMAGE_NAME
 fi
