@@ -6,11 +6,12 @@ WIP
   * try out models.xml to upload PNML
     * ? just append body to stream ?
 
-* support users/roles
-  * using roles.xml - this may become a user record
 
 BACKLOG
 =======
+* support users/roles
+  * using roles.xml - this may become a user record
+
 * build meta-models for
   * accounts (roles?)
   * billing

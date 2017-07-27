@@ -93,6 +93,7 @@ class Config(headers.Mixin, RequestHandler):
 
         self.write({
             'endpoint': os.environ.get('ENDPOINT', 'http://' + self.request.host),
+            'wrapserver': os.environ.get('WRAPSERVER', 'http://127.0.0.1:8000'),
             'encoding': 'json',
             'version': VERSION,
             'stage': stage
