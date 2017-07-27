@@ -1,14 +1,29 @@
-Mon Jul 24 19:20:50 CDT 2017
+Wed Jul 26 23:20:18 CDT 2017
 
 WIP
 ===
-* integration testing on AWS
+* Develop Meta-streams
+  * try out models.xml to upload PNML
+    * ? just append body to stream ?
+
+* support users/roles
+  * using roles.xml - this may become a user record
 
 BACKLOG
 =======
-* support self-signed SSL cert generation
-  * in docker container
+* build meta-models for
+  * accounts (roles?)
+  * billing
+
+* allow front-end user to subscibe to 'follow up' event messages
+  * users would subscribe using the event-id
+  * these would be transient messages, not eventstream payloads
+    * would this just be a normal 'bind' command ?
+    * could write to bitwrap exchange w/ eventid as route key
 
 ICEBOX
 ======
+* support self-signed SSL cert generation
+  * in docker container
+
 * investigate how we could use tensor flow with bitwrap models

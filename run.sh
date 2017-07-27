@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
 if [[ "x${CONTAINER_NAME}" = 'x' ]] ; then
-  CONTAINER_NAME="txbitwrap-dev-${1}"
+  if [[ "x${1}" = 'x' ]] ; then
+    CONTAINER_NAME="txbitwrap-dev"
+  else
+    CONTAINER_NAME="txbitwrap-dev-${1}"
+  fi
 fi
 
 # comment out to build new image

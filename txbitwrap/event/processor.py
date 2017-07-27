@@ -72,6 +72,7 @@ class Factory(EventStoreMethods):
             }
 
         self.options = Options.from_env(self.config)
+        print __name__, self.config
 
         bind(self.schema, self.options, self.on_event)
 
