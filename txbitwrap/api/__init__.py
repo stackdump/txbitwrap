@@ -96,7 +96,8 @@ class Config(headers.Mixin, RequestHandler):
             'wrapserver': os.environ.get('WRAPSERVER', 'http://127.0.0.1:8000'),
             'encoding': 'json',
             'version': VERSION,
-            'stage': stage
+            'stage': stage,
+            'use_websocket': True
         })
 
 class Index(RequestHandler):
