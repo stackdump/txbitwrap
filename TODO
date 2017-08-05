@@ -1,4 +1,4 @@
-Wed Jul 26 23:20:18 CDT 2017
+Sat Aug  5 14:47:53 CDT 2017
 
 WIP
 ===
@@ -9,6 +9,10 @@ WIP
 
 BACKLOG
 =======
+* add slackbot demo for tic-tac-toe
+
+* add a way to stop amqp client gracefully
+
 * support users/roles
   * using roles.xml - this may become a user record
 

@@ -22,7 +22,7 @@ fi
 # KLUDGE: api must be specified first to listen on http port
 if [[ ("x${1}" = 'x') || ("$1" = 'api') ]] ; then
   echo "starting => http://127.0.0.1:8080 worker(s): ${@}"
-  docker run -it --name=${CONTAINER_NAME} \
+  docker run -d --name=${CONTAINER_NAME} \
     --link bitwrap-dev:rds \
     --link rabbit-dev:amqp \
     -p 127.0.0.1:8080:8080 \

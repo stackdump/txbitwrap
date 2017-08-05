@@ -91,6 +91,8 @@ class Dispatcher(object):
         yield self.chan.basic_consume(queue=self.settings['queue'], no_ack=True, consumer_tag=consumer_id)
         queue = yield self.conn.queue(consumer_id)
 
+        # TODO: add a way to end this gracefully
+        # need to terminate when reactor receives shutdown signal
         while True:
             d = defer.Deferred()
             msg = yield queue.get()
