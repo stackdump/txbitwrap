@@ -1,0 +1,1301 @@
+<?xml version="1.0" encoding="ISO-8859-1"?><pnml>
+<net id="Net-One" type="P/T net">
+<token id="Default" enabled="true" red="0" green="0" blue="0"/>
+<place id="actor_model">
+<graphics>
+<position x="465.0" y="360.0"/>
+</graphics>
+<name>
+<value>actor_model</value>
+<graphics>
+<offset x="-17.0" y="17.0"/>
+</graphics>
+</name>
+<initialMarking>
+<value>Default,0</value>
+<graphics>
+<offset x="0.0" y="0.0"/>
+</graphics>
+</initialMarking>
+<capacity>
+<value>0</value>
+</capacity>
+</place>
+<place id="admin">
+<graphics>
+<position x="165.0" y="60.0"/>
+</graphics>
+<name>
+<value>admin</value>
+<graphics>
+<offset x="27.0" y="-10.0"/>
+</graphics>
+</name>
+<initialMarking>
+<value>Default,0</value>
+<graphics>
+<offset x="0.0" y="0.0"/>
+</graphics>
+</initialMarking>
+<capacity>
+<value>1</value>
+</capacity>
+</place>
+<place id="admin_role">
+<graphics>
+<position x="165.0" y="135.0"/>
+</graphics>
+<name>
+<value>admin_role</value>
+<graphics>
+<offset x="-13.0" y="12.0"/>
+</graphics>
+</name>
+<initialMarking>
+<value>Default,0</value>
+<graphics>
+<offset x="0.0" y="0.0"/>
+</graphics>
+</initialMarking>
+<capacity>
+<value>1</value>
+</capacity>
+</place>
+<place id="auth">
+<graphics>
+<position x="470.0" y="50.0"/>
+</graphics>
+<name>
+<value>auth</value>
+<graphics>
+<offset x="-19.0" y="18.0"/>
+</graphics>
+</name>
+<initialMarking>
+<value>Default,0</value>
+<graphics>
+<offset x="0.0" y="0.0"/>
+</graphics>
+</initialMarking>
+<capacity>
+<value>0</value>
+</capacity>
+</place>
+<place id="basic_intro">
+<graphics>
+<position x="465.0" y="315.0"/>
+</graphics>
+<name>
+<value>basic_intro</value>
+<graphics>
+<offset x="-14.0" y="21.0"/>
+</graphics>
+</name>
+<initialMarking>
+<value>Default,0</value>
+<graphics>
+<offset x="0.0" y="0.0"/>
+</graphics>
+</initialMarking>
+<capacity>
+<value>0</value>
+</capacity>
+</place>
+<place id="dsl">
+<graphics>
+<position x="465.0" y="405.0"/>
+</graphics>
+<name>
+<value>dsl</value>
+<graphics>
+<offset x="-13.0" y="17.0"/>
+</graphics>
+</name>
+<initialMarking>
+<value>Default,0</value>
+<graphics>
+<offset x="0.0" y="0.0"/>
+</graphics>
+</initialMarking>
+<capacity>
+<value>0</value>
+</capacity>
+</place>
+<place id="editor">
+<graphics>
+<position x="465.0" y="165.0"/>
+</graphics>
+<name>
+<value>editor</value>
+<graphics>
+<offset x="-13.0" y="13.0"/>
+</graphics>
+</name>
+<initialMarking>
+<value>Default,0</value>
+<graphics>
+<offset x="0.0" y="0.0"/>
+</graphics>
+</initialMarking>
+<capacity>
+<value>0</value>
+</capacity>
+</place>
+<place id="messages">
+<graphics>
+<position x="465.0" y="540.0"/>
+</graphics>
+<name>
+<value>messages</value>
+<graphics>
+<offset x="-8.0" y="10.0"/>
+</graphics>
+</name>
+<initialMarking>
+<value>Default,0</value>
+<graphics>
+<offset x="0.0" y="0.0"/>
+</graphics>
+</initialMarking>
+<capacity>
+<value>0</value>
+</capacity>
+</place>
+<place id="notation">
+<graphics>
+<position x="465.0" y="450.0"/>
+</graphics>
+<name>
+<value>notation</value>
+<graphics>
+<offset x="-8.0" y="20.0"/>
+</graphics>
+</name>
+<initialMarking>
+<value>Default,0</value>
+<graphics>
+<offset x="0.0" y="0.0"/>
+</graphics>
+</initialMarking>
+<capacity>
+<value>0</value>
+</capacity>
+</place>
+<place id="readonly_role">
+<graphics>
+<position x="690.0" y="420.0"/>
+</graphics>
+<name>
+<value>readonly_role</value>
+<graphics>
+<offset x="117.0" y="11.0"/>
+</graphics>
+</name>
+<initialMarking>
+<value>Default,0</value>
+<graphics>
+<offset x="0.0" y="0.0"/>
+</graphics>
+</initialMarking>
+<capacity>
+<value>0</value>
+</capacity>
+</place>
+<place id="schemata">
+<graphics>
+<position x="165.0" y="495.0"/>
+</graphics>
+<name>
+<value>schemata</value>
+<graphics>
+<offset x="38.0" y="59.0"/>
+</graphics>
+</name>
+<initialMarking>
+<value>Default,0</value>
+<graphics>
+<offset x="0.0" y="0.0"/>
+</graphics>
+</initialMarking>
+<capacity>
+<value>0</value>
+</capacity>
+</place>
+<place id="store_once">
+<graphics>
+<position x="465.0" y="495.0"/>
+</graphics>
+<name>
+<value>store_once</value>
+<graphics>
+<offset x="-11.0" y="18.0"/>
+</graphics>
+</name>
+<initialMarking>
+<value>Default,0</value>
+<graphics>
+<offset x="0.0" y="0.0"/>
+</graphics>
+</initialMarking>
+<capacity>
+<value>0</value>
+</capacity>
+</place>
+<place id="streams">
+<graphics>
+<position x="165.0" y="330.0"/>
+</graphics>
+<name>
+<value>streams</value>
+<graphics>
+<offset x="26.0" y="-11.0"/>
+</graphics>
+</name>
+<initialMarking>
+<value>Default,0</value>
+<graphics>
+<offset x="0.0" y="0.0"/>
+</graphics>
+</initialMarking>
+<capacity>
+<value>0</value>
+</capacity>
+</place>
+<place id="terminal">
+<graphics>
+<position x="465.0" y="105.0"/>
+</graphics>
+<name>
+<value>terminal</value>
+<graphics>
+<offset x="-13.0" y="13.0"/>
+</graphics>
+</name>
+<initialMarking>
+<value>Default,0</value>
+<graphics>
+<offset x="0.0" y="0.0"/>
+</graphics>
+</initialMarking>
+<capacity>
+<value>0</value>
+</capacity>
+</place>
+<place id="tic_tac_toe">
+<graphics>
+<position x="465.0" y="225.0"/>
+</graphics>
+<name>
+<value>tic_tac_toe</value>
+<graphics>
+<offset x="-18.0" y="18.0"/>
+</graphics>
+</name>
+<initialMarking>
+<value>Default,0</value>
+<graphics>
+<offset x="0.0" y="0.0"/>
+</graphics>
+</initialMarking>
+<capacity>
+<value>0</value>
+</capacity>
+</place>
+<place id="use_role">
+<graphics>
+<position x="690.0" y="135.0"/>
+</graphics>
+<name>
+<value>use_role</value>
+<graphics>
+<offset x="84.0" y="12.0"/>
+</graphics>
+</name>
+<initialMarking>
+<value>Default,0</value>
+<graphics>
+<offset x="0.0" y="0.0"/>
+</graphics>
+</initialMarking>
+<capacity>
+<value>0</value>
+</capacity>
+</place>
+<place id="user">
+<graphics>
+<position x="165.0" y="225.0"/>
+</graphics>
+<name>
+<value>user</value>
+<graphics>
+<offset x="34.0" y="50.0"/>
+</graphics>
+</name>
+<initialMarking>
+<value>Default,0</value>
+<graphics>
+<offset x="0.0" y="0.0"/>
+</graphics>
+</initialMarking>
+<capacity>
+<value>1</value>
+</capacity>
+</place>
+<place id="user_role">
+<graphics>
+<position x="165.0" y="405.0"/>
+</graphics>
+<name>
+<value>user_role</value>
+<graphics>
+<offset x="-17.0" y="22.0"/>
+</graphics>
+</name>
+<initialMarking>
+<value>Default,0</value>
+<graphics>
+<offset x="0.0" y="0.0"/>
+</graphics>
+</initialMarking>
+<capacity>
+<value>1</value>
+</capacity>
+</place>
+<transition id="actor_model">
+<graphics>
+<position x="525.0" y="360.0"/>
+</graphics>
+<name>
+<value>actor_model</value>
+<graphics>
+<offset x="103.0" y="19.0"/>
+</graphics>
+</name>
+<orientation>
+<value>0</value>
+</orientation>
+<rate>
+<value>1.0</value>
+</rate>
+<timed>
+<value>false</value>
+</timed>
+<infiniteServer>
+<value>false</value>
+</infiniteServer>
+<priority>
+<value>1</value>
+</priority>
+</transition>
+<transition id="add_user">
+<graphics>
+<position x="210.0" y="180.0"/>
+</graphics>
+<name>
+<value>add_user</value>
+<graphics>
+<offset x="81.0" y="23.0"/>
+</graphics>
+</name>
+<orientation>
+<value>0</value>
+</orientation>
+<rate>
+<value>1.0</value>
+</rate>
+<timed>
+<value>false</value>
+</timed>
+<infiniteServer>
+<value>false</value>
+</infiniteServer>
+<priority>
+<value>1</value>
+</priority>
+</transition>
+<transition id="auth">
+<graphics>
+<position x="530.0" y="50.0"/>
+</graphics>
+<name>
+<value>auth</value>
+<graphics>
+<offset x="59.0" y="31.0"/>
+</graphics>
+</name>
+<orientation>
+<value>0</value>
+</orientation>
+<rate>
+<value>1.0</value>
+</rate>
+<timed>
+<value>false</value>
+</timed>
+<infiniteServer>
+<value>false</value>
+</infiniteServer>
+<priority>
+<value>1</value>
+</priority>
+</transition>
+<transition id="basic_intro">
+<graphics>
+<position x="525.0" y="315.0"/>
+</graphics>
+<name>
+<value>basic_intro</value>
+<graphics>
+<offset x="89.0" y="16.0"/>
+</graphics>
+</name>
+<orientation>
+<value>0</value>
+</orientation>
+<rate>
+<value>1.0</value>
+</rate>
+<timed>
+<value>false</value>
+</timed>
+<infiniteServer>
+<value>false</value>
+</infiniteServer>
+<priority>
+<value>1</value>
+</priority>
+</transition>
+<transition id="create_schema">
+<graphics>
+<position x="210.0" y="450.0"/>
+</graphics>
+<name>
+<value>create_schema</value>
+<graphics>
+<offset x="123.0" y="26.0"/>
+</graphics>
+</name>
+<orientation>
+<value>0</value>
+</orientation>
+<rate>
+<value>1.0</value>
+</rate>
+<timed>
+<value>false</value>
+</timed>
+<infiniteServer>
+<value>false</value>
+</infiniteServer>
+<priority>
+<value>1</value>
+</priority>
+</transition>
+<transition id="create_stream">
+<graphics>
+<position x="210.0" y="360.0"/>
+</graphics>
+<name>
+<value>create_stream</value>
+<graphics>
+<offset x="115.0" y="27.0"/>
+</graphics>
+</name>
+<orientation>
+<value>0</value>
+</orientation>
+<rate>
+<value>1.0</value>
+</rate>
+<timed>
+<value>false</value>
+</timed>
+<infiniteServer>
+<value>false</value>
+</infiniteServer>
+<priority>
+<value>1</value>
+</priority>
+</transition>
+<transition id="destroy_schema">
+<graphics>
+<position x="120.0" y="450.0"/>
+</graphics>
+<name>
+<value>destroy_schema</value>
+<graphics>
+<offset x="-5.0" y="35.0"/>
+</graphics>
+</name>
+<orientation>
+<value>0</value>
+</orientation>
+<rate>
+<value>1.0</value>
+</rate>
+<timed>
+<value>false</value>
+</timed>
+<infiniteServer>
+<value>false</value>
+</infiniteServer>
+<priority>
+<value>1</value>
+</priority>
+</transition>
+<transition id="destroy_stream">
+<graphics>
+<position x="120.0" y="360.0"/>
+</graphics>
+<name>
+<value>destroy_stream</value>
+<graphics>
+<offset x="-5.0" y="35.0"/>
+</graphics>
+</name>
+<orientation>
+<value>0</value>
+</orientation>
+<rate>
+<value>1.0</value>
+</rate>
+<timed>
+<value>false</value>
+</timed>
+<infiniteServer>
+<value>false</value>
+</infiniteServer>
+<priority>
+<value>1</value>
+</priority>
+</transition>
+<transition id="dsl">
+<graphics>
+<position x="525.0" y="405.0"/>
+</graphics>
+<name>
+<value>dsl</value>
+<graphics>
+<offset x="51.0" y="14.0"/>
+</graphics>
+</name>
+<orientation>
+<value>0</value>
+</orientation>
+<rate>
+<value>1.0</value>
+</rate>
+<timed>
+<value>false</value>
+</timed>
+<infiniteServer>
+<value>false</value>
+</infiniteServer>
+<priority>
+<value>1</value>
+</priority>
+</transition>
+<transition id="editor">
+<graphics>
+<position x="525.0" y="165.0"/>
+</graphics>
+<name>
+<value>editor</value>
+<graphics>
+<offset x="72.0" y="20.0"/>
+</graphics>
+</name>
+<orientation>
+<value>0</value>
+</orientation>
+<rate>
+<value>1.0</value>
+</rate>
+<timed>
+<value>false</value>
+</timed>
+<infiniteServer>
+<value>false</value>
+</infiniteServer>
+<priority>
+<value>1</value>
+</priority>
+</transition>
+<transition id="messages">
+<graphics>
+<position x="525.0" y="540.0"/>
+</graphics>
+<name>
+<value>messages</value>
+<graphics>
+<offset x="88.0" y="20.0"/>
+</graphics>
+</name>
+<orientation>
+<value>0</value>
+</orientation>
+<rate>
+<value>1.0</value>
+</rate>
+<timed>
+<value>false</value>
+</timed>
+<infiniteServer>
+<value>false</value>
+</infiniteServer>
+<priority>
+<value>1</value>
+</priority>
+</transition>
+<transition id="notation">
+<graphics>
+<position x="525.0" y="450.0"/>
+</graphics>
+<name>
+<value>notation</value>
+<graphics>
+<offset x="76.0" y="21.0"/>
+</graphics>
+</name>
+<orientation>
+<value>0</value>
+</orientation>
+<rate>
+<value>1.0</value>
+</rate>
+<timed>
+<value>false</value>
+</timed>
+<infiniteServer>
+<value>false</value>
+</infiniteServer>
+<priority>
+<value>1</value>
+</priority>
+</transition>
+<transition id="rm_admin">
+<graphics>
+<position x="105.0" y="90.0"/>
+</graphics>
+<name>
+<value>rm_admin</value>
+<graphics>
+<offset x="-5.0" y="35.0"/>
+</graphics>
+</name>
+<orientation>
+<value>0</value>
+</orientation>
+<rate>
+<value>1.0</value>
+</rate>
+<timed>
+<value>false</value>
+</timed>
+<infiniteServer>
+<value>false</value>
+</infiniteServer>
+<priority>
+<value>1</value>
+</priority>
+</transition>
+<transition id="rm_user">
+<graphics>
+<position x="105.0" y="180.0"/>
+</graphics>
+<name>
+<value>rm_user</value>
+<graphics>
+<offset x="-5.0" y="35.0"/>
+</graphics>
+</name>
+<orientation>
+<value>0</value>
+</orientation>
+<rate>
+<value>1.0</value>
+</rate>
+<timed>
+<value>false</value>
+</timed>
+<infiniteServer>
+<value>false</value>
+</infiniteServer>
+<priority>
+<value>1</value>
+</priority>
+</transition>
+<transition id="set_admin">
+<graphics>
+<position x="210.0" y="90.0"/>
+</graphics>
+<name>
+<value>set_admin</value>
+<graphics>
+<offset x="91.0" y="23.0"/>
+</graphics>
+</name>
+<orientation>
+<value>0</value>
+</orientation>
+<rate>
+<value>1.0</value>
+</rate>
+<timed>
+<value>false</value>
+</timed>
+<infiniteServer>
+<value>false</value>
+</infiniteServer>
+<priority>
+<value>1</value>
+</priority>
+</transition>
+<transition id="store_once">
+<graphics>
+<position x="525.0" y="495.0"/>
+</graphics>
+<name>
+<value>store_once</value>
+<graphics>
+<offset x="89.0" y="17.0"/>
+</graphics>
+</name>
+<orientation>
+<value>0</value>
+</orientation>
+<rate>
+<value>1.0</value>
+</rate>
+<timed>
+<value>false</value>
+</timed>
+<infiniteServer>
+<value>false</value>
+</infiniteServer>
+<priority>
+<value>1</value>
+</priority>
+</transition>
+<transition id="terminal">
+<graphics>
+<position x="525.0" y="105.0"/>
+</graphics>
+<name>
+<value>terminal</value>
+<graphics>
+<offset x="83.0" y="21.0"/>
+</graphics>
+</name>
+<orientation>
+<value>0</value>
+</orientation>
+<rate>
+<value>1.0</value>
+</rate>
+<timed>
+<value>false</value>
+</timed>
+<infiniteServer>
+<value>false</value>
+</infiniteServer>
+<priority>
+<value>1</value>
+</priority>
+</transition>
+<transition id="tic_tac_toe">
+<graphics>
+<position x="525.0" y="225.0"/>
+</graphics>
+<name>
+<value>tic_tac_toe</value>
+<graphics>
+<offset x="105.0" y="12.0"/>
+</graphics>
+</name>
+<orientation>
+<value>0</value>
+</orientation>
+<rate>
+<value>1.0</value>
+</rate>
+<timed>
+<value>false</value>
+</timed>
+<infiniteServer>
+<value>false</value>
+</infiniteServer>
+<priority>
+<value>1</value>
+</priority>
+</transition>
+<arc id="actor_model to actor_model" source="actor_model" target="actor_model">
+<graphics/>
+<inscription>
+<value>Default,1</value>
+<graphics/>
+</inscription>
+<tagged>
+<value>false</value>
+</tagged>
+<arcpath id="000" x="531" y="372" curvePoint="false"/>
+<arcpath id="001" x="491" y="372" curvePoint="false"/>
+<type value="normal"/>
+</arc>
+<arc id="admin_role to add_user" source="admin_role" target="add_user">
+<graphics/>
+<inscription>
+<value/>
+<graphics/>
+</inscription>
+<tagged>
+<value/>
+</tagged>
+<arcpath id="000" x="187" y="157" curvePoint="false"/>
+<arcpath id="001" x="217" y="187" curvePoint="false"/>
+<type value="inhibitor"/>
+</arc>
+<arc id="admin_role to rm_admin" source="admin_role" target="rm_admin">
+<graphics/>
+<inscription>
+<value/>
+<graphics/>
+</inscription>
+<tagged>
+<value/>
+</tagged>
+<arcpath id="000" x="164" y="138" curvePoint="false"/>
+<arcpath id="001" x="121" y="107" curvePoint="false"/>
+<type value="inhibitor"/>
+</arc>
+<arc id="admin_role to rm_user" source="admin_role" target="rm_user">
+<graphics/>
+<inscription>
+<value/>
+<graphics/>
+</inscription>
+<tagged>
+<value/>
+</tagged>
+<arcpath id="000" x="164" y="155" curvePoint="false"/>
+<arcpath id="001" x="122" y="187" curvePoint="false"/>
+<type value="inhibitor"/>
+</arc>
+<arc id="admin_role to set_admin" source="admin_role" target="set_admin">
+<graphics/>
+<inscription>
+<value/>
+<graphics/>
+</inscription>
+<tagged>
+<value/>
+</tagged>
+<arcpath id="000" x="187" y="136" curvePoint="false"/>
+<arcpath id="001" x="216" y="107" curvePoint="false"/>
+<type value="inhibitor"/>
+</arc>
+<arc id="admin to rm_admin" source="admin" target="rm_admin">
+<graphics/>
+<inscription>
+<value>Default,1</value>
+<graphics/>
+</inscription>
+<tagged>
+<value>false</value>
+</tagged>
+<arcpath id="000" x="163" y="78" curvePoint="false"/>
+<arcpath id="001" x="122" y="97" curvePoint="false"/>
+<type value="normal"/>
+</arc>
+<arc id="auth to auth" source="auth" target="auth">
+<graphics/>
+<inscription>
+<value>Default,1</value>
+<graphics/>
+</inscription>
+<tagged>
+<value>false</value>
+</tagged>
+<arcpath id="000" x="536" y="62" curvePoint="false"/>
+<arcpath id="001" x="496" y="62" curvePoint="false"/>
+<type value="normal"/>
+</arc>
+<arc id="basic_intro to basic_intro" source="basic_intro" target="basic_intro">
+<graphics/>
+<inscription>
+<value>Default,1</value>
+<graphics/>
+</inscription>
+<tagged>
+<value>false</value>
+</tagged>
+<arcpath id="000" x="531" y="327" curvePoint="false"/>
+<arcpath id="001" x="491" y="327" curvePoint="false"/>
+<type value="normal"/>
+</arc>
+<arc id="create_schema to schemata" source="create_schema" target="schemata">
+<graphics/>
+<inscription>
+<value>Default,1</value>
+<graphics/>
+</inscription>
+<tagged>
+<value>false</value>
+</tagged>
+<arcpath id="000" x="216" y="467" curvePoint="false"/>
+<arcpath id="001" x="187" y="496" curvePoint="false"/>
+<type value="normal"/>
+</arc>
+<arc id="create_stream to streams" source="create_stream" target="streams">
+<graphics/>
+<inscription>
+<value>Default,1</value>
+<graphics/>
+</inscription>
+<tagged>
+<value>false</value>
+</tagged>
+<arcpath id="000" x="217" y="367" curvePoint="false"/>
+<arcpath id="001" x="189" y="350" curvePoint="false"/>
+<type value="normal"/>
+</arc>
+<arc id="dsl to dsl" source="dsl" target="dsl">
+<graphics/>
+<inscription>
+<value>Default,1</value>
+<graphics/>
+</inscription>
+<tagged>
+<value>false</value>
+</tagged>
+<arcpath id="000" x="531" y="417" curvePoint="false"/>
+<arcpath id="001" x="491" y="417" curvePoint="false"/>
+<type value="normal"/>
+</arc>
+<arc id="messages to messages" source="messages" target="messages">
+<graphics/>
+<inscription>
+<value>Default,1</value>
+<graphics/>
+</inscription>
+<tagged>
+<value>false</value>
+</tagged>
+<arcpath id="000" x="531" y="552" curvePoint="false"/>
+<arcpath id="001" x="491" y="552" curvePoint="false"/>
+<type value="normal"/>
+</arc>
+<arc id="notation to notation" source="notation" target="notation">
+<graphics/>
+<inscription>
+<value>Default,1</value>
+<graphics/>
+</inscription>
+<tagged>
+<value>false</value>
+</tagged>
+<arcpath id="000" x="531" y="462" curvePoint="false"/>
+<arcpath id="001" x="491" y="462" curvePoint="false"/>
+<type value="normal"/>
+</arc>
+<arc id="readonly_role to actor_model" source="readonly_role" target="actor_model">
+<graphics/>
+<inscription>
+<value/>
+<graphics/>
+</inscription>
+<tagged>
+<value/>
+</tagged>
+<arcpath id="000" x="687" y="426" curvePoint="false"/>
+<arcpath id="001" x="541" y="372" curvePoint="false"/>
+<type value="inhibitor"/>
+</arc>
+<arc id="readonly_role to basic_intro" source="readonly_role" target="basic_intro">
+<graphics/>
+<inscription>
+<value/>
+<graphics/>
+</inscription>
+<tagged>
+<value/>
+</tagged>
+<arcpath id="000" x="689" y="423" curvePoint="false"/>
+<arcpath id="001" x="541" y="327" curvePoint="false"/>
+<type value="inhibitor"/>
+</arc>
+<arc id="readonly_role to dsl" source="readonly_role" target="dsl">
+<graphics/>
+<inscription>
+<value/>
+<graphics/>
+</inscription>
+<tagged>
+<value/>
+</tagged>
+<arcpath id="000" x="687" y="430" curvePoint="false"/>
+<arcpath id="001" x="541" y="417" curvePoint="false"/>
+<type value="inhibitor"/>
+</arc>
+<arc id="readonly_role to messages" source="readonly_role" target="messages">
+<graphics/>
+<inscription>
+<value/>
+<graphics/>
+</inscription>
+<tagged>
+<value/>
+</tagged>
+<arcpath id="000" x="690" y="441" curvePoint="false"/>
+<arcpath id="001" x="541" y="552" curvePoint="false"/>
+<type value="inhibitor"/>
+</arc>
+<arc id="readonly_role to notation" source="readonly_role" target="notation">
+<graphics/>
+<inscription>
+<value/>
+<graphics/>
+</inscription>
+<tagged>
+<value/>
+</tagged>
+<arcpath id="000" x="687" y="434" curvePoint="false"/>
+<arcpath id="001" x="541" y="462" curvePoint="false"/>
+<type value="inhibitor"/>
+</arc>
+<arc id="readonly_role to store_once" source="readonly_role" target="store_once">
+<graphics/>
+<inscription>
+<value/>
+<graphics/>
+</inscription>
+<tagged>
+<value/>
+</tagged>
+<arcpath id="000" x="688" y="438" curvePoint="false"/>
+<arcpath id="001" x="541" y="507" curvePoint="false"/>
+<type value="inhibitor"/>
+</arc>
+<arc id="schemata to destroy_schema" source="schemata" target="destroy_schema">
+<graphics/>
+<inscription>
+<value>Default,1</value>
+<graphics/>
+</inscription>
+<tagged>
+<value>false</value>
+</tagged>
+<arcpath id="000" x="166" y="496" curvePoint="false"/>
+<arcpath id="001" x="136" y="467" curvePoint="false"/>
+<type value="normal"/>
+</arc>
+<arc id="set_admin to admin" source="set_admin" target="admin">
+<graphics/>
+<inscription>
+<value>Default,1</value>
+<graphics/>
+</inscription>
+<tagged>
+<value>false</value>
+</tagged>
+<arcpath id="000" x="217" y="97" curvePoint="false"/>
+<arcpath id="001" x="189" y="80" curvePoint="false"/>
+<type value="normal"/>
+</arc>
+<arc id="store_once to store_once" source="store_once" target="store_once">
+<graphics/>
+<inscription>
+<value>Default,1</value>
+<graphics/>
+</inscription>
+<tagged>
+<value>false</value>
+</tagged>
+<arcpath id="000" x="531" y="507" curvePoint="false"/>
+<arcpath id="001" x="491" y="507" curvePoint="false"/>
+<type value="normal"/>
+</arc>
+<arc id="streams to destroy_stream" source="streams" target="destroy_stream">
+<graphics/>
+<inscription>
+<value>Default,1</value>
+<graphics/>
+</inscription>
+<tagged>
+<value>false</value>
+</tagged>
+<arcpath id="000" x="164" y="350" curvePoint="false"/>
+<arcpath id="001" x="137" y="367" curvePoint="false"/>
+<type value="normal"/>
+</arc>
+<arc id="T15 to P15" source="add_user" target="user">
+<graphics/>
+<inscription>
+<value>Default,1</value>
+<graphics/>
+</inscription>
+<tagged>
+<value>false</value>
+</tagged>
+<arcpath id="000" x="216" y="197" curvePoint="false"/>
+<arcpath id="001" x="187" y="226" curvePoint="false"/>
+<type value="normal"/>
+</arc>
+<arc id="T9 to P9" source="editor" target="editor">
+<graphics/>
+<inscription>
+<value>Default,1</value>
+<graphics/>
+</inscription>
+<tagged>
+<value>false</value>
+</tagged>
+<arcpath id="000" x="531" y="177" curvePoint="false"/>
+<arcpath id="001" x="491" y="177" curvePoint="false"/>
+<type value="normal"/>
+</arc>
+<arc id="terminal to terminal" source="terminal" target="terminal">
+<graphics/>
+<inscription>
+<value>Default,1</value>
+<graphics/>
+</inscription>
+<tagged>
+<value>false</value>
+</tagged>
+<arcpath id="000" x="531" y="117" curvePoint="false"/>
+<arcpath id="001" x="491" y="117" curvePoint="false"/>
+<type value="normal"/>
+</arc>
+<arc id="tic_tac_toe to tic_tac_toe" source="tic_tac_toe" target="tic_tac_toe">
+<graphics/>
+<inscription>
+<value>Default,1</value>
+<graphics/>
+</inscription>
+<tagged>
+<value>false</value>
+</tagged>
+<arcpath id="000" x="531" y="237" curvePoint="false"/>
+<arcpath id="001" x="491" y="237" curvePoint="false"/>
+<type value="normal"/>
+</arc>
+<arc id="use_role to auth" source="use_role" target="auth">
+<graphics/>
+<inscription>
+<value/>
+<graphics/>
+</inscription>
+<tagged>
+<value/>
+</tagged>
+<arcpath id="000" x="688" y="139" curvePoint="false"/>
+<arcpath id="001" x="546" y="62" curvePoint="false"/>
+<type value="inhibitor"/>
+</arc>
+<arc id="use_role to editor" source="use_role" target="editor">
+<graphics/>
+<inscription>
+<value/>
+<graphics/>
+</inscription>
+<tagged>
+<value/>
+</tagged>
+<arcpath id="000" x="687" y="149" curvePoint="false"/>
+<arcpath id="001" x="541" y="177" curvePoint="false"/>
+<type value="inhibitor"/>
+</arc>
+<arc id="use_role to terminal" source="use_role" target="terminal">
+<graphics/>
+<inscription>
+<value/>
+<graphics/>
+</inscription>
+<tagged>
+<value/>
+</tagged>
+<arcpath id="000" x="687" y="144" curvePoint="false"/>
+<arcpath id="001" x="541" y="117" curvePoint="false"/>
+<type value="inhibitor"/>
+</arc>
+<arc id="use_role to tic_tac_toe" source="use_role" target="tic_tac_toe">
+<graphics/>
+<inscription>
+<value/>
+<graphics/>
+</inscription>
+<tagged>
+<value/>
+</tagged>
+<arcpath id="000" x="688" y="154" curvePoint="false"/>
+<arcpath id="001" x="541" y="237" curvePoint="false"/>
+<type value="inhibitor"/>
+</arc>
+<arc id="user_role to create_schema" source="user_role" target="create_schema">
+<graphics/>
+<inscription>
+<value/>
+<graphics/>
+</inscription>
+<tagged>
+<value/>
+</tagged>
+<arcpath id="000" x="187" y="427" curvePoint="false"/>
+<arcpath id="001" x="217" y="457" curvePoint="false"/>
+<type value="inhibitor"/>
+</arc>
+<arc id="user_role to create_stream" source="user_role" target="create_stream">
+<graphics/>
+<inscription>
+<value/>
+<graphics/>
+</inscription>
+<tagged>
+<value/>
+</tagged>
+<arcpath id="000" x="187" y="406" curvePoint="false"/>
+<arcpath id="001" x="216" y="377" curvePoint="false"/>
+<type value="inhibitor"/>
+</arc>
+<arc id="user_role to destroy_schema" source="user_role" target="destroy_schema">
+<graphics/>
+<inscription>
+<value/>
+<graphics/>
+</inscription>
+<tagged>
+<value/>
+</tagged>
+<arcpath id="000" x="166" y="427" curvePoint="false"/>
+<arcpath id="001" x="137" y="457" curvePoint="false"/>
+<type value="inhibitor"/>
+</arc>
+<arc id="user_role to destroy_stream" source="user_role" target="destroy_stream">
+<graphics/>
+<inscription>
+<value/>
+<graphics/>
+</inscription>
+<tagged>
+<value/>
+</tagged>
+<arcpath id="000" x="166" y="406" curvePoint="false"/>
+<arcpath id="001" x="136" y="377" curvePoint="false"/>
+<type value="inhibitor"/>
+</arc>
+<arc id="user to rm_user" source="user" target="rm_user">
+<graphics/>
+<inscription>
+<value>Default,1</value>
+<graphics/>
+</inscription>
+<tagged>
+<value>false</value>
+</tagged>
+<arcpath id="000" x="164" y="228" curvePoint="false"/>
+<arcpath id="001" x="121" y="197" curvePoint="false"/>
+<type value="normal"/>
+</arc>
+</net>
+</pnml>

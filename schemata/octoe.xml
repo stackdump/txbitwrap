@@ -182,6 +182,26 @@
                 <value>Default,1</value>
             </initialMarking>
         </place>
+        <place id="judge_role">
+            <graphics>
+                <position x="254.0" y="560.0"/>
+            </graphics>
+            <name>
+                <value>P0</value>
+                <graphics>
+                    <offset x="40.0" y="48.0"/>
+                </graphics>
+            </name>
+            <capacity>
+                <value>0</value>
+            </capacity>
+            <initialMarking>
+                <graphics>
+                    <offset x="0.0" y="0.0"/>
+                </graphics>
+                <value></value>
+            </initialMarking>
+        </place>
         <place id="m01">
             <graphics>
                 <position x="465.0" y="75.0"/>
@@ -240,6 +260,26 @@
                     <offset x="0.0" y="0.0"/>
                 </graphics>
                 <value>Default,0</value>
+            </initialMarking>
+        </place>
+        <place id="play_role">
+            <graphics>
+                <position x="152.0" y="52.0"/>
+            </graphics>
+            <name>
+                <value>P0</value>
+                <graphics>
+                    <offset x="34.0" y="-6.0"/>
+                </graphics>
+            </name>
+            <capacity>
+                <value>0</value>
+            </capacity>
+            <initialMarking>
+                <graphics>
+                    <offset x="0.0" y="0.0"/>
+                </graphics>
+                <value></value>
             </initialMarking>
         </place>
         <place id="complete">
@@ -1040,6 +1080,22 @@
                 <value>Default,1</value>
             </inscription>
         </arc>
+        <arc id="judge_role TO END_X" source="judge_role" target="END_X">
+            <arcpath id="" x="257.0" y="565.0" curvePoint="false"/>
+            <arcpath id="" x="197.0" y="516.0" curvePoint="false"/>
+            <type value="inhibitor"/>
+            <inscription>
+                <value></value>
+            </inscription>
+        </arc>
+        <arc id="player_role TO BEGIN" source="play_role" target="BEGIN">
+            <arcpath id="" x="153.0" y="73.0" curvePoint="false"/>
+            <arcpath id="" x="85.0" y="105.0" curvePoint="false"/>
+            <type value="inhibitor"/>
+            <inscription>
+                <value></value>
+            </inscription>
+        </arc>
         <arc id="M22 TO Y22" source="m22" target="O22">
             <arcpath id="" x="660.0" y="450.0" curvePoint="false"/>
             <arcpath id="" x="690.0" y="450.0" curvePoint="false"/>
@@ -1110,6 +1166,14 @@
             <type value="normal"/>
             <inscription>
                 <value>Default,1</value>
+            </inscription>
+        </arc>
+        <arc id="judge_role TO END_O" source="judge_role" target="END_O">
+            <arcpath id="" x="284.0" y="572.0" curvePoint="false"/>
+            <arcpath id="" x="820.0" y="449.0" curvePoint="false"/>
+            <type value="inhibitor"/>
+            <inscription>
+                <value></value>
             </inscription>
         </arc>
         <arc id="turn_o TO O10" source="turn_o" target="O10">
