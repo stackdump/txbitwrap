@@ -97,7 +97,16 @@ class Config(headers.Mixin, RequestHandler):
             'encoding': 'json',
             'version': VERSION,
             'stage': stage,
-            'use_websocket': True
+            'use_websocket': True,
+            'auth': {
+              'provider': 'cognito',
+              'cognito': { # KLUDGE: use a config file or env vars instead of hardcoding
+                'login_domain': 'https://bitwrap.auth.us-east-1.amazoncognito.com',
+                'redirect_uri': 'https://txbitwrap.stackdump.com',
+                'response_type': 'code',
+                'client_id': '4nrh45iftued2enb5qi6b4oc58'
+              }
+            }
         })
 
 class Index(RequestHandler):
