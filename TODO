@@ -2,32 +2,28 @@ Sat Aug  5 14:47:53 CDT 2017
 
 WIP
 ===
-* Develop Meta-streams
-  * try out models.xml to upload PNML
-    * ? just append body to stream ?
 
+* adding github authentication
 
 BACKLOG
 =======
 * add slackbot demo for tic-tac-toe
 
-* add a way to stop amqp client gracefully
-
-* support users/roles
-  * using roles.xml - this may become a user record
-
 * build meta-models for
   * accounts (roles?)
-  * billing
-
-* allow front-end user to subscibe to 'follow up' event messages
-  * users would subscribe using the event-id
-  * these would be transient messages, not eventstream payloads
-    * would this just be a normal 'bind' command ?
-    * could write to bitwrap exchange w/ eventid as route key
 
 ICEBOX
 ======
+* add a way to stop amqp client gracefully
+* allow front-end user to subscibe to 'follow up' event messages
+
+  * users would subscribe using the event-id
+  * these would be transient messages 
+
+* Develop Meta-streams
+  * try out models.xml to upload PNML
+    * ? just append body to stream ?
+
 * support self-signed SSL cert generation
   * in docker container
 
