@@ -2,6 +2,7 @@
 
 import os
 import json
+import time
 import cyclone.web
 from cyclone.web import RequestHandler
 import txbitwrap
@@ -50,14 +51,18 @@ class Broadcast(headers.PostMixin, RequestHandler):
 
         handle = txbitwrap.storage(schema, **self.settings)
         res = handle.storage.db.events.fetch(key)
+        res['msg'] = time.time()
 
         if self.request.body.startswith('{'):
             data = json.loads(self.request.body)
+
 
             _schema = data.get('schema')
             if _schema and _schema != schema:
                 res['forged'] = True
                 res['schema'] = _schema
+            else:
+                res['schema'] = schema
 
             _action = data.get('action')
             if _action and _action != res['action']:
