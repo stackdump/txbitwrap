@@ -9,6 +9,11 @@ BACKLOG
 =======
 * add slackbot demo for tic-tac-toe
 
+* build post-commit github event hooks
+  * pull bitwrap events out of commit messages
+  * update project state
+
+
 * build meta-models for
   * accounts (roles?)
 

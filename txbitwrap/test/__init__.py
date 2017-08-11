@@ -72,3 +72,13 @@ class ApiTest(TestCase):
             data = json.dumps(event['payload'])
 
         return cyclone.httpclient.fetch(url, postdata=data)
+
+    @staticmethod
+    def broadcast(**event):
+        """ rpc client """
+
+        resource = 'broadcast/%s/%s' % (event['schema'], event['id'])
+        url = ApiTest.url(resource)
+        data = json.dumps(event)
+
+        return cyclone.httpclient.fetch(url, postdata=data)

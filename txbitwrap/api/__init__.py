@@ -39,6 +39,39 @@ class Dispatch(headers.PostMixin, RequestHandler):
         res['action'] = action
         redispatch(res)
 
+class Broadcast(headers.PostMixin, RequestHandler):
+    """ /broadcast/{schema}/{key} """
+
+    def post(self, schema, key, **kwargs):
+        """
+        forward an existing event to message broker
+        optionally override existing fields by passing json in post body
+        """
+
+        handle = txbitwrap.storage(schema, **self.settings)
+        res = handle.storage.db.events.fetch(key)
+
+        if self.request.body.startswith('{'):
+            data = json.loads(self.request.body)
+
+            _schema = data.get('schema')
+            if _schema and _schema != schema:
+                res['forged'] = True
+                res['schema'] = _schema
+
+            _action = data.get('action')
+            if _action and _action != res['action']:
+                res['forged'] = True
+                res['action'] = _action
+
+            _payload = data.get('payload')
+            if _payload and _payload != res['payload']:
+                res['forged'] = True
+                res['payload'] = _payload
+
+        redispatch(res)
+        self.write(res)
+
 class Event(headers.Mixin, RequestHandler):
     """ /event/{schema}/{eventid} """
 
@@ -115,6 +148,7 @@ def factory(options):
 
     handlers = [
         (r"/dispatch/(.*)/(.*)/(.*)", Dispatch),
+        (r"/broadcast/(.*)/(.*)", Broadcast),
         (r"/websocket", WebSocketBroker),
         (r"/event/(.*)/(.*)", Event),
         (r"/state/(.*)/(.*)", State),
