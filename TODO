@@ -1,33 +1,22 @@
-Sat Aug  5 14:47:53 CDT 2017
+Thu Sep 21 22:01:46 CDT 2017
 
 WIP
 ===
 
-* adding github authentication
 
 BACKLOG
 =======
+
 * add slackbot demo for tic-tac-toe
 
-* build post-commit github event hooks
-  * pull bitwrap events out of commit messages
-  * update project state
-
-
-* build meta-models for
-  * accounts (roles?)
+* add github authentication
 
 ICEBOX
 ======
 * add a way to stop amqp client gracefully
+
 * allow front-end user to subscibe to 'follow up' event messages
-
-  * users would subscribe using the event-id
-  * these would be transient messages 
-
-* Develop Meta-streams
-  * try out models.xml to upload PNML
-    * ? just append body to stream ?
+  * users would subscribe to websocket using the event-id
 
 * support self-signed SSL cert generation
   * in docker container

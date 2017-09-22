@@ -45,36 +45,18 @@ class Broadcast(headers.PostMixin, RequestHandler):
 
     def post(self, schema, key, **kwargs):
         """
-        forward an existing event to message broker
-        optionally override existing fields by passing json in post body
+        forward payload to message broker
         """
 
         handle = txbitwrap.storage(schema, **self.settings)
-        res = handle.storage.db.events.fetch(key)
-        res['msg'] = time.time()
+        res = { 'schema': schema, 'key': key, 'seq': time.time() }
 
         if self.request.body.startswith('{'):
-            data = json.loads(self.request.body)
+            res['payload'] = json.loads(self.request.body)
+            redispatch(res)
+        else:
+            res['__err__'] = 'no json found in body'
 
-
-            _schema = data.get('schema')
-            if _schema and _schema != schema:
-                res['forged'] = True
-                res['schema'] = _schema
-            else:
-                res['schema'] = schema
-
-            _action = data.get('action')
-            if _action and _action != res['action']:
-                res['forged'] = True
-                res['action'] = _action
-
-            _payload = data.get('payload')
-            if _payload and _payload != res['payload']:
-                res['forged'] = True
-                res['payload'] = _payload
-
-        redispatch(res)
         self.write(res)
 
 class Event(headers.Mixin, RequestHandler):

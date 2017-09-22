@@ -14,4 +14,5 @@ if [[ "x${PNML_PATH}" = 'x' ]] ; then
     export PNML_PATH=./schemata
 fi
 
+export PYTHONPATH=./
 honcho start $@
