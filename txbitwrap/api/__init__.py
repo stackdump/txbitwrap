@@ -22,7 +22,9 @@ def settings(options):
     #options['github_secret']=os.environ.get('GITHUB_SECRET'),
     #login_url="/auth/login",
     #xsrf_cookies=True, # REVIEW: is this usable w/ rpc ?
-    options['template_path'] = os.path.abspath(os.path.dirname(__file__) + '/../templates')
+    if 'template_path' not in options:
+        options['template_path'] = os.path.abspath(os.path.dirname(__file__) + '/../templates')
+
     options['debug'] = True
 
     return dict(options.items())
