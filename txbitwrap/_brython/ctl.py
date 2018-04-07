@@ -26,7 +26,11 @@ def __onload(ctx):
 
     global CTX
     CTX = ctx
-    CTX.machine('counter', callback=CTL.load)
+
+    # TODO: control from UI
+    # maybe add a dropdown
+    #CTX.machine('counter', callback=CTL.load)
+    CTX.machine('octoe', callback=CTL.load)
 
 class Controller(object):
     """ Provide interface for UI actions """

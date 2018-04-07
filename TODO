@@ -1,4 +1,4 @@
-Sat Apr  7 00:22:07 CDT 2018
+Sat Apr  7 14:07:03 CDT 2018
 
 WIP
 ===
@@ -11,9 +11,22 @@ BACKLOG
 
 * test websocket pub/sub
 
+* test amqp pub/sub
+
 * ctx.load() - returns false (even though it works)
 
 * add a way to stop amqp client gracefully
+
+* UI improvement
+  * add link to Github repo in UI
+  * add dropdown for selecting which schema to render 
+  * add edit dialog for updating symbol attributes
+
+* UI bugs
+  * token ledger isn't reset when resetting a simulation
+  * missing arc weight handle
+    * ? use SVG marker element ?
+    * should be txt/number positioned at midpoint in line as a clickable handle
 
 ICEBOX
 ======
@@ -29,3 +42,16 @@ ICEBOX
 
 * make dual mode of operation w/ AMQP & txrdq more explicit
   * or refactor to get rid of txrdq
+
+* allow petri-net json to be written back to disk over jsonrpc service
+  * allow save to local storage in browser as PNML
+  * support downloads as <pnml>.xml
+
+* simulator(eventstore)
+  * show formatted history in GUI somehow
+  * provide replay, fwd back of event stream
+
+* add a build step to compile python to js in ./docs
+  * see also: https://github.com/brython-dev/brython/wiki/Writing-an-Android-application
+
+* hyperledger/ethereum ?? smart contract generator/framework ??

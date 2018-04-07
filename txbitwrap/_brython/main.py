@@ -17,10 +17,11 @@ null = None
 true = True
 false = False
 
-_credits = """    Thanks to CWI, CNRI, BeOpen.com, Zope Corporation and a cast of thousands
-    for supporting Python development.  See www.python.org for more information."""
+_copyright = """
+Copyright (c) 2018, Matthew York myork@bitwrap.io.
+All Rights Reserved.
 
-_copyright = """Copyright (c) 2012, Pierre Quentel pierre.quentel@gmail.com
+Copyright (c) 2012, Pierre Quentel pierre.quentel@gmail.com
 All Rights Reserved.
 
 Copyright (c) 2001-2013 Python Software Foundation.
@@ -35,9 +36,7 @@ All Rights Reserved.
 Copyright (c) 1991-1995 Stichting Mathematisch Centrum, Amsterdam.
 All Rights Reserved."""
 
-_license = """Copyright (c) 2012, Pierre Quentel pierre.quentel@gmail.com
-All rights reserved.
-
+_license = """
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
 
@@ -67,21 +66,8 @@ def clear():
     """ reload the console """
     doc['code'].value = ''
 
-def credits():
-    print(_credits)
-credits.__repr__ = lambda:_credits
-
-def copyright():
-    print(_copyright)
-copyright.__repr__ = lambda:_copyright
-
-def license():
-    print(_license)
-license.__repr__ = lambda:_license
-
 def write(data):
     doc['code'].value += str(data)
-
 
 sys.stdout.write = sys.stderr.write = write
 
@@ -90,10 +76,7 @@ current = 0
 _status = "main"  # or "block" if typing inside a block
 
 # execution namespace
-editor_ns = {'credits':credits,
-    'copyright':copyright,
-    'license':license,
-    '__name__':'__main__'}
+editor_ns = {'__name__':'__main__'}
 
 def cursorToEnd(*args):
     pos = len(doc['code'].value)
@@ -107,7 +90,6 @@ def get_col(area):
     for line in lines[:-1]:
         sel -= len(line) + 1
     return sel
-
 
 def myKeyPress(event):
     global _status, current
@@ -219,12 +201,11 @@ def myKeyDown(event):
             event.preventDefault()
             event.stopPropagation()
 
+def __onload(version):
+    """ configure console and load bitwrap application context """
+    doc['code'].bind('keypress', myKeyPress)
+    doc['code'].bind('keydown', myKeyDown)
+    doc['code'].bind('click', cursorToEnd)
+    ctx.__onload(version=version, callback=cursorToEnd)
 
-doc['code'].bind('keypress', myKeyPress)
-doc['code'].bind('keydown', myKeyDown)
-doc['code'].bind('click', cursorToEnd)
-v = sys.implementation.version
-doc['code'].value = "Bitwrap-Brython on %s %s\n>>> " % ( window.navigator.appName, window.navigator.appVersion)
-doc['code'].value += "help(ctx)"
-doc['code'].focus()
-cursorToEnd()
+__onload(sys.implementation.version)
