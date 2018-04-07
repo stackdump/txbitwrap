@@ -4,14 +4,14 @@ txbitwrap
 usage:
 
     import txbitwrap
-    m = txbitwrap.open('counter')
-    m(oid='foo', action='INC', payload={}) # dispatch an event
+    store = txbitwrap.eventstore('counter')
+    store(oid='foo', action='INC', payload={}) # commit event to db
 
 """
 import os
 from twisted.python import usage
-from bitwrap_machine import ptnet
-import bitwrap_psql as psql
+from txbitwrap.machine import PNML_PATH, set_pnml_path
+import txbitwrap.storage as psql
 from txbitwrap.event import rdq, bind, unbind
 from txbitwrap.event.dispatch import Dispatcher
 
@@ -29,7 +29,7 @@ def factory(name, options):
 
     return app
 
-def storage(schema, **kwargs):
+def eventstore(schema, **kwargs):
     """ open an evenstore by providing a schema name """
 
     if not schema in _STORE:
@@ -51,7 +51,9 @@ class EventStore(object):
 class Options(usage.Options):
 
     optParameters = (
-        ("machine-path", "m", ptnet.PNML_PATH, "Path to read <schema>.xml"),
+        ("template-path", "l", None, "Path to html templates"),
+        ("machine-path", "m", PNML_PATH, "Path to read <schema>.xml"),
+        ("brython-path", "b", None, "Path to brython source files"),
         ("listen-ip", "i", "0.0.0.0", "The listen address."),
         ("listen-port", "o", 8080, "The port number to listen on."),
         ("pg-host", "h", None, "psql host ; use env RDS_HOST=127.0.0.1"),
@@ -75,11 +77,17 @@ class Options(usage.Options):
             if options[optkey] is None:
                 options[optkey] = os.environ.get(key, default)
 
-        ptnet.set_pnml_path(options['machine-path'])
+        set_pnml_path(options['machine-path'])
+
+        _brython = os.path.abspath(os.path.dirname(__file__) + '/_brython')
+        _templates = os.path.abspath(os.path.dirname(__file__) + '/templates')
+
+        _opt('template-path', 'TEMPLATE_PATH', _templates)
+        _opt('brython-path', 'BRYTHON_PATH', _brython)
 
         _opt('pg-host', 'RDS_HOST', '127.0.0.1')
         _opt('pg-database', 'RDS_DB', 'bitwrap')
-        _opt('pg-username', 'RDS_USER', 'postgres')
+        _opt('pg-username', 'RDS_USER', 'bitwrap')
         _opt('pg-password', 'RDS_PASS', 'bitwrap')
 
         _opt('rabbit-host', 'AMQP_HOST', '127.0.0.1')

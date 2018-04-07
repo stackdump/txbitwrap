@@ -4,15 +4,15 @@ import os
 import json
 import time
 import cyclone.web
-from cyclone.web import RequestHandler
+from cyclone.web import RequestHandler, StaticFileHandler
+from twisted.internet import defer
 import txbitwrap
 from txbitwrap.api import headers, rpc
 from txbitwrap.event import redispatch
 from txbitwrap.event.broker import WebSocketBroker
-import bitwrap_machine as pnml
-import bitwrap_psql.db as pg
+import txbitwrap.machine as pnml
 
-VERSION = 'v1'
+VERSION = '20180407'
 
 def settings(options):
     """ append settings to api args """
@@ -22,9 +22,8 @@ def settings(options):
     #options['github_secret']=os.environ.get('GITHUB_SECRET'),
     #login_url="/auth/login",
     #xsrf_cookies=True, # REVIEW: is this usable w/ rpc ?
-    if 'template_path' not in options:
-        options['template_path'] = os.path.abspath(os.path.dirname(__file__) + '/../templates')
 
+    options['template_path'] = options.pop('template-path')
     options['debug'] = True
 
     return dict(options.items())
@@ -32,14 +31,16 @@ def settings(options):
 class Dispatch(headers.PostMixin, RequestHandler):
     """ /dispatch/{schema}/{oid} """
 
+    @defer.inlineCallbacks
     def post(self, schema, oid, action, **kwargs):
         """ accepts a json post body as event payload """
 
-        res = txbitwrap.storage(schema, **self.settings)(oid=oid, action=action, payload=self.request.body)
+        res = yield txbitwrap.eventstore(schema, **self.settings)(oid=oid, action=action, payload=self.request.body)
         self.write(res)
         res['payload'] = json.loads(self.request.body)
         res['schema'] = schema
         res['action'] = action
+
         redispatch(res)
 
 class Broadcast(headers.PostMixin, RequestHandler):
@@ -50,7 +51,7 @@ class Broadcast(headers.PostMixin, RequestHandler):
         forward payload to message broker
         """
 
-        handle = txbitwrap.storage(schema, **self.settings)
+        handle = txbitwrap.eventstore(schema, **self.settings)
         res = { 'schema': schema, 'key': key, 'seq': time.time() }
 
         if self.request.body.startswith('{'):
@@ -64,19 +65,23 @@ class Broadcast(headers.PostMixin, RequestHandler):
 class Event(headers.Mixin, RequestHandler):
     """ /event/{schema}/{eventid} """
 
+    @defer.inlineCallbacks
     def get(self, schema, key, *args):
         """ get event by eventid """
-        handle = txbitwrap.storage(schema, **self.settings)
-        self.write(handle.storage.db.events.fetch(key))
+        handle = txbitwrap.eventstore(schema, **self.settings)
+        res = yield handle.storage.db.events.fetch(key)
+        self.write(res)
 
 class State(headers.Mixin, RequestHandler):
     """ /state/{schema}/{oid} """
 
+    @defer.inlineCallbacks
     def get(self, schema, key, *args):
         """ get head event by oid """
 
-        handle = txbitwrap.storage(schema, **self.settings)
-        self.write(handle.storage.db.states.fetch(key))
+        handle = txbitwrap.eventstore(schema, **self.settings)
+        res = yield handle.storage.db.states.fetch(key)
+        self.write(res)
 
 class Machine(headers.Mixin, RequestHandler):
     """ Return state machine json """
@@ -97,15 +102,23 @@ class Schemata(headers.Mixin, RequestHandler):
 
     def get(self, *args):
         """ list schema files """
-        self.write({'schemata': pnml.ptnet.schema_list()})
+        self.write({'schemata': pnml.schema_list()})
 
 class Stream(headers.Mixin, RequestHandler):
     """ /stream/{schema}/{oid} """
 
+    
+    @defer.inlineCallbacks
     def get(self, schema, key, *args):
         """ return event stream json array """
-        stor = txbitwrap.storage(schema, **self.settings)
-        self.write(json.dumps(stor.storage.db.events.fetchall(key)))
+        try:
+            stor = txbitwrap.eventstore(schema, **self.settings)
+            stream = yield stor.storage.db.events.fetchall(key)
+            self.write(json.dumps(stream))
+        except Exception as x:
+            # REVIEW: should this set 404 status
+            self.write('[]')
+
 
 class Config(headers.Mixin, RequestHandler):
     """ config """
@@ -115,8 +128,6 @@ class Config(headers.Mixin, RequestHandler):
 
         self.write({
             'endpoint': os.environ.get('ENDPOINT', 'http://' + self.request.host),
-            'wrapserver': os.environ.get('WRAPSERVER', 'http://127.0.0.1:8000'),
-            'encoding': 'json',
             'version': VERSION,
             'stage': stage,
             'use_websocket': True
@@ -129,7 +140,6 @@ class Index(RequestHandler):
         self.render(
             "index.html",
             app_root=os.environ.get('APP_ROOT', ''),
-            bundle_root=os.environ.get('BUNDLE_ROOT', 'https://bitwrap.io/txbitwrap')
         )
 
 def factory(options):
@@ -146,7 +156,8 @@ def factory(options):
         (r"/stream/(.*)/(.*)", Stream),
         (r"/config/(.*).json", Config),
         (r"/api", rpc.Rpc),
-        (r"/", Index)
+        (r"/", Index),
+        (r"/(.*\.py)", StaticFileHandler, {"path": options['brython-path']})
     ]
 
     return cyclone.web.Application(handlers, **settings(options))

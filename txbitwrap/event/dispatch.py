@@ -11,10 +11,11 @@ from txamqp.client import TwistedDelegate
 from txamqp.content import Content
 import txamqp.spec
 
-def __dispatcher(handle):
+def __dispatcher(ready):
     """ Dispatcher singleton """
-    Dispatcher.instance = handle
-    return handle
+    log.msg('__AMQP_DISPATCH_STARTED___')
+    Dispatcher.instance = ready
+    return ready
 
 class Dispatcher(object):
     """
@@ -23,7 +24,7 @@ class Dispatcher(object):
 
     implements(IService)
 
-    handle = defer.Deferred()
+    ready = defer.Deferred()
     instance = None
 
     def __init__(self, rdq, settings):
@@ -36,23 +37,26 @@ class Dispatcher(object):
         pass
 
     def startService(self):
-
         spec = txamqp.spec.load(os.path.abspath(__file__ + '/../../specs/amqp0-9-1.stripped.xml'))
 
         delegate = TwistedDelegate()
 
-        cli = ClientCreator(
-                reactor,
-                AMQClient,
-                delegate=delegate,
-                vhost=self.settings['rabbit-vhost'],
-                spec=spec).connectTCP(
-                        self.settings['rabbit-host'],
-                        self.settings['rabbit-port'])
+        factory = ClientCreator(
+            reactor,
+            AMQClient,
+            delegate=delegate,
+            vhost=self.settings['rabbit-vhost'],
+            spec=spec
+        )
+        
+        cli = factory.connectTCP(
+            self.settings['rabbit-host'],
+            self.settings['rabbit-port']
+        )
 
         cli.addCallback(self.onConnect)
         cli.addErrback(lambda err: log.err(err))
-        Dispatcher.handle.callback(self)
+        Dispatcher.ready.callback(self)
 
     def stopService(self):
         # TODO: stop listening to rabbit
@@ -63,10 +67,12 @@ class Dispatcher(object):
 
     @staticmethod
     def send(event):
+        print '__SEND__'
         self = Dispatcher.instance
         msg = Content(json.dumps(event))
-        #log.msg("Sending message: %s" % msg)
-        self.chan.basic_publish(exchange=self.settings['exchange'], content=msg, routing_key=event['schema'])
+        log.msg("Sending message: %s" % msg)
+        d = self.chan.basic_publish(exchange=self.settings['exchange'], content=msg, routing_key=event['schema'])
+        print d
         return event
 
     @defer.inlineCallbacks
@@ -103,4 +109,4 @@ class Dispatcher(object):
 
             d.callback(json.loads(msg.content.body))
 
-Dispatcher.handle.addCallback(__dispatcher)
+Dispatcher.ready.addCallback(__dispatcher)

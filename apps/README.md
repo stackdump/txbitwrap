@@ -7,13 +7,6 @@ The included ./Procfile is used to start each application using [honcho](https:/
 
 #### Api
 
-Run only the bitwrap api server
+Run only the bitwrap api server or leave our all args to run all apps
 
     honcho start api
-
-#### Octoe
-
-A bot that will play tic-tac-toe against you over RabbitMQ
-
-    honcho start api octoe
-

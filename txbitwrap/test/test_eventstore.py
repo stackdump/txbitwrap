@@ -2,41 +2,26 @@
 import time
 import json
 from twisted.internet import defer
+from twisted.python import log
 from txbitwrap.test import ApiTest
-import bitwrap_psql.db as pg
-import bitwrap_machine as pnml
+import txbitwrap.storage.postgres as psql
+import txbitwrap.machine as pnml
 
 
 class EventStoreTest(ApiTest):
     """ test bitwrap eventstore using tic-tac-toe """
 
     cli = ApiTest.client('api')
+    oid = 'trial-' + time.time().__str__()
+    schema = 'octoe'
 
-    def test_machine_api(self):
-        """
-        test readonly operations
-        """ 
-        d = defer.Deferred()
-        schema = 'octoe'
+    def setUp(self):
+        """ """
+        ApiTest.setUp(self)
+        self.pool = psql.connect(**self.options)
 
-        def assert_status_code(res, code=200):
-            """ test event response """
-            self.assertEquals(res.code, code)
-            obj = json.loads(res.body)
-            print "\n", json.dumps(obj, indent=4)
-            return obj
-
-        d.addCallback(lambda _: self.fetch('config/default.json'))
-        d.addCallback(assert_status_code)
-
-        d.addCallback(lambda _: self.fetch('schemata'))
-        d.addCallback(assert_status_code)
-
-        d.addCallback(lambda _: self.fetch('machine/%s' % schema))
-        d.addCallback(assert_status_code)
-
-        d.callback(None)
-
+        d = psql.drop_schema(self.schema, conn=self.pool)
+        d.addCallback(lambda _: psql.create_schema(pnml.Machine(self.schema), conn=self.pool))
         return d
 
     def test_tic_tac_toe_sequence(self):
@@ -44,11 +29,7 @@ class EventStoreTest(ApiTest):
         test write operation using a sequence of tic-tac-toe events
         """
 
-        d = defer.Deferred()
-        oid = 'trial-' + time.time().__str__()
-        schema = 'octoe'
-        pg.recreate_db(**self.options)
-        pg.create_schema(pnml.Machine(schema), drop=True, **self.options)
+        self.assertTrue(self.pool)
 
         def assert_valid_body(res, code=200):
             """ test event response """
@@ -60,70 +41,68 @@ class EventStoreTest(ApiTest):
         def test_eventstream(count=0):
             """ add stream tests"""
 
-            def _test(_):
-                print "\n* event-stream"
-                return self.fetch('stream/octoe/'+ oid)
+            d = self.fetch('stream/octoe/'+ self.oid)
 
-            d.addCallback(_test)
             d.addCallback(assert_valid_body)
             d.addCallback(lambda obj: self.assertEquals(len(obj), count))
+
+            return d
 
         def test_state():
             """ add state tests"""
             def _get_state(_):
                 print "\n* state - latest"
-                return self.fetch('state/octoe/'+ oid)
+                return self.fetch('state/octoe/'+ self.oid)
 
             def test_head_event(obj):
                 print "\n* event - %i" % obj['rev']
                 return self.fetch('event/octoe/'+ obj['id'])
 
-            d.addCallback(_get_state)
+            d =_get_state
             d.addCallback(assert_valid_body)
             d.addCallback(test_head_event)
             d.addCallback(assert_valid_body)
+            return d
 
-        def create_stream(exists):
-            self.assertFalse(exists)
-            return self.cli.stream_create(schema, oid)
 
         def create_trial_stream():
             """ add a new stream """
 
-            def schema_exists(_):
+            def schema_exists(schema):
                 return self.cli.schema_exists(schema)
 
             def stream_exists(exists):
                 self.assertTrue(exists)
-                return self.cli.stream_exists(schema, oid)
+                return self.cli.stream_exists(self.schema, self.oid)
 
-            d.addCallback(schema_exists)
+            def create_stream(exists):
+                self.assertFalse(exists)
+                return self.cli.stream_create(self.schema, self.oid)
+
+            d = schema_exists(self.schema)
             d.addCallback(stream_exists)
             d.addCallback(create_stream)
+            return d
 
+        @defer.inlineCallbacks
         def dispatch_sequence(seq):
             """ add event sequence tests """
-
-            def add_action(action):
+            
+            def _command(action):
                 """ send an action event """
 
-                def dispatch_event(_):
-                    print "\n* tx-response\n"
+                return self.dispatch(
+                    schema=self.schema,
+                    oid=self.oid,
+                    action=action,
+                    payload={'trial': ['event', 'data']}
+                )
 
-                    return self.dispatch(
-                        schema=schema,
-                        oid=oid,
-                        action=action,
-                        payload={'trial': ['event', 'data']}
-                    )
-
-                d.addCallback(dispatch_event)
-                d.addCallback(assert_valid_body)
- 
             for action in seq:
-                add_action(action)
+                yield _command(action)
 
-        def run_tests():
+
+        def run_tests(_):
             """ kick off testing """
             seq = ['BEGIN',
                    'X11',
@@ -135,11 +114,45 @@ class EventStoreTest(ApiTest):
                    'X22',
                    'END_O']
 
-            create_trial_stream()
-            dispatch_sequence(seq)
-            test_eventstream(count=7)
-            test_state()
+            d = dispatch_sequence(seq)
+            d.addCallback(lambda _: test_eventstream(count=7))
 
-        d.callback(run_tests())
+            def _err(failure):
+                print '__FAIL__'
+                print failure
+
+            d.addErrback(_err)
+            return d
+            #test_state()
+
+        d = create_trial_stream()
+        d.addCallback(run_tests)
 
         return d
+
+    #def test_machine_api(self):
+    #    """
+    #    test readonly operations
+    #    """ 
+    #    d = defer.Deferred()
+    #    schema = 'octoe'
+
+    #    def assert_status_code(res, code=200):
+    #        """ test event response """
+    #        self.assertEquals(res.code, code)
+    #        obj = json.loads(res.body)
+    #        print "\n", json.dumps(obj, indent=4)
+    #        return obj
+
+    #    d.addCallback(lambda _: self.fetch('config/default.json'))
+    #    d.addCallback(assert_status_code)
+
+    #    d.addCallback(lambda _: self.fetch('schemata'))
+    #    d.addCallback(assert_status_code)
+
+    #    d.addCallback(lambda _: self.fetch('machine/%s' % schema))
+    #    d.addCallback(assert_status_code)
+
+    #    d.callback(None)
+
+    #    return d

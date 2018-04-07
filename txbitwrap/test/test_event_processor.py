@@ -3,8 +3,8 @@ import txbitwrap
 from txbitwrap.event import bind, unbind, rdq
 from txbitwrap.event.processor import run, redispatch
 from txbitwrap.test import ApiTest, OPTIONS
-import bitwrap_psql.db as pg
-import bitwrap_machine as pnml
+import txbitwrap.storage.postgres as pgsql
+import txbitwrap.machine as pnml
 
 class EventProcessorTest(ApiTest):
     """ Test Event Handler """
@@ -14,16 +14,16 @@ class EventProcessorTest(ApiTest):
         add an event handler for tic-tac-toe
         and run a proc to execute a game
         """
-        pg.recreate_db(**self.options)
-        pg.create_schema(pnml.Machine('proc'), drop=True, **self.options)
-        pg.create_schema(pnml.Machine('octoe'), schema_name='game', drop=True, **self.options)
+        pgsql.recreate_db(**self.options)
+        pgsql.create_schema(pnml.Machine('proc'), drop=True, **self.options)
+        pgsql.create_schema(pnml.Machine('octoe'), schema_name='game', drop=True, **self.options)
 
         d = defer.Deferred()
 
         def game_handler(options, event):
             """ play a game of tic-tac-toe """
 
-            gamestore = txbitwrap.storage('game', **OPTIONS)
+            gamestore = txbitwrap.eventstore('game', **OPTIONS)
             gameid = event['payload']['gameid']
             db = gamestore.storage.db
 

@@ -8,33 +8,36 @@ HANDLERS = {}
 
 def __worker(event):
     """ handle event on local reactor """
-    deferjob = defer.Deferred()
+    #print event
+    #deferjob = defer.Deferred()
 
-    def __run(deferjob, handle):
-        """ add job to rdq """
-        if handle not in HANDLERS:
-            return
+    #def __run(deferjob, handle):
+    #    """ add job to rdq """
+    #    if handle not in HANDLERS:
+    #        return
 
-        for _, dispatch in HANDLERS[handle].items():
-            deferjob.addCallback(dispatch)
+    #    for _, dispatch in HANDLERS[handle].items():
+    #        deferjob.addCallback(dispatch)
 
-    __run(deferjob, event['schema'])
-    __run(deferjob, event['schema'] + '.' + event['oid'])
+    #__run(deferjob, event['schema'])
+    #__run(deferjob, event['schema'] + '.' + event['oid'])
 
-    deferjob.callback(event)
+    #deferjob.callback(event)
     return event
 
-rdq = ResizableDispatchQueue(__worker, 5)
+rdq = ResizableDispatchQueue(__worker, 1)
 
+@defer.inlineCallbacks
 def redispatch(event):
     """ send AMQP event """
     if '__err__' not in event:
         if Dispatcher.instance is not None:
-            Dispatcher.send(event)
+            # no message queue just handle locally
+            yield Dispatcher.send(event)
         else:
-            rdq.put(event)
+            yield rdq.put(event)
 
-    return event
+    defer.returnValue(event)
 
 def bind(handle_id, options, handler):
     """

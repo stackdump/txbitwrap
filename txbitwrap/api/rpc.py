@@ -3,8 +3,8 @@ from cyclone.jsonrpc import JsonrpcRequestHandler
 from txbitwrap.event.dispatch import Dispatcher
 from txbitwrap.api import headers
 import txbitwrap
-import bitwrap_machine as pnml
-import bitwrap_psql.db as pg
+import txbitwrap.machine as pnml
+import txbitwrap.storage.postgres as pgsql
 
 
 class Rpc(headers.Mixin, JsonrpcRequestHandler):
@@ -12,7 +12,7 @@ class Rpc(headers.Mixin, JsonrpcRequestHandler):
 
     def handle(self, schema):
         """ open handle on bitwrap storage """
-        return txbitwrap.storage(schema, **self.settings)
+        return txbitwrap.eventstore(schema, **self.settings)
 
     def jsonrpc_schema_exists(self, schema):
         """ test that an event-machine schema exists """
@@ -25,13 +25,13 @@ class Rpc(headers.Mixin, JsonrpcRequestHandler):
         else:
             name = schema
 
-        pg.create_schema(pnml.Machine(machine_name), schema_name=name, **self.settings)
+        pgsql.create_schema(pnml.Machine(machine_name), schema_name=name, **self.settings)
 
         return self.jsonrpc_schema_exists(name)
 
     def jsonrpc_schema_destroy(self, schema):
         """ drop database schema """
-        pg.drop_schema(schema, **self.settings)
+        pgsql.drop_schema(schema, **self.settings)
 
     def jsonrpc_stream_exists(self, schema, oid):
         """ test that a stream exists """

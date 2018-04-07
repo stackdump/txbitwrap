@@ -1,24 +1,31 @@
-Thu Sep 21 22:01:46 CDT 2017
+Sat Apr  7 00:22:07 CDT 2018
 
 WIP
 ===
 
+* test all options from brython UI
 
 BACKLOG
 =======
+* fs watch doesn't seem to work
 
-* add slackbot demo for tic-tac-toe
+* test websocket pub/sub
 
-* add github authentication
+* ctx.load() - returns false (even though it works)
+
+* add a way to stop amqp client gracefully
 
 ICEBOX
 ======
-* add a way to stop amqp client gracefully
 
-* allow front-end user to subscibe to 'follow up' event messages
-  * users would subscribe to websocket using the event-id
+* consider refactor
+  * of machine module - all PNML code exists there now
+  * refactor storage class
+
+* add github authentication
 
 * support self-signed SSL cert generation
   * in docker container
 
-* investigate how we could use tensor flow with bitwrap models
+* make dual mode of operation w/ AMQP & txrdq more explicit
+  * or refactor to get rid of txrdq

@@ -49,3 +49,15 @@ Run development database & server
     # TODO: include instructions run this container and how to link w/ postgresql container above
 
     docker run -d --hostname rabbit-dev --name rabbit-dev -e RABBITMQ_DEFAULT_USER=bitwrap -e RABBITMQ_DEFAULT_PASS=bitwrap  -p 127.0.0.1:5672:5672 -p 127.0.0.1:15672:15672 rabbitmq:3-management
+
+#### Testing
+
+See tests under txbitwrap.tests -- it is recommended to only run a single test at a time.
+
+Not all test code plays nice w/ the reactor,
+if needed -- convert to warnings using the --unclean-warnings arg and don't fail the test.
+
+```
+trial --unclean-warnings
+```
+

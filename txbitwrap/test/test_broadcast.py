@@ -3,8 +3,8 @@ import time
 import json
 from twisted.internet import defer
 from txbitwrap.test import ApiTest
-import bitwrap_psql.db as pg
-import bitwrap_machine as pnml
+import txbitwrap.storage.postgres as pgsql
+import txbitwrap.machine as pnml
 
 
 class EventStoreTest(ApiTest):
@@ -20,8 +20,8 @@ class EventStoreTest(ApiTest):
         d = defer.Deferred()
         oid = 'trial-' + time.time().__str__()
         schema = 'octoe'
-        pg.recreate_db(**self.options)
-        pg.create_schema(pnml.Machine(schema), drop=True, **self.options)
+        pgsql.recreate_db(**self.options)
+        pgsql.create_schema(pnml.Machine(schema), drop=True, **self.options)
 
         def assert_valid_body(res, code=200):
             """ test event response """

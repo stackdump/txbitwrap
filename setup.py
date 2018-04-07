@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="txbitwrap",
-    version="0.3.0",
+    version="0.4.0",
     author="Matthew York",
     author_email="myork@stackdump.com",
     description="bitwrap eventstore deployed as a Twisted plugin",
@@ -15,9 +15,8 @@ setup(
         'cyclone==1.1',
         'service-identity==16.0.0',
         'txRDQ==0.2.14',
-        'txAMQP==0.7.0',
-        'bitwrap-machine',
-        'bitwrap-psql'],
+        'psycopg2==2.7.4',
+        'txAMQP==0.7.0'],
 
     long_description="""
 txbitwrap
