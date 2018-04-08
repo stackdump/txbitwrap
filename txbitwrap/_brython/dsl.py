@@ -8,6 +8,8 @@ _CFG = None
 _ENDPOINT = ''
 _WS = None
 
+UI_ELEMENT='#code'
+
 def __onload(config):
     """
     config is requested and this method is
@@ -27,16 +29,18 @@ def __onload(config):
     def _open(evt):
         console.log(evt)
         subscribe('brython', 'fswatch')
+        window.jQuery(UI_ELEMENT).trigger('init', evt)
 
     def _error(evt):
         console.log(evt)
 
-    def _message(evt):
-        msg = json.loads(evt.data)
-        console.log(msg)
-
-        if msg['oid'] == 'fswatch':
+    def _message(msg):
+        event = json.loads(msg.data)
+        if event['schema'] == 'brython':
             window.location.reload()
+        elif event['action']:
+            window.jQuery(UI_ELEMENT).trigger(event['schema'], event)
+            window.jQuery(UI_ELEMENT).trigger('.'.join([event['schema'], event['action']]), event)
 
     def _close(evt):
         console.log(evt)
@@ -45,6 +49,29 @@ def __onload(config):
     _WS.bind('error', _error)
     _WS.bind('message', _message)
     _WS.bind('close', _close)
+
+def bind(schema=None, action=None, callback=None):
+    """ bind event handler """
+    assert callable(callback)
+
+    if action:
+        routing_key = '.'.join(schema, action)
+    else:
+        routing_key = schema
+
+    window.jQuery(UI_ELEMENT).on(routing_key, callback)
+
+def trigger(schema=None, action=None, callback=None):
+    """ trigger event handler """
+    if action:
+        routing_key = '.'.join(schema, action)
+    else:
+        routing_key = schema
+
+    window.jQuery(UI_ELEMENT).trigger(routing_key)
+
+    if callable(callback):
+        callback()
 
 def subscribe(schema, oid):
     """ subscribe(schema, oid): lisent for events over WebSocket """

@@ -3,11 +3,13 @@
 import dsl
 import json
 from browser import window, document
-from dsl import subscribe, unsubscribe, echo # util
+from dsl import bind, trigger, subscribe, unsubscribe, echo # util
 from dsl import load, create, destroy # modify stream
 from dsl import schemata, state, machine, dispatch, stream, event, exists # use stream
 
 commands = [
+    'bind',
+    'trigger',
     'subscribe',
     'unsubscribe',
     'load',
@@ -27,7 +29,6 @@ from dsl import load, create, destroy # modify stream
 from dsl import schemata, state, machine, dispatch, stream, event, exists # use stream
 import ctl
 
-
 def __onload(version=None, callback=None):
     """ init config and connections """
 
@@ -42,6 +43,6 @@ def __onload(version=None, callback=None):
         document['code'].focus()
 
         if callable(callback):
-            callback(window.Bitwrap.config)
+            callback(config)
 
     dsl._get(window.Bitwrap.config, application)

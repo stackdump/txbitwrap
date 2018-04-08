@@ -32,6 +32,13 @@ def __onload(ctx):
     #CTX.machine('counter', callback=CTL.load)
     CTX.machine('octoe', callback=CTL.load)
 
+def on_event(event):
+    """ receive upstream event """
+    CTL.simulation.trigger(event)
+    action = CTL.simulation.trigger(event)
+    console.log(net.SCHEMA, CTL.simulation.oid, action)
+    return action
+
 class Controller(object):
     """ Provide interface for UI actions """
 
@@ -125,8 +132,7 @@ class EditorEvents(object):
 
     def on_trigger(self, event):
         """ callback when triggering a transition during a simulation """
-        action = self.simulation.trigger(event)
-        console.log(net.SCHEMA, self.simulation.oid, action)
+        action = on_event(event)
         CTX.dispatch(net.SCHEMA, self.simulation.oid, action)
 
     def on_token_inc(self, event):
