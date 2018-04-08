@@ -37,9 +37,7 @@ class TicTacToe(processor.Factory):
     def on_event(self, opts, event):
         """ handle 'octoe' event from rabbit """
         state = yield self.state(self.schema, event['oid'])
-        log.msg('__EVENT__')
         statevector = state['state']
-        print statevector
 
         if statevector[self.move_key] != 0:
 
@@ -47,7 +45,6 @@ class TicTacToe(processor.Factory):
 
             def end(msg):
                 """ end the game with message about winning player """
-                print '__END__'
                 d = self.dispatch(
                     oid=event['oid'],
                     action='END_' + self.player,
@@ -61,11 +58,13 @@ class TicTacToe(processor.Factory):
                 """ select first valid move and emit an event """
                 for coords in self.board:
                     if statevector['m' + coords] > 0:
-                        print self.dispatch(
+                        d = self.dispatch(
                             oid=event['oid'],
                             action=self.player + coords,
                             payload=event['payload'])
-                        return
+
+                        d.addCallback(lambda evt: log.msg(evt))
+                        return d
                 return end('Draw')
 
             if winner is None:
@@ -83,8 +82,6 @@ class TicTacToe(processor.Factory):
         stream = yield self.stream(self.schema, oid)
 
         winner = None
-        print '__STREAM__'
-        print stream
 
         if len(stream) > 5:
 

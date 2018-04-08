@@ -1,4 +1,5 @@
 from twisted.internet import defer
+from twisted.python import log
 from txrdq.rdq import ResizableDispatchQueue
 from twisted.internet import defer
 from txbitwrap.event.dispatch import Dispatcher
@@ -11,13 +12,10 @@ def dispatch(handle, event):
     if handle in HANDLERS:
         for _, dispatch in HANDLERS[handle].items():
             try:
-                print '__DISPATCH__'
-                print _
-                print event
                 dispatch(event)
             except Exception as ex:
-                print '__DISPATCH_FAIL__'
-                print ex
+                log.msg('__DISPATCH_FAIL__')
+                log.msg(ex)
 
 def __worker(event):
     """
@@ -65,8 +63,6 @@ def bind(handle_id, options, handler):
         return event
 
     HANDLERS[handle][options['subscriber_id']] = __handle
-
-    print HANDLERS
 
     return options['subscriber_id']
 

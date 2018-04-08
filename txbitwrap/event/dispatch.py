@@ -72,7 +72,7 @@ class Dispatcher(object):
         """ push to rabbit """
         self = Dispatcher.instance
         msg = Content(json.dumps(event))
-        log.msg("Sending message: %s" % msg)
+        #log.msg("Sending message: %s" % msg)
         yield self.chan.basic_publish(exchange=self.settings['exchange'], content=msg, routing_key=event['schema'])
         defer.returnValue(event)
 
@@ -102,7 +102,7 @@ class Dispatcher(object):
         # need to terminate when reactor receives shutdown signal
         while True:
             msg = yield queue.get()
-            log.msg('Received: ' + msg.content.body + ' from channel #' + str(self.chan.id))
+            #log.msg('Received: ' + msg.content.body + ' from channel #' + str(self.chan.id))
 
             d = defer.Deferred()
             for dispatch in self.listeners:
