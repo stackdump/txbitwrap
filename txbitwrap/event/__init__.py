@@ -6,23 +6,26 @@ import uuid
 
 HANDLERS = {}
 
-def __worker(event):
+def dispatch(handle, event):
     """ handle event on local reactor """
-    #print event
-    #deferjob = defer.Deferred()
+    if handle in HANDLERS:
+        for _, dispatch in HANDLERS[handle].items():
+            try:
+                print '__DISPATCH__'
+                print _
+                print event
+                dispatch(event)
+            except Exception as ex:
+                print '__DISPATCH_FAIL__'
+                print ex
 
-    #def __run(deferjob, handle):
-    #    """ add job to rdq """
-    #    if handle not in HANDLERS:
-    #        return
-
-    #    for _, dispatch in HANDLERS[handle].items():
-    #        deferjob.addCallback(dispatch)
-
-    #__run(deferjob, event['schema'])
-    #__run(deferjob, event['schema'] + '.' + event['oid'])
-
-    #deferjob.callback(event)
+def __worker(event):
+    """
+    process events from rxrdq
+    invokes handlers for <schema> and <schema>.<oid>
+    """
+    dispatch(event['schema'], event)
+    dispatch(event['schema'] + '.' + event['oid'], event)
     return event
 
 rdq = ResizableDispatchQueue(__worker, 1)
@@ -62,6 +65,8 @@ def bind(handle_id, options, handler):
         return event
 
     HANDLERS[handle][options['subscriber_id']] = __handle
+
+    print HANDLERS
 
     return options['subscriber_id']
 

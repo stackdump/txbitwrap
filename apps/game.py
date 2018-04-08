@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import random
-from twisted.internet import reactor
+from twisted.internet import defer, reactor
+from twisted.python import log
 from txbitwrap.event import processor
 
 class TicTacToe(processor.Factory):
@@ -32,65 +33,75 @@ class TicTacToe(processor.Factory):
             'routing-key': self.schema
         }
 
+    @defer.inlineCallbacks
     def on_event(self, opts, event):
         """ handle 'octoe' event from rabbit """
-        statevector = self.state(self.schema, event['oid'])
+        state = yield self.state(self.schema, event['oid'])
+        log.msg('__EVENT__')
+        statevector = state['state']
+        print statevector
 
-        if statevector[self.move_key] == 0:
-            return
+        if statevector[self.move_key] != 0:
 
-        winner = self.find_winner(event['oid'])
+            winner = yield self.find_winner(event['oid'])
 
-        def end(msg):
-            """ end the game with message about winning player """
-            print self.dispatch(
-                oid=event['oid'],
-                action='END_' + self.player,
-                payload={'msg': msg}
-            )
+            def end(msg):
+                """ end the game with message about winning player """
+                print '__END__'
+                d = self.dispatch(
+                    oid=event['oid'],
+                    action='END_' + self.player,
+                    payload={'msg': msg}
+                )
 
-        def move():
-            """ select first valid move and emit an event """
-            for coords in self.board:
-                if statevector['m' + coords] > 0:
-                    print self.dispatch(
-                        oid=event['oid'],
-                        action=self.player + coords,
-                        payload=event['payload'])
-                    return
-            end('Draw')
+                d.addCallback(lambda event: log.msg(event))
+                return d
 
-        if winner is None:
-            reactor.callLater(0.5, move)
-            random.shuffle(self.board)
-        else:
-            end(winner)
+            def move():
+                """ select first valid move and emit an event """
+                for coords in self.board:
+                    if statevector['m' + coords] > 0:
+                        print self.dispatch(
+                            oid=event['oid'],
+                            action=self.player + coords,
+                            payload=event['payload'])
+                        return
+                return end('Draw')
 
+            if winner is None:
+                reactor.callLater(0.5, move)
+                random.shuffle(self.board)
+            else:
+                end(winner)
+
+    @defer.inlineCallbacks
     def find_winner(self, oid):
         """ search event stream for a win state """
         x_moves = []
         o_moves = []
 
-        stream = self.stream(self.schema, oid)
+        stream = yield self.stream(self.schema, oid)
 
-        if len(stream) < 6:
-            return None
+        winner = None
+        print '__STREAM__'
+        print stream
 
-        for event in stream:
+        if len(stream) > 5:
 
-            coords = event['action'][1:]
+            for event in stream:
 
-            if event['action'][0] == 'X':
-                x_moves.append(coords)
-            elif event['action'][0] == 'O':
-                o_moves.append(coords)
+                coords = event['action'][1:]
 
-        for winset in self.winning_sets:
+                if event['action'][0] == 'X':
+                    x_moves.append(coords)
+                elif event['action'][0] == 'O':
+                    o_moves.append(coords)
 
-            if winset.issubset(x_moves):
-                return 'X Wins'
+            for winset in self.winning_sets:
 
-            if winset.issubset(o_moves):
-                return 'O Wins'
+                if winset.issubset(x_moves):
+                    winner = 'X Wins'
+                elif winset.issubset(o_moves):
+                    winner = 'O Wins'
 
-        return None
+        defer.returnValue(winner)

@@ -62,18 +62,19 @@ class Dispatcher(object):
         # TODO: stop listening to rabbit
         pass
 
-    def addCallback(self, listener):
-        Deferred.listener.append(listener)
+    def addListener(self, callback):
+        """ """
+        Deferred.listener.append(callback)
 
     @staticmethod
+    @defer.inlineCallbacks
     def send(event):
-        print '__SEND__'
+        """ push to rabbit """
         self = Dispatcher.instance
         msg = Content(json.dumps(event))
         log.msg("Sending message: %s" % msg)
-        d = self.chan.basic_publish(exchange=self.settings['exchange'], content=msg, routing_key=event['schema'])
-        print d
-        return event
+        yield self.chan.basic_publish(exchange=self.settings['exchange'], content=msg, routing_key=event['schema'])
+        defer.returnValue(event)
 
     @defer.inlineCallbacks
     def onConnect(self, conn):
@@ -100,10 +101,10 @@ class Dispatcher(object):
         # TODO: add a way to end this gracefully
         # need to terminate when reactor receives shutdown signal
         while True:
-            d = defer.Deferred()
             msg = yield queue.get()
-            #log.msg('Received: ' + msg.content.body + ' from channel #' + str(self.chan.id))
+            log.msg('Received: ' + msg.content.body + ' from channel #' + str(self.chan.id))
 
+            d = defer.Deferred()
             for dispatch in self.listeners:
                 d.addCallback(dispatch)
 

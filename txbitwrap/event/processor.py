@@ -1,4 +1,5 @@
 import json
+from twisted.internet import defer
 from txbitwrap import Dispatcher, Options, factory, bind, eventstore
 import txbitwrap.machine as pnml
 import txbitwrap.storage.postgres as pgsql
@@ -9,6 +10,7 @@ class EventStoreMethods(object):
     frendly dsl methods for eventstore
     """
 
+    @defer.inlineCallbacks
     def dispatch(self, oid=None, action=None, payload=None, schema=None):
         """ send an event to the same schema this handler instances is using """
 
@@ -18,13 +20,15 @@ class EventStoreMethods(object):
         if schema is None:
             schema = self.schema
 
-        res = eventstore(schema, **self.options)(oid=oid, action=action, payload=json.dumps(payload))
+        res = yield eventstore(schema, **self.options)(oid=oid, action=action, payload=json.dumps(payload))
+        print '__SENDDDING__'
+        print res
 
         res['schema'] = schema
         res['action'] = action
         res['payload'] = payload
 
-        return Dispatcher.send(res)
+        defer.returnValue(Dispatcher.send(res))
 
     def exists(self, *args):
         """ load a bitwrap machine as a database schema """
@@ -54,9 +58,9 @@ class EventStoreMethods(object):
         return stor.storage.db.events.fetchall(oid)
 
     def state(self, schema, oid):
+        """ return state snapshot """
         stor = eventstore(schema, **self.options)
-        return stor.storage.db.states.fetch(oid)['state']
-
+        return stor.storage.db.states.fetch(oid)
 
 class Factory(EventStoreMethods):
     """ event processor twisted application factory """
