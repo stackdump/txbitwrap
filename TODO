@@ -1,21 +1,19 @@
-Sat Apr  7 14:07:03 CDT 2018
+Sat Apr  7 23:40:50 CDT 2018
 
 WIP
 ===
 
-* test all options from brython UI
+Fix error when running simulator
 
 BACKLOG
 =======
-* fs watch doesn't seem to work
+* test websocket pub/sub 
 
-* test websocket pub/sub
+* websockets are not cleaned up
+  * perhaps should have loop to cleanup based on max age
+  * when reset is called from UI unbind existing listeners
 
-* test amqp pub/sub
-
-* ctx.load() - returns false (even though it works)
-
-* add a way to stop amqp client gracefully
+* update simulator to apply incoming WS events
 
 * UI improvement
   * add link to Github repo in UI
@@ -27,6 +25,10 @@ BACKLOG
   * missing arc weight handle
     * ? use SVG marker element ?
     * should be txt/number positioned at midpoint in line as a clickable handle
+
+* RPC call: ctx.load() - returns false (even though it works)
+
+* add a way to stop amqp client gracefully
 
 ICEBOX
 ======

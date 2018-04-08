@@ -30,7 +30,6 @@ class Storage(object):
         if req['payload'] == '':
             req['payload'] = '{}'
 
-        res = defer.Deferred()
 
         sql = """
         INSERT INTO %s.events(oid, action, payload)
@@ -41,21 +40,17 @@ class Storage(object):
 
         d = self.db.conn.runQuery(sql)
 
-        def _pass(reply):
-            res.callback(reply[0][0])
-
         def _fail(failure):
             #print failure
             if failure.type == psycopg2.IntegrityError:
                 req['__err__'] = 'CONFLICT'
             else:
                 req['__err__'] = 'INVALID'
+            return req
 
-            res.callback(req)
-
-        d.addCallback(_pass)
+        d.addCallback(lambda reply: reply[0][0])
         d.addErrback(_fail)
-        return res
+        return d
 
 
 class Database(object):

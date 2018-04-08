@@ -21,14 +21,13 @@ class EventStoreMethods(object):
             schema = self.schema
 
         res = yield eventstore(schema, **self.options)(oid=oid, action=action, payload=json.dumps(payload))
-        print '__SENDDDING__'
-        print res
 
         res['schema'] = schema
         res['action'] = action
         res['payload'] = payload
 
-        defer.returnValue(Dispatcher.send(res))
+        Dispatcher.send(res)
+        defer.returnValue(res)
 
     def exists(self, *args):
         """ load a bitwrap machine as a database schema """
