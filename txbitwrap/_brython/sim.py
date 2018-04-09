@@ -51,14 +51,15 @@ class Simulation(object):
 
         refid, symbol = target_id.split('-')
 
-        if not self.pnet or not symbol == 'transition':
-            return
+        if self.pnet and symbol == 'transition':
+            return self.execute(refid)
 
-        if self.commit(refid):
-            self.history.append(refid)
+    def execute(self, action):
+        if self.commit(action):
+            self.history.append(action)
             self.ctl.reset(callback=self.redraw)
 
-        return refid
+        return action
 
     def reset(self):
         """ render SVG and hilight live transitions """
@@ -67,8 +68,7 @@ class Simulation(object):
 
     def redraw(self):
         """ render SVG and hilight live transitions """
-        self.ctl.render()
-        self.hilight_live_transitions()
+        self.ctl.render(callback=self.hilight_live_transitions)
 
     def hilight_live_transitions(self):
         """ visually indiciate which transitions can fire """

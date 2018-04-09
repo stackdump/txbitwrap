@@ -4,6 +4,8 @@ from twisted.internet import defer, reactor
 from twisted.python import log
 from txbitwrap.event import processor
 
+MOVE_DELAY_SEC = 1
+
 class TicTacToe(processor.Factory):
     """ play tic-tac-toe w/ random strategy """
 
@@ -68,7 +70,7 @@ class TicTacToe(processor.Factory):
                 return end('Draw')
 
             if winner is None:
-                reactor.callLater(0.5, move)
+                reactor.callLater(MOVE_DELAY_SEC, move)
                 random.shuffle(self.board)
             else:
                 end(winner)

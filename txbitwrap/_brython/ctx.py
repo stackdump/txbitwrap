@@ -28,6 +28,7 @@ from dsl import subscribe, unsubscribe, echo # util
 from dsl import load, create, destroy # modify stream
 from dsl import schemata, state, machine, dispatch, stream, event, exists # use stream
 import ctl
+from ctl import on_event
 
 def __onload(version=None, callback=None):
     """ init config and connections """

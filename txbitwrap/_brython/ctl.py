@@ -32,12 +32,10 @@ def __onload(ctx):
     #CTX.machine('counter', callback=CTL.load)
     CTX.machine('octoe', callback=CTL.load)
 
-def on_event(event):
-    """ receive upstream event """
-    CTL.simulation.trigger(event)
-    action = CTL.simulation.trigger(event)
-    console.log(net.SCHEMA, CTL.simulation.oid, action)
-    return action
+def on_event(_, event):
+    """ receive event over jQuery binding"""
+    if 'action' in event:
+        return CTL.simulation.execute(event['action'])
 
 class Controller(object):
     """ Provide interface for UI actions """
@@ -59,16 +57,19 @@ class Controller(object):
         net.PAPER.clear()
         net.on_load()
 
-        if callback:
+        if callable(callback):
             callback()
 
-    def render(self):
+    def render(self, callback=None):
         """ development examples """
         if not net.INSTANCE:
             net.PNet(self)
 
         net.INSTANCE.render()
         self.json_view()
+
+        if callable(callback):
+            callback()
 
     def json_view(self):
         _info = json.dumps({
@@ -132,7 +133,8 @@ class EditorEvents(object):
 
     def on_trigger(self, event):
         """ callback when triggering a transition during a simulation """
-        action = on_event(event)
+        action = CTL.simulation.trigger(event)
+        console.log(net.SCHEMA, CTL.simulation.oid, action)
         CTX.dispatch(net.SCHEMA, self.simulation.oid, action)
 
     def on_token_inc(self, event):

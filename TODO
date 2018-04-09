@@ -1,9 +1,9 @@
-Sun Apr  8 22:02:44 CDT 2018
+Sun Apr  8 22:58:46 CDT 2018
 
 WIP
 ===
 
-* update simulator to apply incoming WS events
+* RPC call: ctx.load() - returns false (even though it works)
 
 BACKLOG
 =======
@@ -11,19 +11,19 @@ BACKLOG
 * registred websocket handlers are not cleaned up/unbound
   * when reset is called from UI, unbind existing listeners
 
+* add a way to stop amqp client gracefully when service shuts down
+
 * UI improvement
   * add link to Github repo in UI
   * add dropdown for selecting which schema to render 
   * add edit dialog for updating symbol attributes
+  * don't redraw entire SVG after every event
+    * HACK added a 1 sec move delay in demo 'game' app
 
 * UI bugs
   * token ledger isn't reset when resetting a simulation
   * missing arc weight handle to allow edit & +/- intial token balance
     * use SVG marker element - should be txt/number clickable handle
-
-* RPC call: ctx.load() - returns false (even though it works)
-
-* add a way to stop amqp client gracefully when service shuts down
 
 ICEBOX
 ======
