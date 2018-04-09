@@ -1,19 +1,15 @@
-Sat Apr  7 23:40:50 CDT 2018
+Sun Apr  8 22:02:44 CDT 2018
 
 WIP
 ===
 
-Fix error when running simulator
+* update simulator to apply incoming WS events
 
 BACKLOG
 =======
-* test websocket pub/sub 
 
-* websockets are not cleaned up
-  * perhaps should have loop to cleanup based on max age
-  * when reset is called from UI unbind existing listeners
-
-* update simulator to apply incoming WS events
+* registred websocket handlers are not cleaned up/unbound
+  * when reset is called from UI, unbind existing listeners
 
 * UI improvement
   * add link to Github repo in UI
@@ -22,25 +18,32 @@ BACKLOG
 
 * UI bugs
   * token ledger isn't reset when resetting a simulation
-  * missing arc weight handle
-    * ? use SVG marker element ?
-    * should be txt/number positioned at midpoint in line as a clickable handle
+  * missing arc weight handle to allow edit & +/- intial token balance
+    * use SVG marker element - should be txt/number clickable handle
 
 * RPC call: ctx.load() - returns false (even though it works)
 
-* add a way to stop amqp client gracefully
+* add a way to stop amqp client gracefully when service shuts down
 
 ICEBOX
 ======
 
-* consider refactor
-  * of machine module - all PNML code exists there now
-  * refactor storage class
-
 * add github authentication
+
+* BUGS:
+  * registred websocket handlers are not cleaned up/unbound
+    * should expire server-side after some TTL
 
 * support self-signed SSL cert generation
   * in docker container
+
+* simulator(eventstore)
+  * show formatted history in GUI somehow
+  * provide replay, fwd back of event stream
+
+* consider refactor
+  * of machine module - all PNML code exists there now
+  * refactor storage class
 
 * make dual mode of operation w/ AMQP & txrdq more explicit
   * or refactor to get rid of txrdq
@@ -48,10 +51,6 @@ ICEBOX
 * allow petri-net json to be written back to disk over jsonrpc service
   * allow save to local storage in browser as PNML
   * support downloads as <pnml>.xml
-
-* simulator(eventstore)
-  * show formatted history in GUI somehow
-  * provide replay, fwd back of event stream
 
 * add a build step to compile python to js in ./docs
   * see also: https://github.com/brython-dev/brython/wiki/Writing-an-Android-application
