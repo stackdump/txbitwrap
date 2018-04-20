@@ -1,6 +1,5 @@
 txRDQ==0.2.14
 txAMQP==0.7.0
-cyclone==1.1
 service-identity==16.0.0
 honcho==1.0.1
 psycopg2-binary==2.7.4

@@ -1,2 +1,3 @@
 recursive-include txbitwrap *.*
 recursive-include twisted *.py
+recursive-include cyclone *.py
