@@ -1,12 +1,14 @@
-Sun Apr  8 22:58:46 CDT 2018
+Thu Apr 19 22:45:21 CDT 2018
 
 WIP
 ===
 
-* RPC call: ctx.load() - returns false (even though it works)
+make run.sh work to lauch twistd in background
 
 BACKLOG
 =======
+
+* RPC call: ctx.load() - returns false (even though it works)
 
 * registred websocket handlers are not cleaned up/unbound
   * when reset is called from UI, unbind existing listeners

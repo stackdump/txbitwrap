@@ -9,6 +9,7 @@ from twisted.plugin import IPlugin
 from txbitwrap.api import factory as ApiFactory
 from txbitwrap.event.dispatch import Dispatcher
 from txbitwrap.fswatch import FsWatch
+from txbitwrap.session_watch import SessionWatch
 from txbitwrap.event import rdq
 from txbitwrap import Options
 Factory.noisy = False
@@ -30,6 +31,7 @@ class ServiceFactory(object):
             interface=options['listen-ip'])
 
         multi_service.addService(FsWatch(options['brython-path']))
+        multi_service.addService(SessionWatch())
         multi_service.addService(bitwrap_node)
 
         # REVIEW: should this be optional?

@@ -2,6 +2,7 @@
 
 from twisted.internet import inotify
 from twisted.python import filepath
+from twisted.python import log
 from twisted.application.service import IService
 from zope.interface import implements
 from txbitwrap.event.dispatch import Dispatcher
@@ -23,13 +24,13 @@ class FsWatch(object):
 
     def startService(self):
         """ start service """
-        print '__SERVICE__ => ' + self.name
+        log.msg('__SERVICE__ => ' + self.name)
         self.notifier.startReading()
         self.notifier.watch(filepath.FilePath(self.web_root), callbacks=[self.fs_changed])
 
     def stopService(self):
         """ stop service """
-        print 'stopping %s' % self.name
+        log.msg('stopping %s' % self.name)
 
     def fs_changed(self, _, path, mask):
         if not str.endswith(filepath.FilePath.basename(path), '.py'):
@@ -40,7 +41,7 @@ class FsWatch(object):
         if not 'modify' in fsmask:
            return
 
-        print "event %s on %s" % (', '.join(inotify.humanReadableMask(mask)), path)
+        log.msg("event %s on %s" % (', '.join(inotify.humanReadableMask(mask)), path))
 
         Dispatcher.send({
             'schema': 'brython',
