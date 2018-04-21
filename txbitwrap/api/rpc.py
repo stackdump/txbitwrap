@@ -25,9 +25,9 @@ class Rpc(headers.Mixin, JsonrpcRequestHandler):
         else:
             name = schema
 
-        pgsql.create_schema(pnml.Machine(machine_name), schema_name=name, **self.settings)
-
-        return self.jsonrpc_schema_exists(name)
+        d = pgsql.create_schema(pnml.Machine(machine_name), schema_name=name, **self.settings)
+        d.addCallback(lambda _: self.jsonrpc_schema_exists(name))
+        return d
 
     def jsonrpc_schema_destroy(self, schema):
         """ drop database schema """

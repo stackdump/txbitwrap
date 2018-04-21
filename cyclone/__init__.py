@@ -15,5 +15,5 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-__author__ = "Alexandre Fiori"
-__version__ = version = "git-2013042301"
+__author__ = "Alexandre Fiori" # original cyclone author
+__version__ = version = "v0.4.0" # set to txbitwrap version rather than cyclone version

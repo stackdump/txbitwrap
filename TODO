@@ -1,17 +1,13 @@
-Thu Apr 19 22:45:21 CDT 2018
+Fri Apr 20 22:04:00 CDT 2018
 
 WIP
 ===
 
-make run.sh work to lauch twistd in background
+* registred websocket handlers are not cleaned up/unbound
+  * when reset is called from UI, unbind existing listeners
 
 BACKLOG
 =======
-
-* RPC call: ctx.load() - returns false (even though it works)
-
-* registred websocket handlers are not cleaned up/unbound
-  * when reset is called from UI, unbind existing listeners
 
 * add a way to stop amqp client gracefully when service shuts down
 

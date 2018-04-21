@@ -227,7 +227,7 @@ class RequestHandler(object):
         # headers we generate on the server side, so use a plain dict
         # and list instead.
         self._headers = {
-            "Server": "cyclone/%s" % cyclone.version,
+            "Server": "txbitwrap/%s" % cyclone.version,
             "Content-Type": "text/html; charset=UTF-8",
             "Date": datetime.datetime.utcnow().strftime(
                                                 "%a, %d %b %Y %H:%M:%S GMT"),
