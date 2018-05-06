@@ -1,5 +1,5 @@
 import os
-import json
+import ujson as json
 from cyclone.websocket import WebSocketHandler
 from txbitwrap.event import bind, unbind
 from twisted.python import log

@@ -1,6 +1,6 @@
 """ Test EventStore """
 import time
-import json
+import ujson as json
 from twisted.internet import defer
 from twisted.python import log
 from txbitwrap.test import ApiTest

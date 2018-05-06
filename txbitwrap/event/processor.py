@@ -1,4 +1,4 @@
-import json
+import ujson as json
 from twisted.internet import defer
 from txbitwrap import Dispatcher, Options, factory, bind, eventstore
 import txbitwrap.machine as pnml

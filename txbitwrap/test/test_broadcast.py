@@ -1,6 +1,6 @@
 """ Test EventStore """
 import time
-import json
+import ujson as json
 from twisted.internet import defer
 from txbitwrap.test import ApiTest
 import txbitwrap.storage.postgres as pgsql

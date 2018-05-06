@@ -1,13 +1,49 @@
-Fri Apr 20 22:04:00 CDT 2018
+Sat May  5 22:23:40 CDT 2018
 
 WIP
 ===
 
-* registred websocket handlers are not cleaned up/unbound
-  * when reset is called from UI, unbind existing listeners
+* add github authentication
+* issue JWT token after github authentication
+* set cookie
+
+# consider using github userid to create schemata
+# some various options below
+
+bitwrap=# \dn
+     List of schemas
+     Name        |  Owner   
+-----------------+----------
+ _$12345$foo     | bitwrap # prefix with _ wouldbe visually different from 'user' schemata  <-FAV
+                 |
+ foo_1234        | bitwrap # simplest but potentially error prone when querying schemata
+ _1234$foo       | bitwrap
+ _1234_foo$      | bitwrap
+ v1$123456$foo   | bitwrap # schema versioning
+ u123456$foo     | bitwrap # u meaning 'user'
+
 
 BACKLOG
 =======
+
+* switch to timescaledb https://blog.timescale.com/tutorial-installing-timescaledb-on-aws-c8602b767a98
+
+
+* update API's to enforce auth checking header in each API request
+
+* investigate issuing tokens that expire after each state machine change
+  * possibly require the current state version number
+  * or previous eventid for each interaction
+
+* fix issue where twisted failed to install from pypi
+  * could this be a cache/pyenv issue?
+
+* refactor - Improve postgres queries to build sql w/ params rather than string substitution
+  ? should we actually profile the app with a python profiler ?
+
+* registred websocket handlers are not cleaned up/unbound
+  * when reset is called from UI, unbind existing listeners
+  * tie this into auth + session managment
 
 * add a way to stop amqp client gracefully when service shuts down
 
@@ -23,10 +59,14 @@ BACKLOG
   * missing arc weight handle to allow edit & +/- intial token balance
     * use SVG marker element - should be txt/number clickable handle
 
+* APP gitwrap.com - features
+  * allow registered users to log in via github
+  * should allow users to create/replace schemata using definitions from github repos
+  * should require authentication token to dispatch events
+  * should provide ACL for each user's schemata
+
 ICEBOX
 ======
-
-* add github authentication
 
 * BUGS:
   * registred websocket handlers are not cleaned up/unbound

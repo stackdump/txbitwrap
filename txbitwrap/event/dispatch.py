@@ -1,5 +1,5 @@
 import os
-import json
+import ujson as json
 from zope.interface import implements
 from twisted.internet import defer
 from twisted.internet import reactor

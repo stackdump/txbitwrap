@@ -5,7 +5,7 @@ NOTE: this test uses port 8888 on localhost
 """
 
 import os
-import json
+import ujson as json
 import cyclone.httpclient
 from twisted.internet import defer
 from twisted.application import internet

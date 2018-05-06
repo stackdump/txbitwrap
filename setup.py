@@ -12,6 +12,7 @@ setup(
     packages=find_packages() + ['twisted.plugins'],
     include_package_data=True,
     install_requires=[
+        'ujson==1.35',
         'service-identity==16.0.0',
         'txRDQ==0.2.14',
         'psycopg2==2.7.4',
