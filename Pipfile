@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[dev-packages]
+
+[packages]
+Twisted = {ref = "twisted-18.4.0", git = "https://github.com/twisted/twisted.git", editable = true}
+honcho = "==1.0.1"
+"psycopg2-binary" = ">=2.7.4"
+ujson = ">=1.35"
+txRDQ = ">=0.2.14"
+txAMQP = ">=0.7.0"
+service_identity = ">=16.0.0"
+PyJWT = ">=1.6.1"
+
+[requires]
+python_version = "2.7"
